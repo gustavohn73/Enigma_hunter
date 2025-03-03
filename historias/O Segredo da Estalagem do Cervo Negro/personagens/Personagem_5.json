@@ -1,0 +1,90 @@
+[
+  {
+    "character_id": 5,
+    "name": "Lydia Hemlock",
+    "base_description": "Uma herborista itinerante em seus quarenta anos, recentemente chegada a Ravenshire e hospedada na Estalagem do Cervo Negro. Conhecida em toda a região por seu excepcional conhecimento de plantas raras, seus remédios eficazes e sua disposição para viajar a lugares remotos em busca de espécimes incomuns. Lydia se apresenta como uma acadêmica prática, coletando e documentando conhecimento tradicional sobre ervas enquanto fornece tratamentos para aqueles que não podem pagar médicos convencionais.",
+    "personality": "Intelectualmente curiosa e metodicamente científica em sua abordagem ao mundo natural. Reservada nas interações sociais, preferindo plantas a pessoas na maioria das vezes. Demonstra uma paciência infinita ao explicar propriedades botânicas, mas pouca tolerância para superstições ou charlatanismo. Possuidora de um humor seco e ocasionalmente mordaz, especialmente quando seu conhecimento é questionado. Observadora aguçada de detalhes, particularmente relacionados ao crescimento, colheita e uso de plantas. Guarda seus segredos pessoais cuidadosamente, mantendo uma distância profissional mesmo com aqueles que ajuda.",
+    "appearance": "Mulher de estatura média com físico resistente desenvolvido por anos de caminhadas e trabalho manual. Cabelos castanho-avermelhados com mechas grisalhas, geralmente trançados ou presos em um coque funcional. Veste-se de maneira prática em roupas de viagem duráveis em tons terrosos, sempre com múltiplos bolsos e bolsas para armazenar amostras e ferramentas. Suas mãos são livremente manchadas por pigmentos vegetais, e ela frequentemente carrega um sutil aroma de ervas secas e óleos essenciais. Olhos verdes penetrantes que parecem avaliar tudo e todos como possíveis espécimes de estudo.",
+    "is_culprit": false,
+    "motive": "",
+    "location_schedule": {
+      "morning": 6,
+      "afternoon": 7,
+      "evening": 1
+    },
+    "levels": [
+      {
+        "level_number": 0,
+        "knowledge_scope": "Lydia tem conhecimento geral sobre a morte de Thaddeus como um acontecimento recente na estalagem, mas nenhuma conexão pessoal com ele. Possui conhecimento especializado sobre plantas medicinais e tóxicas, incluindo o 'Suspiro da Viúva', mas não faz nenhuma conexão com o caso. Está ciente da reputação de Sebastian Reed na estalagem, tendo trocado algumas conversas profissionais com ele sobre propriedades de certas plantas, que ela interpretou como interesse acadêmico genuíno.",
+        "narrative_stance": "Profissional e um pouco distante, mais interessada em suas próprias pesquisas do que nos acontecimentos da estalagem. Responde perguntas de forma precisa mas sucinta, frequentemente desviando a conversa para tópicos botânicos. Demonstra curiosidade científica quando o assunto envolve plantas, mas desinteresse relativo em assuntos puramente sociais.",
+        "is_defensive": false,
+        "triggers": [
+          {
+            "trigger_id": 13,
+            "trigger_keyword": "Suspiro da Viúva",
+            "contextual_condition": "O investigador deve mencionar especificamente esta planta pelo nome",
+            "defensive_response": "Um espécime fascinante, mas extremamente raro nesta região. Por que pergunta sobre uma planta tão específica?",
+            "challenge_question": "Conhece as propriedades tóxicas dessa planta e como identificar seus efeitos em uma possível vítima de envenenamento?",
+            "success_response": "[Seus olhos se iluminam com interesse acadêmico] O Suspiro da Viúva... uma planta extraordinária do ponto de vista toxicológico. Contém um composto que, quando adequadamente extraído, provoca sintomas facilmente confundidos com falência cardíaca natural. Suores noturnos, náuseas progressivas, tremores sutis nas extremidades, e eventualmente, parada cardíaca. [Pause] A beleza perversa do veneno é sua capacidade de imitar doenças naturais, especialmente em dosagens fracionadas ao longo de dias ou semanas. [Subitamente mais séria] Espere... você está sugerindo que o Sr. Ironwood foi envenenado? Interessante. Recentemente notei algo peculiar - o Sr. Reed me abordou com perguntas muito específicas sobre essa planta. Inicialmente presumi interesse acadêmico, mas suas perguntas eram focadas demais nos métodos de extração e dosagem para mero estudo botânico. Cheguei a mostrar a ele alguns de meus livros de referência sobre o assunto.",
+            "fail_response": "Conheço centenas de plantas e suas propriedades, mas não discuto usos potencialmente perigosos com estranhos. Se tem interesse acadêmico genuíno, sugiro consultar os textos botânicos apropriados na biblioteca.",
+            "requirements": [
+              {
+                "requirement_type": "knowledge",
+                "required_object_id": [3, 10, 20],
+                "verification_method": "O jogador deve demonstrar conhecimento básico de toxicologia ou mencionar evidências específicas de envenenamento encontradas no caso"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "level_number": 1,
+        "knowledge_scope": "Lydia revela detalhes sobre suas interações com Sebastian Reed, incluindo suas perguntas suspeitas sobre extração e dosagem do 'Suspiro da Viúva'. Compartilha conhecimento técnico sobre os sintomas de envenenamento por esta planta, que correspondem aos apresentados por Thaddeus antes de sua morte. Menciona ter notado plantas arrancadas no jardim da estalagem que poderiam ser usadas para potencializar os efeitos tóxicos da planta principal.",
+        "narrative_stance": "Significativamente mais engajada e preocupada, reconhecendo que seu conhecimento compartilhado pode ter contribuído involuntariamente para um crime. Fala com precisão científica sobre toxicologia, mas também demonstra preocupação ética genuína. Oferece sua expertise para ajudar a confirmar evidências de envenenamento.",
+        "is_defensive": false,
+        "triggers": [
+          {
+            "trigger_id": 14,
+            "trigger_keyword": "laboratório",
+            "contextual_condition": "O investigador deve mencionar ter encontrado equipamentos de processamento de plantas ou local de preparação do veneno",
+            "defensive_response": "Laboratório? Não tenho conhecimento de instalações científicas na estalagem além do meu próprio kit de campo...",
+            "challenge_question": "Encontramos o que parece ser uma área improvisada de processamento de plantas. Poderia identificar se este equipamento seria adequado para produzir veneno a partir do Suspiro da Viúva?",
+            "success_response": "[Examina os itens cuidadosamente] Este é um conjunto bastante sofisticado para trabalho de campo. O almofariz de pedra porosa é ideal para maceração inicial de folhas para liberar os óleos essenciais. Este pequeno destilador de cobre... interessante. É um modelo antigo, mas perfeitamente funcional para concentrar compostos ativos. E estas anotações... [franze a testa] Estas proporções e tempos de processamento são precisamente calculados para maximizar a toxicidade enquanto mantém a estabilidade do composto em solução alcoólica como vinho. [Olha com seriedade] Quem quer que tenha montado isto não é amador. Possui conhecimento avançado de etnobotânica e química básica. Aliás, reconheço estas anotações - são extremamente similares às informações que compartilhei com Sebastian quando ele expressou interesse acadêmico pelo meu trabalho. [Pausa] Há algo mais. Visitei os jardins ontem e notei um padrão peculiar de colheita. Não apenas o Suspiro da Viúva foi removido, mas também seleções específicas de outras plantas que, quando combinadas, potencializam seus efeitos e mascaram alguns sintomas-chave. Esta não é a abordagem de um oportunista, mas de alguém com um plano meticuloso.",
+            "fail_response": "Sem ver os equipamentos específicos, não posso oferecer uma análise útil. Equipamentos de processamento de plantas são usados para dezenas de finalidades legítimas, desde medicamentos até perfumaria.",
+            "requirements": [
+              {
+                "requirement_type": "evidence",
+                "required_object_id": [11, 8, 9],
+                "verification_method": "O jogador deve apresentar o almofariz, o caderno de anotações ou outros equipamentos encontrados na alcova do porão ou na área de compostagem"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "level_number": 2,
+        "knowledge_scope": "Lydia identifica os equipamentos de processamento encontrados como apropriados para extração de veneno, confirmando que correspondem às técnicas que ela discutiu com Sebastian. Fornece análise detalhada do método de envenenamento, incluindo a combinação específica de plantas usadas para potencializar o efeito enquanto mascara sintomas que alertariam médicos. Revela que Sebastian solicitou especificamente emprestado alguns de seus livros raros sobre toxicologia botânica, alegando interesse em documentar plantas medicinais tradicionais da região.",
+        "narrative_stance": "Completamente colaborativa e profissionalmente engajada, tratando a investigação como um estudo científico que requer sua expertise. Demonstra remorso por sua contribuição involuntária e determina",
+        "is_defensive": false,
+        "triggers": [
+          {
+            "trigger_id": 15,
+            "trigger_keyword": "antídoto",
+            "contextual_condition": "O investigador deve perguntar sobre tratamentos ou contramedidas para o veneno",
+            "defensive_response": "Antídoto? Para um envenenamento que já resultou em morte? Receio que seja tarde demais para isso...",
+            "challenge_question": "Existe alguma forma de identificar definitivamente o Suspiro da Viúva como causa da morte, mesmo dias depois? Algum teste específico que poderia ser realizado?",
+            "success_response": "Uma pergunta excelente com implicações forenses significativas. Sim, existe um teste. [Abre sua bolsa e retira um pequeno estojo] Parte do meu trabalho envolve identificar envenenamentos acidentais por plantas. Este reagente que desenvolvi pode detectar traços do composto ativo do Suspiro da Viúva em fluidos corporais ou resíduos, mesmo semanas após a exposição. [Demonstra o processo] Se aplicado a uma amostra contaminada, produzirá uma reação colorimétrica azul-esverdeada distinta. Podemos testar os resíduos das taças de vinho ou... [hesita] amostras dos lençóis onde os fluidos corporais da vítima possam estar presentes. [Após realizar o teste] Positivo, sem dúvida alguma. Esta é uma assinatura química específica que não pode ser confundida com outras toxinas. [Pensativa] Devo mencionar algo que pode ser relevante. Dois dias antes de partir de minha última parada, a cidade de Oakhollow, fui procurada por um homem que corresponde à descrição de Sebastian. Ele usava outro nome e aparência ligeiramente alterada, mas reconheço agora que era ele. Procurava informações sobre o Suspiro da Viúva e outras plantas tóxicas raras. Na época, acreditei em seu disfarce como pesquisador acadêmico. Isso sugere premeditação significativa - ele estava pesquisando métodos muito antes de chegar a Ravenshire.",
+            "fail_response": "Meu trabalho foca em cura, não em detectar crimes após o fato. Sem amostras específicas para análise, posso apenas teorizar sobre possíveis métodos de identificação post-mortem.",
+          "requirements": [
+              {
+                "requirement_type": "object",
+                "required_object_id": [3, 10, 15, 20],
+                "verification_method": "O jogador deve apresentar um objeto contaminado com o veneno (frasco, copo, garrafa ou tecido) para que Lydia realize o teste"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,596 @@
+{
+  "categorias": [
+    {
+      "id": "cat_1",
+      "nome_interno": "analise_evidencias",
+      "nome_exibicao": "Análise de Evidências",
+      "descricao": "Capacidade de examinar e compreender pistas físicas e vestígios",
+      "niveis": {
+        "1": 15,
+        "2": 40,
+        "3": 80
+      }
+    },
+    {
+      "id": "cat_2",
+      "nome_interno": "conhecimento_historico",
+      "nome_exibicao": "Conhecimento Histórico",
+      "descricao": "Compreensão de eventos passados, famílias e propriedades da região",
+      "niveis": {
+        "1": 20,
+        "2": 50,
+        "3": 90
+      }
+    },
+    {
+      "id": "cat_3",
+      "nome_interno": "interpretacao_comportamento",
+      "nome_exibicao": "Interpretação de Comportamento",
+      "descricao": "Habilidade de avaliar motivações, detectar mentiras e interpretar relações",
+      "niveis": {
+        "1": 15,
+        "2": 45,
+        "3": 85
+      }
+    },
+    {
+      "id": "cat_4",
+      "nome_interno": "descoberta_ambiental",
+      "nome_exibicao": "Descoberta Ambiental",
+      "descricao": "Capacidade de encontrar e interpretar elementos do ambiente e natureza",
+      "niveis": {
+        "1": 10,
+        "2": 35,
+        "3": 75
+      }
+    },
+    {
+      "id": "cat_5",
+      "nome_interno": "conexao_informacoes",
+      "nome_exibicao": "Conexão de Informações",
+      "descricao": "Habilidade de relacionar pistas e formar conclusões coerentes",
+      "niveis": {
+        "1": 25,
+        "2": 60,
+        "3": 100
+      }
+    }
+  ],
+  
+  "interacoes": {
+    "objetos": {
+      "1": {
+        "examine": {
+          "categoria": "cat_2",
+          "pontos": 15,
+          "descricao": "Examinar o baú misterioso"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_2": 1 },
+          "2": { "cat_2": 2, "cat_5": 1 },
+          "3": { "cat_2": 3, "cat_5": 2 }
+        }
+      },
+      "2": {
+        "examine": {
+          "categoria": "cat_5",
+          "pontos": 20,
+          "descricao": "Examinar o diário"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_5": 1 },
+          "2": { "cat_5": 2 }
+        }
+      },
+      "3": {
+        "examine": {
+          "categoria": "cat_1",
+          "pontos": 25,
+          "descricao": "Examinar o frasco de veneno"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_1": 1 },
+          "2": { "cat_1": 2, "cat_4": 1 }
+        }
+      },
+      "4": {
+        "examine": {
+          "categoria": "cat_2",
+          "pontos": 15,
+          "descricao": "Examinar a chave ornamentada"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_2": 1 },
+          "2": { "cat_1": 2, "cat_2": 1 }
+        }
+      },
+      "5": {
+        "examine": {
+          "categoria": "cat_5",
+          "pontos": 20,
+          "descricao": "Examinar a carta selada"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_5": 1 },
+          "2": { "cat_3": 2, "cat_5": 2 }
+        }
+      },
+      "6": {
+        "examine": {
+          "categoria": "cat_2",
+          "pontos": 15,
+          "descricao": "Examinar o mapa antigo"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_2": 1 },
+          "2": { "cat_2": 2 }
+        }
+      },
+      "7": {
+        "examine": {
+          "categoria": "cat_2",
+          "pontos": 20,
+          "descricao": "Examinar o medalhão"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_2": 1 },
+          "2": { "cat_2": 2, "cat_5": 1 },
+          "3": { "cat_2": 2, "cat_5": 2 }
+        }
+      },
+      "8": {
+        "examine": {
+          "categoria": "cat_4",
+          "pontos": 20,
+          "descricao": "Examinar o livro de botânica"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_4": 1 },
+          "2": { "cat_1": 1, "cat_4": 2 }
+        }
+      },
+      "9": {
+        "examine": {
+          "categoria": "cat_3",
+          "pontos": 25,
+          "descricao": "Examinar o caderno de anotações"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_3": 1 },
+          "2": { "cat_3": 2, "cat_5": 1 }
+        }
+      },
+      "10": {
+        "examine": {
+          "categoria": "cat_1",
+          "pontos": 15,
+          "descricao": "Examinar a taça de vinho"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_1": 1 },
+          "2": { "cat_1": 2 }
+        }
+      },
+      "11": {
+        "examine": {
+          "categoria": "cat_1",
+          "pontos": 20,
+          "descricao": "Examinar o almofariz"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_1": 1 },
+          "2": { "cat_1": 2, "cat_4": 1 }
+        }
+      },
+      "12": {
+        "examine": {
+          "categoria": "cat_2",
+          "pontos": 20,
+          "descricao": "Examinar a árvore genealógica"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_2": 1 },
+          "2": { "cat_2": 2, "cat_5": 1 }
+        }
+      },
+      "13": {
+        "examine": {
+          "categoria": "cat_5",
+          "pontos": 15,
+          "descricao": "Examinar o registro da estalagem"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_5": 1 },
+          "2": { "cat_3": 1, "cat_5": 2 }
+        }
+      },
+      "14": {
+        "examine": {
+          "categoria": "cat_5",
+          "pontos": 15,
+          "descricao": "Examinar as páginas arrancadas"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_5": 1 },
+          "2": { "cat_5": 2 }
+        }
+      },
+      "15": {
+        "examine": {
+          "categoria": "cat_1",
+          "pontos": 15,
+          "descricao": "Examinar a garrafa de vinho"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_1": 1 },
+          "2": { "cat_1": 2 }
+        }
+      },
+      "16": {
+        "examine": {
+          "categoria": "cat_5",
+          "pontos": 25,
+          "descricao": "Examinar a nota cifrada"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_5": 1 },
+          "2": { "cat_3": 1, "cat_5": 2 },
+          "3": { "cat_3": 2, "cat_5": 2 }
+        }
+      },
+      "17": {
+        "examine": {
+          "categoria": "cat_2",
+          "pontos": 30,
+          "descricao": "Examinar a escritura"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_2": 1 },
+          "2": { "cat_2": 2, "cat_5": 1 },
+          "3": { "cat_2": 3, "cat_5": 2 }
+        }
+      },
+      "18": {
+        "examine": {
+          "categoria": "cat_1",
+          "pontos": 20,
+          "descricao": "Examinar o relatório médico"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_1": 1 },
+          "2": { "cat_1": 2, "cat_4": 1 }
+        }
+      },
+      "19": {
+        "examine": {
+          "categoria": "cat_5",
+          "pontos": 15,
+          "descricao": "Examinar o documento falsificado"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_5": 1 },
+          "2": { "cat_2": 1, "cat_5": 2 }
+        }
+      },
+      "20": {
+        "examine": {
+          "categoria": "cat_1",
+          "pontos": 15,
+          "descricao": "Examinar os lençóis manchados"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_1": 1 },
+          "2": { "cat_1": 2 }
+        }
+      }
+    },
+    
+    "personagens": {
+      "1": {
+        "dialogo": {
+          "palavras_chave": ["relatório", "médico", "suspeitas"],
+          "categoria": "cat_3",
+          "pontos": 15,
+          "descricao": "Conversar com Elenora sobre suas suspeitas"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_3": 1 },
+          "2": { "cat_3": 2, "cat_5": 1 },
+          "3": { "cat_3": 2, "cat_5": 2 }
+        }
+      },
+      "2": {
+        "dialogo": {
+          "palavras_chave": ["família", "reed", "terras"],
+          "categoria": "cat_3",
+          "pontos": 25,
+          "descricao": "Confrontar Sebastian sobre sua identidade"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_3": 1 },
+          "2": { "cat_2": 2, "cat_3": 2 },
+          "3": { "cat_2": 3, "cat_3": 3, "cat_5": 2 }
+        }
+      },
+      "3": {
+        "dialogo": {
+          "palavras_chave": ["ervas", "jardim", "desapareceram"],
+          "categoria": "cat_4",
+          "pontos": 20,
+          "descricao": "Conversar com Matilda sobre as plantas medicinais"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_4": 1 },
+          "2": { "cat_3": 1, "cat_4": 2 },
+          "3": { "cat_3": 2, "cat_4": 2 }
+        }
+      },
+      "4": {
+        "dialogo": {
+          "palavras_chave": ["baú", "tentativa", "arrombamento"],
+          "categoria": "cat_3",
+          "pontos": 20,
+          "descricao": "Conversar com o Capitão Frost sobre atividades suspeitas"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_3": 1 },
+          "2": { "cat_3": 2, "cat_5": 1 },
+          "3": { "cat_3": 2, "cat_5": 2 }
+        }
+      },
+      "5": {
+        "dialogo": {
+          "palavras_chave": ["suspiro", "viúva", "veneno"],
+          "categoria": "cat_4",
+          "pontos": 25,
+          "descricao": "Consultar Lydia sobre plantas venenosas"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_4": 1 },
+          "2": { "cat_1": 1, "cat_4": 2 },
+          "3": { "cat_1": 2, "cat_4": 2 }
+        }
+      },
+      "6": {
+        "dialogo": {
+          "palavras_chave": ["guilda", "mercadores", "corvinus"],
+          "categoria": "cat_5",
+          "pontos": 25,
+          "descricao": "Confrontar Victor sobre a conexão com Sebastian"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_5": 1 },
+          "2": { "cat_3": 1, "cat_5": 2 },
+          "3": { "cat_3": 2, "cat_5": 2 }
+        }
+      },
+      "7": {
+        "dialogo": {
+          "palavras_chave": ["bar", "bebidas", "vinho"],
+          "categoria": "cat_1",
+          "pontos": 15,
+          "descricao": "Conversar com Owen sobre as bebidas servidas"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_1": 1 },
+          "2": { "cat_1": 1, "cat_3": 1 },
+          "3": { "cat_1": 2, "cat_3": 2 }
+        }
+      }
+    },
+    
+    "areas": {
+      "1": {
+        "explore": {
+          "categoria": "cat_3",
+          "pontos": 5,
+          "descricao": "Explorar o balcão principal"
+        }
+      },
+      "2": {
+        "explore": {
+          "categoria": "cat_3",
+          "pontos": 5,
+          "descricao": "Explorar a área de mesas"
+        }
+      },
+      "4": {
+        "explore": {
+          "categoria": "cat_5",
+          "pontos": 10,
+          "descricao": "Examinar a lareira central"
+        }
+      },
+      "6": {
+        "explore": {
+          "categoria": "cat_1",
+          "pontos": 10,
+          "descricao": "Investigar a área da cama"
+        }
+      },
+      "7": {
+        "explore": {
+          "categoria": "cat_5",
+          "pontos": 15,
+          "descricao": "Examinar a escrivaninha"
+        }
+      },
+      "10": {
+        "explore": {
+          "categoria": "cat_1",
+          "pontos": 10,
+          "descricao": "Explorar a adega principal"
+        }
+      },
+      "11": {
+        "explore": {
+          "categoria": "cat_5",
+          "pontos": 15,
+          "descricao": "Explorar a área de armazenamento"
+        }
+      },
+      "13": {
+        "explore": {
+          "categoria": "cat_1",
+          "pontos": 20,
+          "descricao": "Descobrir a alcova oculta"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_5": 2 }
+        }
+      },
+      "14": {
+        "explore": {
+          "categoria": "cat_4",
+          "pontos": 10,
+          "descricao": "Examinar a área de preparo da cozinha"
+        }
+      },
+      "18": {
+        "explore": {
+          "categoria": "cat_5",
+          "pontos": 15,
+          "descricao": "Explorar a escrivaninha de Elenora"
+        }
+      },
+      "21": {
+        "explore": {
+          "categoria": "cat_5",
+          "pontos": 25,
+          "descricao": "Acessar o cofre particular"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_3": 2, "cat_5": 2 }
+        }
+      },
+      "22": {
+        "explore": {
+          "categoria": "cat_4",
+          "pontos": 10,
+          "descricao": "Explorar a área de descanso no jardim"
+        }
+      },
+      "23": {
+        "explore": {
+          "categoria": "cat_4",
+          "pontos": 15,
+          "descricao": "Examinar a horta culinária"
+        }
+      },
+      "25": {
+        "explore": {
+          "categoria": "cat_4",
+          "pontos": 20,
+          "descricao": "Investigar a área de compostagem"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_4": 2 }
+        }
+      },
+      "26": {
+        "explore": {
+          "categoria": "cat_2",
+          "pontos": 10,
+          "descricao": "Explorar o balcão da biblioteca"
+        }
+      },
+      "27": {
+        "explore": {
+          "categoria": "cat_2",
+          "pontos": 15,
+          "descricao": "Pesquisar a sala de documentos históricos"
+        }
+      },
+      "30": {
+        "explore": {
+          "categoria": "cat_2",
+          "pontos": 20,
+          "descricao": "Acessar o arquivo de periódicos antigos"
+        },
+        "requisitos_nivel": {
+          "1": { "cat_2": 2 }
+        }
+      }
+    },
+    
+    "pistas": {
+      "1": {
+        "descoberta": {
+          "categoria": "cat_1",
+          "pontos": 15,
+          "descricao": "Descobrir os sintomas suspeitos"
+        }
+      },
+      "2": {
+        "descoberta": {
+          "categoria": "cat_1",
+          "pontos": 20,
+          "descricao": "Identificar resíduos estranhos"
+        }
+      },
+      "5": {
+        "descoberta": {
+          "categoria": "cat_4",
+          "pontos": 20,
+          "descricao": "Compreender o conhecimento de venenos"
+        }
+      },
+      "6": {
+        "descoberta": {
+          "categoria": "cat_3",
+          "pontos": 25,
+          "descricao": "Descobrir a identidade oculta"
+        }
+      },
+      "9": {
+        "descoberta": {
+          "categoria": "cat_2",
+          "pontos": 20,
+          "descricao": "Compreender a disputa histórica de terras"
+        }
+      },
+      "12": {
+        "descoberta": {
+          "categoria": "cat_2",
+          "pontos": 30,
+          "descricao": "Descobrir a escritura das terras"
+        }
+      },
+      "14": {
+        "descoberta": {
+          "categoria": "cat_5",
+          "pontos": 30,
+          "descricao": "Compreender o plano de envenenamento"
+        }
+      },
+      "17": {
+        "descoberta": {
+          "categoria": "cat_5",
+          "pontos": 35,
+          "descricao": "Encontrar a confissão escrita"
+        }
+      }
+    },
+    
+    "combinacoes": {
+      "diario_paginas": {
+        "objetos": [2, 14],
+        "categoria": "cat_5",
+        "pontos": 20,
+        "descricao": "Combinar o diário com as páginas arrancadas"
+      },
+      "veneno_taça": {
+        "objetos": [3, 10],
+        "categoria": "cat_1",
+        "pontos": 25,
+        "descricao": "Relacionar o frasco de veneno com a taça"
+      },
+      "chave_bau": {
+        "objetos": [1, 4],
+        "categoria": "cat_2",
+        "pontos": 30,
+        "descricao": "Usar a chave ornamentada no baú"
+      }
+    }
+  }
+}

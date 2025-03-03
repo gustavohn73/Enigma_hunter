@@ -1,0 +1,807 @@
+[
+  {
+    "uuid": "loc_main_hall",
+    "target_type": "location",
+    "target_id": 1,
+    "action": "enter",
+    "access_requirements": null,
+    "location_requirement": null
+  },
+  {
+    "uuid": "loc_thaddeus_room",
+    "target_type": "location",
+    "target_id": 2,
+    "action": "enter",
+    "access_requirements": null,
+    "location_requirement": null
+  },
+  {
+    "uuid": "loc_basement_cellar",
+    "target_type": "location",
+    "target_id": 3,
+    "action": "enter",
+    "access_requirements": {
+      "level_required": 1,
+      "item_required": null
+    },
+    "location_requirement": null
+  },
+  {
+    "uuid": "loc_kitchen",
+    "target_type": "location",
+    "target_id": 4,
+    "action": "enter",
+    "access_requirements": null,
+    "location_requirement": null
+  },
+  {
+    "uuid": "loc_elenora_office",
+    "target_type": "location",
+    "target_id": 5,
+    "action": "enter",
+    "access_requirements": {
+      "level_required": 1,
+      "item_required": null
+    },
+    "location_requirement": null
+  },
+  {
+    "uuid": "loc_garden",
+    "target_type": "location",
+    "target_id": 6,
+    "action": "enter",
+    "access_requirements": null,
+    "location_requirement": null
+  },
+  {
+    "uuid": "loc_library",
+    "target_type": "location",
+    "target_id": 7,
+    "action": "enter",
+    "access_requirements": {
+      "level_required": 1,
+      "item_required": null
+    },
+    "location_requirement": null
+  },
+  
+  {
+    "uuid": "area_main_hall_counter",
+    "target_type": "area",
+    "target_id": 1,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 1,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_main_hall_tables",
+    "target_type": "area",
+    "target_id": 2,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 1,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_main_hall_stairs",
+    "target_type": "area",
+    "target_id": 3,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 1,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_main_hall_fireplace",
+    "target_type": "area",
+    "target_id": 4,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 1,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_main_hall_corridor",
+    "target_type": "area",
+    "target_id": 5,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 1,
+      "area_ids": null
+    }
+  },
+  
+  {
+    "uuid": "area_thaddeus_room_bed",
+    "target_type": "area",
+    "target_id": 6,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 2,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_thaddeus_room_desk",
+    "target_type": "area",
+    "target_id": 7,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 2,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_thaddeus_room_wardrobe",
+    "target_type": "area",
+    "target_id": 8,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 2,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_thaddeus_room_sitting",
+    "target_type": "area",
+    "target_id": 9,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 2,
+      "area_ids": null
+    }
+  },
+  
+  {
+    "uuid": "area_basement_wine_cellar",
+    "target_type": "area",
+    "target_id": 10,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 3,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_basement_storage",
+    "target_type": "area",
+    "target_id": 11,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 3,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_basement_pantry",
+    "target_type": "area",
+    "target_id": 12,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 3,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_basement_alcove",
+    "target_type": "area",
+    "target_id": 13,
+    "action": "explore",
+    "access_requirements": {
+      "level_required": 2,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 3,
+      "area_ids": [11]
+    }
+  },
+  
+  {
+    "uuid": "area_kitchen_main",
+    "target_type": "area",
+    "target_id": 14,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 4,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_kitchen_pantry",
+    "target_type": "area",
+    "target_id": 15,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 4,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_kitchen_washing",
+    "target_type": "area",
+    "target_id": 16,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 4,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_kitchen_corridor",
+    "target_type": "area",
+    "target_id": 17,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 4,
+      "area_ids": null
+    }
+  },
+  
+  {
+    "uuid": "area_office_desk",
+    "target_type": "area",
+    "target_id": 18,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 5,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_office_archive",
+    "target_type": "area",
+    "target_id": 19,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 5,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_office_meeting",
+    "target_type": "area",
+    "target_id": 20,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 5,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_office_safe",
+    "target_type": "area",
+    "target_id": 21,
+    "action": "explore",
+    "access_requirements": {
+      "level_required": 3,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 5,
+      "area_ids": [20]
+    }
+  },
+  
+  {
+    "uuid": "area_garden_rest",
+    "target_type": "area",
+    "target_id": 22,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 6,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_garden_herbs",
+    "target_type": "area",
+    "target_id": 23,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 6,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_garden_wisteria",
+    "target_type": "area",
+    "target_id": 24,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 6,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_garden_compost",
+    "target_type": "area",
+    "target_id": 25,
+    "action": "explore",
+    "access_requirements": {
+      "level_required": 2,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 6,
+      "area_ids": [23]
+    }
+  },
+  
+  {
+    "uuid": "area_library_counter",
+    "target_type": "area",
+    "target_id": 26,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 7,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_library_documents",
+    "target_type": "area",
+    "target_id": 27,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 7,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_library_botany",
+    "target_type": "area",
+    "target_id": 28,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 7,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_library_private",
+    "target_type": "area",
+    "target_id": 29,
+    "action": "explore",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 7,
+      "area_ids": null
+    }
+  },
+  {
+    "uuid": "area_library_archives",
+    "target_type": "area",
+    "target_id": 30,
+    "action": "explore",
+    "access_requirements": {
+      "level_required": 2,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 7,
+      "area_ids": [26]
+    }
+  },
+  
+  {
+    "uuid": "char_elenora",
+    "target_type": "character",
+    "target_id": 1,
+    "action": "talk",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 1,
+      "area_ids": [1, 2, 3, 4, 5]
+    }
+  },
+  {
+    "uuid": "char_elenora_office",
+    "target_type": "character",
+    "target_id": 1,
+    "action": "talk",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 5,
+      "area_ids": [18, 19, 20, 21]
+    }
+  },
+  {
+    "uuid": "char_sebastian",
+    "target_type": "character",
+    "target_id": 2,
+    "action": "talk",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 1,
+      "area_ids": [1, 2, 4]
+    }
+  },
+  {
+    "uuid": "char_sebastian_library",
+    "target_type": "character",
+    "target_id": 2,
+    "action": "talk",
+    "access_requirements": {
+      "level_required": 1,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 7,
+      "area_ids": [27, 28, 29]
+    }
+  },
+  {
+    "uuid": "char_matilda",
+    "target_type": "character",
+    "target_id": 3,
+    "action": "talk",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 4,
+      "area_ids": [14, 15, 16, 17]
+    }
+  },
+  {
+    "uuid": "char_matilda_garden",
+    "target_type": "character",
+    "target_id": 3,
+    "action": "talk",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 6,
+      "area_ids": [23]
+    }
+  },
+  {
+    "uuid": "char_captain_frost",
+    "target_type": "character",
+    "target_id": 4,
+    "action": "talk",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 1,
+      "area_ids": [2, 4]
+    }
+  },
+  {
+    "uuid": "char_lydia",
+    "target_type": "character",
+    "target_id": 5,
+    "action": "talk",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 6,
+      "area_ids": [22, 23]
+    }
+  },
+  {
+    "uuid": "char_lydia_library",
+    "target_type": "character",
+    "target_id": 5,
+    "action": "talk",
+    "access_requirements": {
+      "level_required": 1,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 7,
+      "area_ids": [28]
+    }
+  },
+  {
+    "uuid": "char_victor",
+    "target_type": "character",
+    "target_id": 6,
+    "action": "talk",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 1,
+      "area_ids": [1, 2, 5]
+    }
+  },
+  {
+    "uuid": "char_victor_library",
+    "target_type": "character",
+    "target_id": 6,
+    "action": "talk",
+    "access_requirements": {
+      "level_required": 1,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 7,
+      "area_ids": [26, 27]
+    }
+  },
+  
+  {
+    "uuid": "obj_mysterious_chest",
+    "target_type": "object",
+    "target_id": 1,
+    "action": "examine",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 3,
+      "area_ids": [11]
+    }
+  },
+  {
+    "uuid": "obj_thaddeus_diary",
+    "target_type": "object",
+    "target_id": 2,
+    "action": "examine",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 2,
+      "area_ids": [7]
+    }
+  },
+  {
+    "uuid": "obj_poison_vial",
+    "target_type": "object",
+    "target_id": 3,
+    "action": "examine",
+    "access_requirements": {
+      "level_required": 1,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 6,
+      "area_ids": [25]
+    }
+  },
+  {
+    "uuid": "obj_ornate_key",
+    "target_type": "object",
+    "target_id": 4,
+    "action": "examine",
+    "access_requirements": {
+      "level_required": 2,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 6,
+      "area_ids": [22]
+    }
+  },
+  {
+    "uuid": "obj_sealed_letter",
+    "target_type": "object",
+    "target_id": 5,
+    "action": "examine",
+    "access_requirements": {
+      "level_required": 3,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 5,
+      "area_ids": [21]
+    }
+  },
+  {
+    "uuid": "obj_old_map",
+    "target_type": "object",
+    "target_id": 6,
+    "action": "examine",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 7,
+      "area_ids": [27]
+    }
+  },
+  {
+    "uuid": "obj_reed_medallion",
+    "target_type": "object",
+    "target_id": 7,
+    "action": "examine",
+    "access_requirements": {
+      "level_required": 3,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 6,
+      "area_ids": [25]
+    }
+  },
+  {
+    "uuid": "obj_botany_book",
+    "target_type": "object",
+    "target_id": 8,
+    "action": "examine",
+    "access_requirements": {
+      "level_required": 2,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 3,
+      "area_ids": [13]
+    }
+  },
+  {
+    "uuid": "obj_notebook",
+    "target_type": "object",
+    "target_id": 9,
+    "action": "examine",
+    "access_requirements": {
+      "level_required": 3,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 6,
+      "area_ids": [24]
+    }
+  },
+  {
+    "uuid": "obj_wine_glass",
+    "target_type": "object",
+    "target_id": 10,
+    "action": "examine",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 4,
+      "area_ids": [16]
+    }
+  },
+  {
+    "uuid": "obj_mortar_pestle",
+    "target_type": "object",
+    "target_id": 11,
+    "action": "examine",
+    "access_requirements": {
+      "level_required": 2,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 3,
+      "area_ids": [13]
+    }
+  },
+  {
+    "uuid": "obj_reed_family_tree",
+    "target_type": "object",
+    "target_id": 12,
+    "action": "examine",
+    "access_requirements": {
+      "level_required": 2,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 7,
+      "area_ids": [30]
+    }
+  },
+  {
+    "uuid": "obj_inn_ledger",
+    "target_type": "object",
+    "target_id": 13,
+    "action": "examine",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 5,
+      "area_ids": [18]
+    }
+  },
+  {
+    "uuid": "obj_torn_diary_pages",
+    "target_type": "object",
+    "target_id": 14,
+    "action": "examine",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 6,
+      "area_ids": [25]
+    }
+  },
+  {
+    "uuid": "obj_special_wine",
+    "target_type": "object",
+    "target_id": 15,
+    "action": "examine",
+    "access_requirements": {
+      "level_required": 2,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 5,
+      "area_ids": [20]
+    }
+  },
+  {
+    "uuid": "obj_guild_cipher",
+    "target_type": "object",
+    "target_id": 16,
+    "action": "examine",
+    "access_requirements": {
+      "level_required": 3,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 4,
+      "area_ids": [17]
+    }
+  },
+  {
+    "uuid": "obj_land_deed",
+    "target_type": "object",
+    "target_id": 17,
+    "action": "examine",
+    "access_requirements": {
+      "level_required": 3,
+      "item_required": 4
+    },
+    "location_requirement": {
+      "location_id": 3,
+      "area_ids": [11]
+    }
+  },
+  {
+    "uuid": "obj_medical_report",
+    "target_type": "object",
+    "target_id": 18,
+    "action": "examine",
+    "access_requirements": {
+      "level_required": 3,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 5,
+      "area_ids": [21]
+    }
+  },
+  {
+    "uuid": "obj_forged_document",
+    "target_type": "object",
+    "target_id": 19,
+    "action": "examine",
+    "access_requirements": {
+      "level_required": 2,
+      "item_required": null
+    },
+    "location_requirement": {
+      "location_id": 7,
+      "area_ids": [29]
+    }
+  },
+  {
+    "uuid": "obj_stained_sheets",
+    "target_type": "object",
+    "target_id": 20,
+    "action": "examine",
+    "access_requirements": null,
+    "location_requirement": {
+      "location_id": 2,
+      "area_ids": [6]
+    }
+  }
+]

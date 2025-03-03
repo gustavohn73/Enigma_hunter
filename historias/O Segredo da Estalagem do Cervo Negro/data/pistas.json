@@ -1,0 +1,413 @@
+[
+  {
+    "clue_id": 1,
+    "name": "Sintomas Suspeitos",
+    "description": "Thaddeus apresentou sintomas como suores noturnos, náuseas progressivas e tremores nas extremidades nos dias antes de sua morte - sinais característicos de envenenamento gradual, especialmente por 'Suspiro da Viúva', mas incorretamente atribuídos a problemas cardíacos.",
+    "type": "testemunho médico",
+    "relevance": 4,
+    "is_key_evidence": true,
+    "related_aspect": "método",
+    "discovery_conditions": {
+      "location_id": 5,
+      "area_id": 21,
+      "detail_id": 64,
+      "character_id": null,
+      "object_id": 18
+    }
+  },
+  {
+    "clue_id": 2,
+    "name": "Resíduos Estranhos",
+    "description": "Resíduos cristalizados esverdeados encontrados no copo de vinho e na garrafa usada por Thaddeus. Analise química confirma ser resíduos do veneno 'Suspiro da Viúva'.",
+    "type": "evidência física",
+    "relevance": 5,
+    "is_key_evidence": true,
+    "related_aspect": "método",
+    "discovery_conditions": {
+      "location_id": 1,
+      "area_id": 31,
+      "detail_id": 95,
+      "character_id": null,
+      "object_id": 10
+    }
+  },
+  {
+    "clue_id": 3,
+    "name": "Mecanismo do Baú",
+    "description": "O baú misterioso possui um mecanismo de abertura complexo que requer conhecimento específico e uma chave ornamentada para ser acessado. Thaddeus descobriu como abri-lo pouco antes de sua morte.",
+    "type": "mecanismo",
+    "relevance": 3,
+    "is_key_evidence": false,
+    "related_aspect": "motivo",
+    "discovery_conditions": {
+      "location_id": 5,
+      "area_id": 21,
+      "detail_id": 62,
+      "character_id": null,
+      "object_id": 1
+    }
+  },
+  {
+    "clue_id": 4,
+    "name": "Revelações do Diário",
+    "description": "O diário parcialmente cifrado de Thaddeus revela sua descoberta sobre o mecanismo do baú e a escritura valiosa dentro dele. Também expressa suspeitas crescentes sobre Sebastian Reed e sua verdadeira identidade.",
+    "type": "documento escrito",
+    "relevance": 4,
+    "is_key_evidence": true,
+    "related_aspect": "culpado",
+    "discovery_conditions": {
+      "location_id": 5,
+      "area_id": 18,
+      "detail_id": 55,
+      "character_id": null,
+      "object_id": 2
+    }
+  },
+  {
+    "clue_id": 5,
+    "name": "Conhecimento de Venenos",
+    "description": "Sebastian possuía conhecimento detalhado sobre plantas venenosas, especialmente o 'Suspiro da Viúva', demonstrado por seus livros, anotações e equipamentos de processamento. Ele fez perguntas específicas a Lydia Hemlock sobre métodos de extração e dosagem.",
+    "type": "conhecimento especializado",
+    "relevance": 5,
+    "is_key_evidence": true,
+    "related_aspect": "método",
+    "discovery_conditions": {
+      "location_id": 3,
+      "area_id": 13,
+      "detail_id": 38,
+      "character_id": 5,
+      "object_id": 8
+    }
+  },
+  {
+    "clue_id": 6,
+    "name": "Identidade Oculta",
+    "description": "Sebastian Reed é na verdade um descendente direto da família Reed, uma das fundadoras de Ravenshire que perdeu terras valiosas para os antepassados de Thaddeus em uma disputa judicial controversa três gerações atrás.",
+    "type": "genealogia",
+    "relevance": 5,
+    "is_key_evidence": true,
+    "related_aspect": "culpado",
+    "discovery_conditions": {
+      "location_id": 7,
+      "area_id": 30,
+      "detail_id": 93,
+      "character_id": null,
+      "object_id": 12
+    }
+  },
+  {
+    "clue_id": 7,
+    "name": "Confronto Planejado",
+    "description": "A última entrada do diário de Thaddeus menciona sua intenção de confrontar Sebastian sobre sua verdadeira identidade e interesse no baú - confronto que nunca ocorreu devido à sua morte na noite anterior ao encontro planejado.",
+    "type": "documento escrito",
+    "relevance": 4,
+    "is_key_evidence": true,
+    "related_aspect": "culpado",
+    "discovery_conditions": {
+      "location_id": 7,
+      "area_id": 29,
+      "detail_id": 90,
+      "character_id": null,
+      "object_id": 14
+    }
+  },
+  {
+    "clue_id": 8,
+    "name": "Conexão com a Guilda",
+    "description": "Sebastian Reed trabalha secretamente para a Guilda dos Mercadores do Norte, especificamente para a facção Corvo Negro, especializada em recuperar documentos valiosos. Seu codinome dentro da organização é 'Corvinus'.",
+    "type": "filiação secreta",
+    "relevance": 3,
+    "is_key_evidence": false,
+    "related_aspect": "culpado",
+    "discovery_conditions": {
+      "location_id": 1,
+      "area_id": 4,
+      "detail_id": 9,
+      "character_id": 6,
+      "object_id": 5
+    }
+  },
+  {
+    "clue_id": 9,
+    "name": "Disputa Histórica de Terras",
+    "description": "Documentos históricos confirmam uma disputa judicial entre as famílias Reed e Ironwood três gerações atrás. Os Reed alegavam ter uma escritura original que provaria sua propriedade, mas o documento nunca foi apresentado no tribunal.",
+    "type": "registro histórico",
+    "relevance": 4,
+    "is_key_evidence": true,
+    "related_aspect": "motivo",
+    "discovery_conditions": {
+      "location_id": 7,
+      "area_id": 27,
+      "detail_id": 81,
+      "character_id": null,
+      "object_id": 6
+    }
+  },
+  {
+    "clue_id": 10,
+    "name": "Medalha de Família",
+    "description": "Um medalhão antigo com o brasão da família Reed e a inscrição 'A terra sempre retorna ao seu verdadeiro senhor' encontrado entre os pertences de Sebastian, confirmando sua ligação com a linhagem Reed.",
+    "type": "objeto pessoal",
+    "relevance": 5,
+    "is_key_evidence": true,
+    "related_aspect": "culpado",
+    "discovery_conditions": {
+      "location_id": 6,
+      "area_id": 25,
+      "detail_id": 77,
+      "character_id": null,
+      "object_id": 7
+    }
+  },
+  {
+    "clue_id": 11,
+    "name": "Plantas Desaparecidas",
+    "description": "Várias plantas medicinais e potencialmente tóxicas desapareceram do jardim da estalagem nas semanas anteriores à morte de Thaddeus, particularmente exemplares do 'Suspiro da Viúva' que Matilda cultivava para fins medicinais controlados.",
+    "type": "evidência circunstancial",
+    "relevance": 3,
+    "is_key_evidence": false,
+    "related_aspect": "método",
+    "discovery_conditions": {
+      "location_id": 6,
+      "area_id": 23,
+      "detail_id": 68,
+      "character_id": 3,
+      "object_id": null
+    }
+  },
+  {
+    "clue_id": 12,
+    "name": "Escritura das Terras",
+    "description": "A escritura original dentro do baú prova definitivamente que as terras onde está a Estalagem do Cervo Negro, bem como propriedades adjacentes valiosas, pertencem legalmente à família Reed. O documento teria alterado significativamente o equilíbrio de poder na região se apresentado durante a disputa judicial.",
+    "type": "documento legal",
+    "relevance": 5,
+    "is_key_evidence": true,
+    "related_aspect": "motivo",
+    "discovery_conditions": {
+      "location_id": 3,
+      "area_id": 11,
+      "detail_id": null,
+      "character_id": null,
+      "object_id": 17
+    }
+  },
+  {
+    "clue_id": 13,
+    "name": "Acesso Noturno",
+    "description": "Sebastian foi visto pelo Capitão Frost acessando o porão da estalagem tarde da noite em várias ocasiões nas semanas anteriores à morte de Thaddeus, fora dos horários normais de funcionamento e sem autorização explícita.",
+    "type": "testemunho",
+    "relevance": 3,
+    "is_key_evidence": false,
+    "related_aspect": "culpado",
+    "discovery_conditions": {
+      "location_id": null,
+      "area_id": null,
+      "detail_id": null,
+      "character_id": 4,
+      "object_id": null
+    }
+  },
+  {
+    "clue_id": 14,
+    "name": "Plano de Envenenamento",
+    "discovery_conditions": [
+      {
+        "location_id": null,
+        "area_id": null,
+        "detail_id": null,
+        "character_id": 5,
+        "object_id": 3
+      },
+      {
+        "location_id": 3,
+        "area_id": 13,
+        "detail_id": 37,
+        "character_id": null,
+        "object_id": 8
+      },
+      {
+        "location_id": 6,
+        "area_id": 24,
+        "detail_id": null,
+        "character_id": null,
+        "object_id": 9
+      }
+    ]
+  },
+  {
+    "clue_id": 15,
+    "name": "Ordens da Guilda",
+    "description": "Sebastian recebeu ordens explícitas da facção Corvo Negro da Guilda dos Mercadores para recuperar a escritura, mas a eliminação de Thaddeus parece ter sido sua iniciativa pessoal, motivada por vingança familiar além da missão oficial.",
+    "type": "documento escrito",
+    "relevance": 4,
+    "is_key_evidence": true,
+    "related_aspect": "motivo",
+    "discovery_conditions": {
+      "location_id": 5,
+      "area_id": 21,
+      "detail_id": null,
+      "character_id": 6,
+      "object_id": 5
+    }
+  },
+  {
+    "clue_id": 16,
+    "name": "Documento Falsificado",
+    "description": "Sebastian tentou criar uma versão falsificada da escritura como plano de contingência, caso não conseguisse encontrar o documento original. A falsificação não foi bem-sucedida, mas demonstra premeditação e determinação.",
+    "type": "falsificação",
+    "relevance": 2,
+    "is_key_evidence": false,
+    "related_aspect": "culpado",
+    "discovery_conditions": {
+      "location_id": 7,
+      "area_id": 29,
+      "detail_id": null,
+      "character_id": null,
+      "object_id": 19
+    }
+  },
+  {
+    "clue_id": 17,
+    "name": "Confissão Escrita",
+    "description": "Anotações incriminadoras encontradas no caderno de Sebastian e nas páginas finais decifradas mencionam explicitamente a 'dosagem final' administrada a Thaddeus e a intenção de 'recuperar o que é legitimamente meu' após sua morte.",
+    "type": "confissão",
+    "relevance": 5,
+    "is_key_evidence": true,
+    "related_aspect": "culpado",
+    "discovery_conditions": {
+      "location_id": 6,
+      "area_id": 24,
+      "detail_id": 73,
+      "character_id": null,
+      "object_id": 9
+    }
+  },
+  {
+    "clue_id": 18,
+    "name": "Débito de Jogo de Thaddeus",
+    "description": "Uma carta encontrada menciona dívidas significativas de Thaddeus com credores de jogo em outra cidade. Esta informação, embora verdadeira, é irrelevante para o caso e serve como pista falsa para sugerir um motivo financeiro para sua morte.",
+    "type": "documento escrito",
+    "relevance": 1,
+    "is_key_evidence": false,
+    "related_aspect": "pista falsa",
+    "discovery_conditions": {
+      "location_id": 2,
+      "area_id": 6,
+      "detail_id": 17,
+      "character_id": null,
+      "object_id": null
+    }
+  },
+  {
+    "clue_id": 19,
+    "name": "Romance Secreto",
+    "description": "Rumores entre os funcionários sobre um possível romance secreto entre Thaddeus e uma misteriosa visitante. Investigação revela que a visitante era na verdade uma parente distante consultando-o sobre negócios familiares. Pista falsa que pode distrair os investigadores.",
+    "type": "rumor",
+    "relevance": 1,
+    "is_key_evidence": false,
+    "related_aspect": "pista falsa",
+    "discovery_conditions": {
+      "location_id": null,
+      "area_id": null,
+      "detail_id": null,
+      "character_id": 3,
+      "object_id": null
+    }
+  },
+  {
+    "clue_id": 20,
+    "name": "Cláusula de Reivindicação",
+    "description": "A escritura das terras contém uma cláusula legal que permite que qualquer descendente direto da família Reed reivindique a propriedade, independentemente do tempo decorrido, desde que apresente o documento original - explicando por que Sebastian precisava recuperá-la pessoalmente.",
+    "type": "detalhe legal",
+    "relevance": 4,
+    "is_key_evidence": true,
+    "related_aspect": "motivo",
+    "discovery_conditions": {
+      "location_id": null,
+      "area_id": null,
+      "detail_id": null,
+      "character_id": null,
+      "object_id": 17
+    }
+  },
+  {
+    "clue_id": 21,
+    "name": "Cronograma do Envenenamento",
+    "description": "Registros detalhados das datas e horários em que Sebastian serviu vinho adulterado a Thaddeus, mostrando um padrão metódico de envenenamento gradual ao longo de duas semanas, culminando na 'dose final' três dias antes da morte.",
+    "type": "plano criminal",
+    "relevance": 4,
+    "is_key_evidence": true,
+    "related_aspect": "método",
+    "discovery_conditions": {
+      "location_id": 6,
+      "area_id": 24,
+      "detail_id": null,
+      "character_id": null,
+      "object_id": 9
+    }
+  },
+  {
+    "clue_id": 22,
+    "name": "Misteriosa Caixa de Música",
+    "description": "Uma caixa de música encontrada no quarto de Thaddeus contendo uma melodia específica que parece ter significado especial. Investigação revela que é apenas uma lembrança de sua falecida esposa, sem relação com o crime atual.",
+    "type": "objeto pessoal",
+    "relevance": 1,
+    "is_key_evidence": false,
+    "related_aspect": "pista falsa",
+    "discovery_conditions": {
+      "location_id": 2,
+      "area_id": 8,
+      "detail_id": null,
+      "character_id": null,
+      "object_id": null
+    }
+  },
+  {
+    "clue_id": 23,
+    "name": "Discussão na Biblioteca",
+    "description": "Testemunhas relatam uma discussão acalorada entre Sebastian e Thaddeus na biblioteca municipal, dias antes da morte. Sebastian foi ouvido dizendo 'aquela escritura me pertence por direito' e Thaddeus respondeu 'você não sabe com quem está lidando'.",
+    "type": "testemunho",
+    "relevance": 3,
+    "is_key_evidence": false,
+    "related_aspect": "culpado",
+    "discovery_conditions": {
+      "location_id": 7,
+      "area_id": 29,
+      "detail_id": 90,
+      "character_id": null,
+      "object_id": null
+    }
+  },
+  {
+    "clue_id": 24,
+    "name": "Pagamentos em Dinheiro",
+    "description": "Sebastian fez pagamentos substanciais em dinheiro para acessos especiais à estalagem fora do horário normal nos dias anteriores à morte de Thaddeus, incluindo acesso ao porão onde se encontrava o baú.",
+    "type": "registro financeiro",
+    "relevance": 3,
+    "is_key_evidence": false,
+    "related_aspect": "culpado",
+    "discovery_conditions": {
+      "location_id": 5,
+      "area_id": 18,
+      "detail_id": 53,
+      "character_id": null,
+      "object_id": 13
+    }
+  },
+  {
+    "clue_id": 25,
+    "name": "Lema da Família Reed",
+    "description": "A inscrição no medalhão de família 'A terra sempre retorna ao seu verdadeiro senhor' reflete o ressentimento geracional da família Reed e sua crença na legitimidade de suas reivindicações, independentemente das decisões judiciais passadas.",
+    "type": "lema familiar",
+    "relevance": 3,
+    "is_key_evidence": false,
+    "related_aspect": "motivo",
+    "discovery_conditions": {
+      "location_id": null,
+      "area_id": null,
+      "detail_id": null,
+      "character_id": null,
+      "object_id": 7
+    }
+  }
+]

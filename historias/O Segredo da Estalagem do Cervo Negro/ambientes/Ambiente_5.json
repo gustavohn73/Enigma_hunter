@@ -1,0 +1,135 @@
+[
+  {
+    "location_id": 5,
+    "name": "Escritório de Elenora",
+    "description": "Um cômodo elegante e funcional localizado em uma área mais reservada do primeiro andar da estalagem. As paredes são revestidas por painéis de madeira escura e prateleiras carregadas de livros e registros. Uma grande escrivaninha de mogno domina o centro do ambiente, coberta por documentos organizados em pilhas meticulosas. Uma janela com cortinas de veludo verde oferece vista para o jardim dos fundos, enquanto um retrato do falecido Sr. Blackwood observa silenciosamente do alto da parede oposta. O ambiente tem um aroma de papel antigo, tinta e o leve perfume de lavanda que Elenora costuma usar. A organização impecável do espaço reflete a personalidade metódica da proprietária da estalagem, que administra o negócio com eficiência desde a morte do marido há mais de uma década.",
+    "is_locked": true,
+    "is_starting_location": false,
+    "areas": [
+      {
+        "area_id": 18,
+        "name": "Área da Escrivaninha",
+        "description": "A imponente escrivaninha de mogno é claramente o centro de operações administrativas da estalagem. Sua superfície polida contém um tinteiro de prata, penas de escrita organizadas em um suporte, um mata-borrão usado recentemente e diversos documentos classificados em pilhas distintas. Uma cadeira estofada em couro verde escuro está posicionada atrás da escrivaninha, enquanto duas cadeiras mais simples aguardam visitantes do lado oposto.",
+        "initially_visible": true,
+        "connected_areas": [19, 20],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 53,
+            "name": "Livro Contábil",
+            "description": "Um livro contábil grande e encadernado em couro contém os registros financeiros meticulosos da estalagem. Folheando suas páginas, é possível notar entradas recentes de pagamentos substanciais feitos por Sebastian Reed, sempre em dinheiro, por estadias que não constam no registro de hóspedes. Há também anotações sobre a conta de Thaddeus, com várias refeições privadas solicitadas nos últimos meses.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 54,
+            "name": "Carta da Guilda dos Mercadores",
+            "description": "Parcialmente oculta sob outros documentos, uma carta oficial com o selo da Guilda dos Mercadores do Norte solicita informações sobre o paradeiro de certos documentos históricos que podem ter sido trazidos à estalagem por um viajante no ano anterior. A carta menciona especificamente 'questões relacionadas a títulos de terra no setor leste' e está assinada por um alto funcionário da Guilda.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 55,
+            "name": "Agenda Pessoal",
+            "description": "Uma pequena agenda de couro contém a programação de Elenora. Nas semanas anteriores à morte de Thaddeus, há várias anotações sobre encontros privados entre ele e Sebastian no salão reservado. Uma entrada específica três dias antes da morte menciona: 'T.I. muito agitado após conversa com S.R. - solicitou acesso especial ao porão para examinar o baú'.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 19,
+        "name": "Arquivo e Biblioteca",
+        "description": "Uma parede inteira do escritório é ocupada por estantes repletas de livros, arquivos e documentos organizados meticulosamente. Alguns volumes parecem ser registros históricos da estalagem, enquanto outros são livros de referência sobre administração, direito comercial e história local. Um pequeno escadote móvel permite acesso às prateleiras mais altas, e uma mesa lateral auxilia na consulta dos materiais.",
+        "initially_visible": true,
+        "connected_areas": [18],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 56,
+            "name": "Registro Histórico da Estalagem",
+            "description": "Um volume especial encadernado em couro vermelho contém a história documentada da Estalagem do Cervo Negro desde sua fundação. As páginas mais antigas mencionam que o terreno onde a estalagem foi construída pertencia originalmente à família Reed, mas foi adquirido pela família Blackwood através de um acordo com o antigo Conselho da Cidade após uma disputa de propriedade.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 57,
+            "name": "Pasta de Clientes Especiais",
+            "description": "Uma pasta trancada (a chave está escondida sob o mata-borrão na escrivaninha) contém informações detalhadas sobre clientes importantes da estalagem. A seção sobre Sebastian Reed indica que ele começou a frequentar regularmente o estabelecimento aproximadamente seis meses após a chegada do baú misterioso. Suas preferências são anotadas meticulosamente, incluindo seu interesse em história local e documentos antigos.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 58,
+            "name": "Livro sobre Plantas Medicinais",
+            "description": "Entre os volumes da biblioteca, um livro sobre plantas medicinais e suas propriedades tem marcadores em várias páginas. A seção sobre 'Plantas Potencialmente Perigosas' está bastante consultada, com anotações nas margens sobre os sintomas de envenenamento pelo 'Suspiro da Viúva', que curiosamente correspondem aos descritos pelo médico que examinou Thaddeus.",
+            "discovery_level_required": 3,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 20,
+        "name": "Área de Reuniões",
+        "description": "Um espaço mais relaxado no canto do escritório, com uma pequena mesa redonda cercada por três poltronas confortáveis. Um serviço de chá em prata repousa sobre a mesa, e uma pequena adega climatizada contém uma seleção de vinhos finos para ocasiões especiais. Este espaço parece ser usado para reuniões privadas com associados importantes ou clientes de elite da estalagem.",
+        "initially_visible": true,
+        "connected_areas": [18, 21],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 59,
+            "name": "Notas de Reunião",
+            "description": "Um caderno de anotações na mesa contém breves registros de reuniões recentes. Uma entrada datada de uma semana antes da morte de Thaddeus descreve um encontro tenso entre ele e Sebastian. Elenora anotou: Discussão acalorada sobre documentos históricos. T.I. mencionou ter descoberto algo que mudaria tudo e acusou S.R. de não ser quem aparentava. Atmosfera muito hostil - evitar agendar juntos no futuro.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          },
+          {
+            "detail_id": 60,
+            "name": "Garrafa de Vinho Especial",
+            "description": "Na pequena adega, uma garrafa específica do mesmo vinho encontrado no quarto de Thaddeus está marcada como 'Reserva Especial - Apenas para T.I.'. Examinando cuidadosamente, é possível notar que o selo foi rompido e recolocado, e há uma quantidade mínima de um resíduo estranho no gargalo da garrafa.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 61,
+            "name": "Cartão de Visita",
+            "description": "Caído entre a poltrona e a parede, um cartão de visita elegante identifica Sebastian Reed como 'Consultor Financeiro Especializado em Patrimônios Históricos', com o símbolo da Guilda dos Mercadores do Norte discretamente impresso no verso. Um número de identificação específico sugere uma posição interna na hierarquia da organização.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 21,
+        "name": "Cofre Particular",
+        "description": "Um painel na parede atrás de uma pintura de paisagem esconde um cofre de metal embutido. Este espaço secreto, acessível apenas com a chave especial que Elenora mantém consigo, contém os itens mais valiosos e documentos confidenciais relacionados à estalagem e aos negócios da família Blackwood.",
+        "initially_visible": false,
+        "connected_areas": [20],
+        "discovery_level_required": 3,
+        "details": [
+          {
+            "detail_id": 62,
+            "name": "Registro do Baú Misterioso",
+            "description": "Um documento oficial registra a chegada do baú misterioso à estalagem, com a assinatura do depositante - um nome falso, como Elenora descobriu posteriormente. Anexado está um relatório de um especialista em antiguidades que examinou discretamente o baú e confirmou sua idade e provável ligação com a família Reed e documentos de terras importantes da região.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          },
+          {
+            "detail_id": 63,
+            "name": "Carta Anônima",
+            "description": "Uma carta sem assinatura, recebida por Elenora pouco antes da morte de Thaddeus, adverte sobre 'interesses perigosos' no conteúdo do baú e sugere que ela deveria entregá-lo às autoridades da cidade por segurança. A análise da caligrafia revela semelhanças com a escrita de Sebastian Reed.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          },
+          {
+            "detail_id": 64,
+            "name": "Relatório Médico Confidencial",
+            "description": "Uma cópia do relatório médico preliminar sobre a morte de Thaddeus, obtida por Elenora através de contatos pessoais. O documento menciona 'possíveis sinais de envenenamento gradual' que foram desconsiderados na conclusão oficial devido à idade da vítima e seu histórico de problemas digestivos. Há anotações de Elenora questionando vários pontos do relatório.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          }
+        ]
+      }
+    ]
+  }
+]

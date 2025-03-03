@@ -1,0 +1,142 @@
+[
+  {
+    "location_id": 3,
+    "name": "Porão/Adega da Estalagem",
+    "description": "Uma escada estreita de pedra desce ao porão fresco e úmido da estalagem. O ar aqui é notavelmente mais frio, com um aroma rico de terra, vinho envelhecido e especiarias armazenadas. Archotes e lanternas colocados estrategicamente iluminam o ambiente com uma luz amarelada e tremeluzente, criando sombras dançantes nas paredes de pedra rústica. O som de gotejamento distante ecoa levemente, misturando-se ao ocasional ranger da madeira do assoalho acima. Este espaço amplo serve como adega, despensa e área de armazenamento geral para a estalagem, com túneis e alcoves que se ramificam da área principal.",
+    "is_locked": true,
+    "is_starting_location": false,
+    "areas": [
+      {
+        "area_id": 10,
+        "name": "Adega Principal",
+        "description": "Fileiras organizadas de prateleiras de madeira curvadas sob o peso de centenas de garrafas de vinho, licores e outras bebidas. Barris de diferentes tamanhos estão empilhados contra uma parede, alguns conectados a tubulações que sobem para o bar no andar superior. Um grande livro de inventário repousa sobre uma mesa de trabalho junto com taças de prova e um saca-rolhas.",
+        "initially_visible": true,
+        "connected_areas": [11, 12],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 28,
+            "name": "Livro de Inventário",
+            "description": "Um grosso volume encadernado em couro contém registros meticulosos de todas as bebidas, organizados por tipo, origem e ano. Entradas recentes mostram que garrafas do mesmo vinho encontrado no quarto de Thaddeus foram retiradas em intervalos regulares, sempre nos dias em que Sebastian Reed estava presente na estalagem.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 29,
+            "name": "Área de Mistura",
+            "description": "Um pequeno espaço dedicado à mistura e preparo de bebidas contém funis, filtros e frascos diversos. Entre os equipamentos há um delicado funil de vidro que contém resíduos verdes cristalizados. Uma nota próxima lista ingredientes para um 'tônico especial para o Sr. Reed'.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 30,
+            "name": "Barril Vazio Marcado",
+            "description": "Um barril menor, separado dos demais, está vazio e tem uma marca discreta entalhada: um símbolo que se assemelha ao brasão da Guilda dos Mercadores do Norte, porém com uma pequena modificação que identifica uma facção específica dentro da organização.",
+            "discovery_level_required": 1,
+            "has_clue": false
+          }
+        ]
+      },
+      {
+        "area_id": 11,
+        "name": "Área de Armazenamento Geral",
+        "description": "Esta seção do porão é dedicada ao armazenamento de suprimentos não perecíveis, móveis extras e pertences de hóspedes. Caixas e baús estão empilhados em configurações aparentemente caóticas, criando pequenos corredores labirínticos. Teias de aranha decoram os cantos menos acessados, e a poeira acumulada sobre alguns itens sugere que não são movidos há meses ou mesmo anos.",
+        "initially_visible": true,
+        "connected_areas": [10, 13],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 31,
+            "name": "O Baú Misterioso",
+            "description": "Parcialmente oculto por outros itens, encontra-se um baú robusto de madeira escura com reforços de metal. Sua aparência corresponde exatamente à descrição dada por Elenora. A fechadura é complexa e parece ter marcas recentes de tentativas de arrombamento. O baú está trancado e requer uma chave específica.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          },
+          {
+            "detail_id": 32,
+            "name": "Marcas no Chão",
+            "description": "O chão de terra batida ao redor do baú misterioso mostra marcas de arrastamento recentes. Pegadas parciais indicam que pelo menos duas pessoas estiveram examinando ou tentando mover o baú recentemente. Um objeto pequeno e metálico, possivelmente uma ferramenta de arrombamento quebrada, está enterrado parcialmente na terra.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 33,
+            "name": "Prateleira de Objetos Perdidos",
+            "description": "Uma estante identificada como 'Objetos Esquecidos' contém itens deixados por hóspedes ao longo dos anos. Entre eles, uma pequena caixa de madeira contém um brasão heráldico que corresponde ao símbolo da família Reed, mencionado nos documentos encontrados no quarto de Thaddeus.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 12,
+        "name": "Despensa de Alimentos",
+        "description": "Uma área mais fresca do porão dedicada ao armazenamento de alimentos perecíveis. Prateleiras e ganchos contêm queijos envelhecendo, carnes defumadas, sacos de grãos e especiarias. O cheiro aqui é uma mistura complexa de aromas alimentares, predominantemente especiarias exóticas e queijos curados.",
+        "initially_visible": true,
+        "connected_areas": [10],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 34,
+            "name": "Armário de Especiarias",
+            "description": "Um armário trancado contém especiarias raras e caras em pequenos frascos rotulados. A organização é meticulosa, mas um espaço vazio sugere que um frasco foi removido recentemente. Um livro de registro próximo indica que Sebastian solicitou acesso recentemente, supostamente para uma receita especial.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 35,
+            "name": "Caixa de Ervas Secas",
+            "description": "Uma caixa de madeira contém pacotes de ervas culinárias secas. No fundo da caixa, escondido sob os pacotes normais, há um pequeno embrulho de pano contendo uma erva que não pertence à culinária - parece ser a planta 'Suspiro da Viúva', conhecida por suas propriedades tóxicas quando processada corretamente.",
+            "discovery_level_required": 3,
+            "has_clue": true
+          },
+          {
+            "detail_id": 36,
+            "name": "Lista de Compras da Cozinheira",
+            "description": "Pregada na parede, uma lista de compras escrita por Matilda Grey, a cozinheira, inclui itens comuns e um pedido sublinhado para 'verificar se aquele contador está mexendo nas minhas ervas outra vez'. A data corresponde a uma semana antes da morte de Thaddeus.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 13,
+        "name": "Alcova Oculta",
+        "description": "Uma passagem estreita entre pilhas de caixas leva a uma pequena alcova que parece ter sido utilizada recentemente. Diferente do resto do porão, esta área tem menos poeira e mostra sinais de atividade. Um pequeno banco improvisado, uma lanterna e vestígios de ocupação sugerem que alguém passou tempo aqui, observando ou trabalhando em algo com privacidade.",
+        "initially_visible": false,
+        "connected_areas": [11],
+        "discovery_level_required": 2,
+        "details": [
+          {
+            "detail_id": 37,
+            "name": "Mesa de Trabalho Improvisada",
+            "description": "Uma tábua apoiada entre dois barris forma uma mesa rudimentar. Restos de pó verde, similar ao encontrado no quarto de Thaddeus, estão espalhados na superfície. Um almofariz e um pilão mostram sinais de uso recente, com resíduos de plantas maceradas.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          },
+          {
+            "detail_id": 38,
+            "name": "Livro de Botânica",
+            "description": "Escondido sob um pano, um pequeno livro encadernado em couro verde intitulado 'Propriedades Medicinais de Plantas Raras' está marcado em uma página específica que descreve detalhadamente o 'Suspiro da Viúva', incluindo métodos de extração e efeitos no corpo humano. Anotações nas margens parecem ser cálculos de dosagem.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          },
+          {
+            "detail_id": 39,
+            "name": "Fendas na Parede",
+            "description": "Pequenas fendas na parede de pedra permitem que alguém nesta alcova observe discretamente a área de armazenamento geral, especialmente o local onde está o baú misterioso. Um desenho simples na parede parece mapear o mecanismo de abertura do baú.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 40,
+            "name": "Carta Rasgada",
+            "description": "Pedaços de uma carta rasgada foram parcialmente queimados em uma pequena lata metálica. Juntando os fragmentos legíveis, é possível identificar instruções da Guilda dos Mercadores para Sebastian Reed sobre a importância de localizar e destruir a escritura das terras antes que Thaddeus pudesse torná-la pública.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          }
+        ]
+      }
+    ]
+  }
+]

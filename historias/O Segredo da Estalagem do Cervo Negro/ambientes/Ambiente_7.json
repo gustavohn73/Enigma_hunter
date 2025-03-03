@@ -1,0 +1,180 @@
+[
+  {
+    "location_id": 7,
+    "name": "Biblioteca Municipal",
+    "description": "Um edifício imponente de pedra construído cerca de cinquenta anos atrás, graças às doações de famílias influentes de Ravenshire. A fachada de estilo clássico é adornada com colunas esculpidas e grandes janelas que permitem a entrada de luz natural. No interior, o aroma característico de papel antigo, couro encadernado e madeira polida preenche o ar. O silêncio respeitoso é quebrado apenas pelo ocasional virar de páginas e sussurros discretos. Pisos de madeira nobre emitem suaves rangidos sob os passos dos visitantes, enquanto o alto teto abobadado cria uma acústica que amplifica mesmo os menores sons. Estantes altas carregadas de livros formam corredores labirínticos, e várias áreas de estudo oferecem espaços para pesquisa. Este repositório de conhecimento contém não apenas literatura comum, mas também documentos históricos importantes para a região, incluindo registros de propriedade, mapas antigos e diários de figuras proeminentes do passado de Ravenshire.",
+    "is_locked": false,
+    "is_starting_location": false,
+    "areas": [
+      {
+        "area_id": 26,
+        "name": "Balcão Principal",
+        "description": "Uma longa bancada de madeira escura polida marca a entrada da biblioteca, onde a bibliotecária-chefe, Sra. Penelope Hartwick, uma mulher idosa com olhos perspicazes por trás de óculos de meia-lua, supervisiona as operações. Grandes livros de registro documentam empréstimos e consultas, enquanto catálogos organizados permitem localizar qualquer obra no vasto acervo. Uma sineta de bronze sobre o balcão brilha sob a luz que penetra pelas janelas altas.",
+        "initially_visible": true,
+        "connected_areas": [27, 28, 29],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 78,
+            "name": "Registro de Consultas",
+            "description": "Um grande livro encadernado registra todas as consultas a documentos especiais que não podem ser retirados da biblioteca. Entradas recentes mostram que tanto Sebastian Reed quanto Thaddeus Ironwood solicitaram acesso aos mesmos arquivos históricos sobre disputas de terra do século passado. A última consulta de Sebastian, três dias antes da morte de Thaddeus, está marcada como 'estendida' e inclui documentos específicos sobre a família Reed.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 79,
+            "name": "Calendário de Eventos",
+            "description": "Um quadro na parede atrás do balcão exibe o calendário de eventos da biblioteca. Uma palestra sobre 'Propriedades Medicinais e Tóxicas de Plantas Raras' está marcada para a semana anterior à morte de Thaddeus, ministrada por um especialista visitante. Na lista de participantes inscritos, o nome de Sebastian Reed aparece em destaque como 'patrocinador especial'.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          },
+          {
+            "detail_id": 80,
+            "name": "Notas da Bibliotecária",
+            "description": "Um pequeno caderno pessoal da Sra. Hartwick contém observações sobre comportamentos incomuns dos frequentadores. Uma entrada específica menciona: 'Encontro tenso entre S.R. e T.I. na seção de mapas antigos. Discussão acalorada sobre documentos da família Reed. T.I. saiu visivelmente perturbado. Verificar possíveis danos aos documentos consultados.'",
+            "discovery_level_required": 2,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 27,
+        "name": "Sala de Documentos Históricos",
+        "description": "Uma sala mais reservada, acessível apenas com permissão especial, onde documentos históricos valiosos são armazenados e consultados. Mesas grandes com iluminação adequada permitem o exame cuidadoso de materiais frágeis. As paredes são forradas com estantes protegidas por vidro, contendo documentos antigos, pergaminhos e livros raros relacionados à história de Ravenshire e região. O ar aqui é notavelmente mais seco para preservação dos materiais.",
+        "initially_visible": true,
+        "connected_areas": [26],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 81,
+            "name": "Arquivo de Propriedades Territoriais",
+            "description": "Uma seção específica contém documentos relacionados à distribuição e transferência de terras na região. Um arquivo particularmente consultado recentemente detalha uma disputa territorial de três gerações atrás entre as famílias Reed e Ironwood. Documentos oficiais mostram que as terras originalmente pertencentes aos Reed foram transferidas para os Ironwood após um julgamento controverso envolvendo alegações de documentos falsificados.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 82,
+            "name": "Marca-páginas Esquecido",
+            "description": "Entre as páginas de um antigo livro de registros, um elegante marca-páginas de couro com as iniciais 'S.R.' foi deixado para trás. Ele marca um trecho específico que detalha como certas propriedades poderiam ser reclamadas por herdeiros diretos caso documentos originais de propriedade fossem apresentados, mesmo após décadas.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 83,
+            "name": "Documento com Anotações",
+            "description": "Uma cópia de trabalho de um mapa territorial antigo tem anotações sutis a lápis nas margens. As notas comparam características de um baú ornamentado descrito em documentos históricos com o baú misterioso na estalagem. Uma pequena inscrição diz: 'Confirmado - mesmo mecanismo, mesma época. Conteúdo provavelmente intacto.' A caligrafia parece ser de Thaddeus.",
+            "discovery_level_required": 3,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 28,
+        "name": "Seção de Botânica e Ciências Naturais",
+        "description": "Um canto tranquilo da biblioteca dedicado a livros sobre flora, fauna e ciências naturais. Várias mesas de estudo são rodeadas por estantes contendo volumes sobre plantas medicinais, taxonomia vegetal e uso histórico de ervas. Ilustrações botânicas detalhadas decoram as paredes, e algumas plantas em vasos criam um ambiente agradável. Uma grande janela oferece iluminação natural ideal para leitura.",
+        "initially_visible": true,
+        "connected_areas": [26, 29],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 84,
+            "name": "Livro sobre Plantas Venenosas",
+            "description": "Um volumoso tratado intitulado 'Toxicologia Botânica: Guia Completo' está marcado como recentemente consultado. A seção sobre o 'Suspiro da Viúva' tem várias páginas com cantos dobrados e pequenas manchas verde-escuras, como se alguém tivesse manuseado o livro com resíduos da planta nas mãos. Um pedaço de papel com cálculos de dosagens foi usado como marca-páginas.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 85,
+            "name": "Caderno de Anotações",
+            "description": "Esquecido sob uma pilha de livros, um pequeno caderno contém estudos detalhados sobre métodos de extração de componentes ativos de plantas. Várias páginas são dedicadas especificamente ao 'Suspiro da Viúva', com anotações sobre como o veneno pode ser aplicado gradualmente para simular doença natural. O caderno não está assinado, mas a caligrafia corresponde a outros documentos escritos por Sebastian.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 86,
+            "name": "Correspondência Escondida",
+            "description": "Dentro de um livro pouco consultado sobre plantas raras, uma carta parcialmente escrita foi deixada como rascunho. A mensagem, na caligrafia de Sebastian, menciona 'eliminar obstáculos' e 'recuperar o que foi roubado de nossa família' antes de ser abruptamente interrompida. No verso do papel há um esboço parcial do que parece ser o mecanismo de abertura do baú misterioso.",
+            "discovery_level_required": 3,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 29,
+        "name": "Sala de Estudos Privativa",
+        "description": "Algumas pequenas salas no fundo da biblioteca oferecem espaços privativos para pesquisa mais concentrada ou reuniões discretas. Cada sala contém uma mesa sólida, cadeiras confortáveis e prateleiras para referências temporárias. Luz natural entra através de janelas altas, complementada por lâmpadas de mesa elegantes. Estas salas podem ser reservadas antecipadamente por pesquisadores sérios ou figuras importantes da cidade.",
+        "initially_visible": true,
+        "connected_areas": [26, 28],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 87,
+            "name": "Livro de Reservas",
+            "description": "O registro de uso das salas privativas mostra que Sebastian Reed e Thaddeus Ironwood reservaram a mesma sala em horários consecutivos várias vezes no mês anterior à morte. Na última ocasião, três dias antes da tragédia, eles estiveram na mesma sala simultaneamente por quase duas horas, algo incomum considerando sua preferência anterior por encontros separados.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          },
+          {
+            "detail_id": 88,
+            "name": "Mesa com Marcas",
+            "description": "A mesa de carvalho em uma das salas privativas tem marcas quase imperceptíveis de tinta no tampo, como se alguém tivesse escrito pressionando com força em um papel sobreposto. Aplicando um lápis suavemente sobre um papel colocado em cima dessas marcas, é possível revelar o desenho de um mecanismo de baú complexo e algumas anotações sobre 'escritura original' e 'prova definitiva'.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 89,
+            "name": "Frasco Escondido",
+            "description": "Atrás de um radiador antigo na sala mais utilizada por Sebastian e Thaddeus, um pequeno frasco de vidro escuro foi cuidadosamente escondido. Contém resíduos de um pó verde-escuro e tem uma etiqueta parcialmente removida com a palavra 'extrato' ainda visível. O resíduo tem o mesmo odor adocicado encontrado no quarto de Thaddeus.",
+            "discovery_level_required": 3,
+            "has_clue": true
+          },
+          {
+            "detail_id": 90,
+            "name": "Relatório do Assistente da Biblioteca",
+            "description": "Uma nota do assistente para a Sra. Hartwick relata ter ouvido uma discussão acalorada na sala privativa durante o último encontro entre Sebastian e Thaddeus. A nota menciona frases captadas como 'aquela escritura me pertence por direito' e 'você não sabe com quem está lidando', seguidas por um súbito silêncio e a saída apressada de Sebastian, parecendo 'pálido e perturbado'.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 30,
+        "name": "Arquivo de Periódicos Antigos",
+        "description": "Uma seção menos visitada no subsolo da biblioteca, acessível por uma escada estreita, onde jornais antigos, gazetas e publicações periódicas são preservados em arquivos especiais. O ar é notavelmente mais seco e tem um cheiro forte de papel envelhecido. Fileiras de arquivos deslizantes contêm edições organizadas cronologicamente, oferecendo um vislumbre fascinante da história cotidiana de Ravenshire através das décadas.",
+        "initially_visible": false,
+        "connected_areas": [26],
+        "discovery_level_required": 2,
+        "details": [
+          {
+            "detail_id": 91,
+            "name": "Notícia sobre Disputa de Terras",
+            "description": "Uma edição amarelada do 'Arauto de Ravenshire' de três gerações atrás relata em detalhes a controversa disputa judicial entre as famílias Reed e Ironwood. O artigo menciona que os Reed alegavam ter uma escritura original que provaria sua propriedade legítima, mas o documento nunca foi apresentado em tribunal, levando à vitória dos Ironwood. Um parágrafo sugere que o documento poderia ter sido escondido para protegê-lo de roubo ou destruição.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          },
+          {
+            "detail_id": 92,
+            "name": "Recorte Marcado",
+            "description": "Um jornal mais recente tem um artigo cuidadosamente recortado. A edição adjacente revela que o artigo removido tratava da descoberta de um baú antigo durante renovações em uma propriedade que anteriormente pertencia à família Reed. Os registros de consulta mostram que Sebastian esteve examinando estes arquivos repetidamente nos últimos meses.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 93,
+            "name": "Árvore Genealógica",
+            "description": "Em uma edição especial dedicada às famílias fundadoras de Ravenshire, uma elaborada árvore genealógica da família Reed mostra claramente que Sebastian é um descendente direto da linhagem principal, apesar de usar um sobrenome que não evidencia imediatamente essa conexão. Anotações a lápis nas margens parecem calcular exatamente qual seria sua posição na linha sucessória de propriedade das terras disputadas.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 94,
+            "name": "Carta Oculta em Arquivo",
+            "description": "Dobrada e escondida dentro de uma edição antiga, uma carta parcialmente escrita por Sebastian para um contato na Guilda dos Mercadores expressa urgência em encontrar 'o documento antes que Ironwood compreenda completamente seu significado'. A carta menciona que 'medidas definitivas' serão necessárias caso Thaddeus desvende o mecanismo do baú e reivindique publicamente a escritura.",
+            "discovery_level_required": 3,
+            "has_clue": true
+          }
+        ]
+      }
+    ]
+  }
+]

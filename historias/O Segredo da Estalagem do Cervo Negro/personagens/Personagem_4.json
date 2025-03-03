@@ -1,0 +1,97 @@
+[
+  {
+    "character_id": 4,
+    "name": "Capitão Reginald Frost",
+    "base_description": "Ex-capitão da guarda de Ravenshire, agora aposentado e residindo permanentemente na Estalagem do Cervo Negro. Um homem de princípios rígidos e observação aguçada, Frost passou quatro décadas fazendo cumprir a lei na região antes de se aposentar há dois anos. Apesar de não estar mais em serviço oficial, mantém-se mentalmente ativo realizando pequenas investigações por conta própria, desde objetos perdidos até disputas menores entre hóspedes, sempre com a tolerância divertida de Elenora.",
+    "personality": "Disciplinado e metódico, com um forte senso de justiça e ordem. Observador compulsivo, raramente deixa passar detalhes do ambiente ou comportamento das pessoas. Direto e por vezes brusco em suas interações, valoriza honestidade acima das formalidades sociais. Profundamente leal à comunidade de Ravenshire e especialmente à Estalagem, que considera seu lar atual. Mantém um ceticismo saudável e tende a desconfiar de coincidências. Ocasionalmente nostálgico sobre seus dias de serviço ativo, mas encontra satisfação em suas 'consultorias' informais para problemas da estalagem.",
+    "appearance": "Homem robusto de aproximadamente 65 anos, com postura militar impecável apesar da idade. Cabelos brancos cortados rentes e um bigode espesso bem cuidado. Cicatrizes discretas no rosto e mãos contam histórias silenciosas de seu serviço ativo. Embora aposentado, ainda mantém um guarda-roupa semiformado - camisas engomadas, coletes abotoados e botas sempre polidas. Carrega consigo uma bengala de carvalho com cabo de prata, mais como símbolo de autoridade do que por necessidade física, e frequentemente a usa para apontar coisas que chamam sua atenção.",
+    "is_culprit": false,
+    "motive": "",
+    "location_schedule": {
+      "morning": 1,
+      "afternoon": 1,
+      "evening": 2
+    },
+    "levels": [
+      {
+        "level_number": 0,
+        "knowledge_scope": "Frost tem um conhecimento geral sobre as rotinas da estalagem e seus frequentadores regulares. Está ciente da morte de Thaddeus, mas aceitou inicialmente a explicação oficial de causas naturais. Possui informações básicas sobre Sebastian Reed como frequentador regular da estalagem, considerando-o um jovem educado e respeitável. Tem observações sobre os padrões de movimento na estalagem, incluindo horários incomuns de atividade, mas ainda não os conectou especificamente ao caso.",
+        "narrative_stance": "Formalmente cooperativo mas ligeiramente cético quanto à necessidade de investigação. Responde às perguntas com precisão militar, frequentemente elaborando mais do que o solicitado com observações detalhadas. Mostra interesse profissional no inquérito, mas mantém uma postura de observador neutro neste estágio.",
+        "is_defensive": false,
+        "triggers": [
+          {
+            "trigger_id": 10,
+            "trigger_keyword": "suspeito",
+            "contextual_condition": "O investigador deve sugerir que a morte de Thaddeus não foi natural",
+            "defensive_response": "Suspeito? O médico local considerou uma morte natural. Que evidência sugere o contrário?",
+            "challenge_question": "Notou algum comportamento ou atividade incomum na estalagem nos dias anteriores à morte de Thaddeus?",
+            "success_response": "Hmm, interessante que pergunte... Minhas velhas investigações me tornaram um observador de hábitos, sabe? E sim, notei algumas anomalias na última semana. Por três noites seguidas antes da morte de Thaddeus, vi Sebastian Reed visitando o porão fora do horário normal - sempre após a meia-noite, quando acreditava que ninguém estava observando. Também notei que ele e Thaddeus tiveram uma conversa particularmente tensa na biblioteca da cidade. Eu estava lá pesquisando antigas ordenanças municipais quando os vi discutindo acaloradamente entre as estantes. Nada conclusivo, claro, mas certamente fora do padrão para dois homens que supostamente tinham apenas uma relação comercial casual.",
+            "fail_response": "Sou um homem que valoriza evidências concretas, não especulações. Durante meus quarenta anos na guarda, aprendi a não confundir coincidências com crime. Sem provas tangíveis, prefiro respeitar o diagnóstico médico oficial.",
+            "requirements": [
+              {
+                "requirement_type": "reasoning",
+                "required_object_id": [10, 18],
+                "verification_method": "O jogador deve apresentar pelo menos dois elementos suspeitos sobre a morte, como o resíduo no copo de vinho e os sintomas inconsistentes com ataque cardíaco"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "level_number": 1,
+        "knowledge_scope": "Frost compartilha observações detalhadas sobre comportamentos suspeitos na estalagem, incluindo visitas noturnas de Sebastian ao porão e sua discussão tensa com Thaddeus na biblioteca. Revela ter notado Sebastian frequentemente no jardim em áreas normalmente não visitadas por hóspedes, especialmente próximo à seção de ervas medicinais. Menciona ter visto Sebastian entrando no quarto de Thaddeus quando este estava ausente, alegando estar entregando alguns documentos.",
+        "narrative_stance": "Significativamente mais engajado e interessado, demonstrando instintos investigativos reavivados. Compartilha suas observações metodicamente, quase como se estivesse relatando a um superior. Começa a demonstrar desconfiança específica de Sebastian, baseada em observações factuais em vez de meras especulações.",
+        "is_defensive": false,
+        "triggers": [
+          {
+            "trigger_id": 11,
+            "trigger_keyword": "baú",
+            "contextual_condition": "O investigador deve mencionar especificamente o baú misterioso no porão",
+            "defensive_response": "Baú? Há diversos baús e contêineres de armazenamento no porão da estalagem. A qual especificamente se refere?",
+            "challenge_question": "Tem conhecimento do baú antigo guardado no porão há aproximadamente um ano, que aparentemente contém documentos históricos valiosos?",
+            "success_response": "Ah, aquele baú específico... Sim, estou bem ciente dele. Na verdade, venho observando-o discretamente desde sua chegada. Velho hábito de guarda - objetos valiosos não identificados sempre merecem atenção. [Baixa a voz] Na verdade, testemunhei duas tentativas de arrombamento nos últimos meses. A primeira por Victor Thorn, aquele mensageiro nervoso da Guilda dos Mercadores - flagrei-o tentando forçar a fechadura cerca de três meses atrás. Confrontei-o e ele fugiu sem explicação. A segunda... [hesita] foi Sebastian Reed, há aproximadamente um mês. Diferente de Victor, ele não fugiu quando o descobri. Explicou com aquele seu charme habitual que estava apenas 'examinando a antiguidade do mecanismo' por interesse histórico. Uma explicação plausível, mas... [toca o bigode pensativamente] notei que ele tinha ferramentas específicas para arrombamento escondidas nas mangas. Deveria ter reportado ambos os incidentes a Elenora imediatamente, mas... bem, não tinha certeza da importância na época.",
+            "fail_response": "Não presto atenção particular a itens armazenados no porão. Meus interesses investigativos geralmente se concentram em pessoas e seus comportamentos, não em objetos. Se este baú tem alguma significância, sugerio falar diretamente com Elenora, que mantém inventário de todos os itens na estalagem.",
+            "requirements": [
+              {
+                "requirement_type": "location",
+                "required_area_id": 11,
+                "required_detail_id": 32,
+                "verification_method": "O jogador deve ter explorado o porão e descoberto as evidências de tentativa de arrombamento do baú"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "level_number": 2,
+        "knowledge_scope": "Frost revela informações críticas sobre tentativas anteriores de acessar o baú misterioso, incluindo uma por Sebastian Reed, que ele flagrou com ferramentas de arrombamento. Compartilha sua descoberta de que Sebastian mantinha vigilância regular sobre o baú e sobre os movimentos de Thaddeus. Revela ter visto Sebastian e Victor Thorn em uma reunião discreta fora da estalagem, indicando uma possível conexão com a Guilda dos Mercadores. Também compartilha conhecimento sobre a história de disputas territoriais em Ravenshire, incluindo a controversa transferência de terras da família Reed para os Ironwood.",
+        "narrative_stance": "Completamente investido na investigação, agindo quase como um parceiro investigativo. Demonstra pesar por não ter conectado os pontos e reportado suas observações antes da morte de Thaddeus. Oferece não apenas informações, mas também análises baseadas em sua vasta experiência em aplicação da lei, fornecendo contexto e possíveis interpretações das evidências.",
+        "is_defensive": false,
+        "triggers": [
+          {
+            "trigger_id": 12,
+            "trigger_keyword": "guilda",
+            "contextual_condition": "O investigador deve mencionar a Guilda dos Mercadores e sua possível conexão com o caso",
+            "defensive_response": "A Guilda dos Mercadores é uma organização respeitável e poderosa em Ravenshire. Que conexão específica você sugere que tenha com este caso?",
+            "challenge_question": "Notamos evidências de que Sebastian Reed pode estar trabalhando para a Guilda, possivelmente com interesse específico nos documentos do baú. Observou alguma conexão entre eles?",
+            "success_response": "[Examina cuidadosamente um objeto antes de responder] Este símbolo aqui... é da facção Corvo Negro dentro da Guilda dos Mercadores. Não é conhecimento comum, mas em meus anos como capitão da guarda, tive que lidar com eles diversas vezes. São especialistas em recuperar documentos e artefatos 'perdidos' por meios frequentemente à margem da lei. [Baixa a voz] Há aproximadamente dois meses, observei Sebastian em uma reunião noturna com três membros conhecidos dessa facção nos limites da cidade. Trocaram documentos e o que pareciam ser instruções. Na manhã seguinte, Sebastian fez perguntas específicas a Elenora sobre a segurança da estalagem e o histórico do baú misterioso. Não conectei os eventos na época, mas agora... [Pausa significativa] Há algo mais que você deveria saber. Nas últimas semanas, venho conduzindo minha própria investigação discreta. Descobri que o 'contador' Sebastian Reed recebeu treinamento especializado em botânica na capital há cinco anos, específicamente focado em propriedades medicinais e tóxicas de plantas raras. Também encontrei evidências de que ele mudou legalmente seu nome - ele nasceu Sebastian Corvinus, o último descendente direto da linhagem masculina Reed por parte de sua avó.",
+            "fail_response": "A Guilda dos Mercadores tem negócios legítimos por toda Ravenshire, incluindo esta estalagem. Muitos dos hóspedes têm alguma conexão com eles. Sem evidências específicas, seria imprudente especular sobre envolvimento institucional em qualquer atividade suspeita.",
+            "requirements": [
+              {
+                "requirement_type": "evidence",
+                "required_object_id": 5,
+                "verification_method": "O jogador deve apresentar a carta selada ou encontrar o símbolo da Guilda no barril"
+              },
+              {
+                "requirement_type": "observation",
+                "required_area_id": 10,
+                "required_detail_id": 30,
+                "verification_method": "O jogador deve ter examinado o barril marcado na adega com o símbolo modificado da Guilda"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

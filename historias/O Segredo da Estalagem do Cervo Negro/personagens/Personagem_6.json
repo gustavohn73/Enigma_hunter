@@ -1,0 +1,93 @@
+[
+  {
+    "character_id": 6,
+    "name": "Victor Thorn",
+    "base_description": "Mensageiro oficial da Guilda dos Mercadores do Norte, Victor é uma figura magra e nervosa frequentemente vista entrando e saindo apressadamente da estalagem com documentos e pacotes. Ostensivamente encarregado de entregar comunicações oficiais e coletar relatórios dos representantes locais da Guilda, seu comportamento furtivo e olhar constantemente vigilante sugerem responsabilidades além das aparentes. Victor tem uma presença quase fantasmagórica, aparecendo e desaparecendo rapidamente, raramente participando da vida social da estalagem apesar de suas visitas frequentes.",
+    "personality": "Nervoso e hipervigilante, com uma tendência a sobressaltar-se com movimentos ou sons repentinos. Extremamente reservado sobre assuntos pessoais e profissionais, respondendo a perguntas diretas com evasivas ou meias-verdades. Demonstra lealdade inquestionável à Guilda dos Mercadores, tratando suas tarefas com seriedade quase religiosa. Observador atento apesar de seu comportamento aparentemente ansioso - pouco escapa à sua atenção. Desconfiado por natureza, especialmente de estranhos ou autoridades. Em raros momentos de descontração, revela lampejos de inteligência aguçada e humor cáustico.",
+    "appearance": "Homem magro em seus trinta anos, com feições angulares e olhos escuros profundamente encovados que dartem constantemente pelo ambiente. Cabelo preto e liso frequentemente escondido sob um chapéu de mensageiro com o emblema discreto da Guilda dos Mercadores. Veste-se em cores escuras e sóbrias, com um casaco longo de muitos bolsos internos onde guarda documentos e pequenos pacotes. Movimenta-se com uma pressa constante e uma agilidade surpreendente para alguém de aparência tão frágil. Uma cicatriz fina atravessa seu pulso esquerdo, visível apenas quando sua manga se ergue durante movimentos mais amplos.",
+    "is_culprit": false,
+    "motive": "",
+    "location_schedule": {
+      "morning": 2,
+      "afternoon": 1,
+      "evening": 3
+    },
+    "levels": [
+      {
+        "level_number": 0,
+        "knowledge_scope": "Victor conhece a rotina básica da estalagem e seus frequentadores regulares devido a suas visitas constantes. Está ciente da morte de Thaddeus e do baú misterioso, mas finge desinteresse em ambos. Possui conhecimento sobre a estrutura interna da Guilda dos Mercadores, incluindo a existência da facção Corvo Negro, mas mantém essa informação estritamente confidencial. Sabe que Sebastian Reed tem alguma conexão com a Guilda, mas desconhece a extensão completa de seu envolvimento.",
+        "narrative_stance": "Evasivo e desconfiado, respondendo perguntas com o mínimo de informação possível enquanto constantemente verifica o ambiente ao redor. Demonstra pressa para encerrar conversas, frequentemente alegando ter entregas urgentes a fazer. Evita contato visual prolongado e mantém distância física dos interlocutores.",
+        "is_defensive": true,
+        "triggers": [
+          {
+            "trigger_id": 16,
+            "trigger_keyword": "Guilda",
+            "contextual_condition": "O investigador deve mencionar especificamente a Guilda dos Mercadores e seu possível interesse no baú",
+            "defensive_response": "A Guilda? Sou apenas um mensageiro, entrego pacotes e documentos, nada mais. Não sei nada sobre políticas ou interesses especiais.",
+            "challenge_question": "Por que então você foi visto tentando acessar o porão onde o baú está guardado, conforme relatado pelo Capitão Frost?",
+            "success_response": "[Empalidece visivelmente, olhando rapidamente para as saídas] Maldito velho intrometido... [Baixa a voz após verificar que ninguém mais está ouvindo] Escute, não tenho nada a ver com o que aconteceu com o comerciante. Sim, recebi ordens para localizar um certo baú que supostamente contém documentos de interesse histórico para a Guilda. Apenas reconhecimento, entende? Verificar se o item existia de fato e reportar sua condição. Nunca autorizaram recuperação física ou... outras medidas. [Nervosamente ajusta o colarinho] Quando reportei que o baú parecia corresponder à descrição nos arquivos da Guilda, fui instruído a monitorar quem demonstrava interesse nele. Thaddeus Ironwood estava na minha lista de observação, assim como aquele contador, Sebastian Reed.",
+            "fail_response": "Não sei do que está falando. Nunca estive no porão desta estalagem. Como mensageiro, tenho acesso apenas às áreas públicas, e mal tenho tempo para completar minhas rotas diárias, quanto mais explorar áreas restritas. Seu informante deve estar confundindo-me com outra pessoa.",
+            "requirements": [
+              {
+                "requirement_type": "testimony",
+                "required_character_id": 4,
+                "required_level": 1,
+                "verification_method": "O jogador deve mencionar especificamente o testemunho do Capitão Frost sobre ter flagrado Victor tentando acessar o porão"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "level_number": 1,
+        "knowledge_scope": "Victor admite ter recebido ordens da Guilda para localizar e monitorar o baú misterioso, bem como observar quem demonstrava interesse nele, incluindo Thaddeus e Sebastian. Revela conhecer a existência de documentos historicamente valiosos dentro do baú relacionados a antigas disputas de propriedade. Compartilha informações limitadas sobre a facção Corvo Negro da Guilda, que se especializa em recuperar itens valiosos através de meios nem sempre legais.",
+        "narrative_stance": "Cautelosamente cooperativo, mas ainda claramente nervoso. Fala em tom baixo e apressado, frequentemente interrompendo-se para verificar se alguém está ouvindo. Demonstra medo tanto dos investigadores quanto de possíveis repercussões da Guilda por compartilhar informações internas.",
+        "is_defensive": true,
+        "triggers": [
+          {
+            "trigger_id": 17,
+            "trigger_keyword": "Sebastian",
+            "contextual_condition": "O investigador deve sugerir uma conexão entre Sebastian e a Guilda dos Mercadores",
+            "defensive_response": "Reed? O contador? Apenas outro cliente da estalagem, pelo que sei. A Guilda tem centenas de associados e afiliados; não conheço todos pessoalmente.",
+            "challenge_question": "Temos evidências de que você e Sebastian tiveram várias reuniões secretas. Qual era a natureza real do relacionamento dele com a Guilda dos Mercadores?",
+            "success_response": "[Olha nervosamente ao redor antes de responder em voz baixa] Você está cutucando um ninho de vespas, sabia? [Suspira] Sebastian não é quem aparenta ser. Dentro da Guilda, ele é conhecido como 'Corvinus' - um agente especial da facção Corvo Negro. Ele foi especificamente designado para este caso devido à sua... conexão pessoal com os documentos em questão. [Mais baixo ainda] O baú contém a escritura original das terras Reed, que foram transferidas para os Ironwood através de meios questionáveis há três gerações. Sebastian é o último descendente direto da linhagem Reed. [Hesita] A missão oficial era apenas recuperar a escritura para os arquivos históricos da Guilda, não... eliminar obstáculos. Se Thaddeus foi assassinado, Reed agiu por conta própria. Eu mesmo o avisei que estava excedendo suas ordens, mas ele se tornou... obsessivo com o assunto. Mencionou várias vezes que era uma 'questão de honra familiar' e que 'justiça seria feita, não importa o custo'.",
+            "fail_response": "Qualquer interação que possa ter tido com Sebastian Reed foi estritamente profissional e dentro do âmbito das atividades normais da Guilda. Não tenho conhecimento de nenhuma agenda especial relacionada a ele ou a qualquer outro indivíduo nesta estalagem.",
+            "requirements": [
+              {
+                "requirement_type": "evidence",
+                "required_object_id": 5,
+                "required_area_id": 10,
+                "required_detail_id": 30,
+                "verification_method": "O jogador deve apresentar evidência física da conexão entre Sebastian e a Guilda, como a carta selada ou o símbolo modificado encontrado no barril"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "level_number": 2,
+        "knowledge_scope": "Victor revela a verdadeira identidade de Sebastian como 'Corvinus', um agente especial da facção Corvo Negro da Guilda, e sua conexão pessoal com a família Reed. Compartilha detalhes sobre o conteúdo do baú - a escritura original das terras disputadas - e a obsessão crescente de Sebastian com recuperá-la por qualquer meio necessário. Admite ter alertado Sebastian sobre exceder suas ordens oficiais, mas que este havia se tornado fixado na ideia de 'justiça familiar' independente das consequências.",
+        "narrative_stance": "Abertamente temeroso, tanto pelos investigadores quanto pela possível retaliação da Guilda ou de Sebastian. Compartilha informações com maior franqueza, reconhecendo que a situação ficou fora de controle. Alterna entre tentativas de distanciar-se pessoalmente dos eventos e momentos de culpa por não ter feito mais para prevenir o crime.",
+        "is_defensive": true,
+        "triggers": [
+          {
+            "trigger_id": 18,
+            "trigger_keyword": "envenenamento",
+            "contextual_condition": "O investigador deve mencionar especificamente o método de assassinato por envenenamento",
+            "defensive_response": "Envenenamento? Isso é... perturbador, mas não tenho conhecimento de métodos tão sórdidos. Minha função é puramente administrativa.",
+            "challenge_question": "Sabia que Sebastian estava estudando plantas venenosas e métodos de extração? Houve autorização da Guilda para tais atividades?",
+            "success_response": "[Visivelmente perturbado] Pelos deuses, não! Jamais haveria autorização oficial para... isso. [Passa a mão pelo rosto nervosamente] Aproximadamente um mês atrás, notei comportamento cada vez mais errático de Sebastian. Encontrei alguns de seus cadernos de anotações com estudos detalhados sobre venenos botânicos. Reportei minhas preocupações ao meu superior na Guilda, mas... [olha para baixo] fui instruído a 'monitorar sem interferir'. O interesse histórico no documento dentro do baú era legítimo, mas Sebastian transformou isso em uma vingança pessoal. Na última vez que nos reunimos, três dias antes da morte de Thaddeus, ele estava... diferente. Frio, calculista, falando sobre 'justiça poética' e como Thaddeus morreria 'sem saber o que o atingiu, assim como meus ancestrais'. Tentei dissuadi-lo, disse que seria descoberto, mas ele apenas sorriu e disse que havia planejado tudo perfeitamente. [Com remorso] Deveria ter alertado alguém, mas temia tanto a reação da Guilda quanto o que Sebastian poderia fazer. Ele não é alguém que se possa contrariar levianamente.",
+            "fail_response": "Não tenho conhecimento de assuntos relacionados a venenos ou outros métodos ilícitos. Minha função é puramente de comunicação entre a Guilda e seus associados. Qualquer atividade criminosa seria completamente contrária às políticas oficiais da organização.",
+            "requirements": [
+              {
+                "requirement_type": "evidence",
+                "required_object_id": [3, 8, 9, 10, 15],
+                "verification_method": "O jogador deve apresentar evidências concretas do envenenamento, como os testes realizados por Lydia ou o caderno com anotações sobre extração do veneno"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

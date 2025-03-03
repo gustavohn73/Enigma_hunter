@@ -1,0 +1,131 @@
+# Lógica do Sistema de Especialização no Enigma Hunter
+
+## Visão Geral
+
+O Sistema de Especialização é um mecanismo de progressão que acompanha o desenvolvimento do jogador em diferentes áreas de conhecimento ou habilidades investigativas ao longo da história. Este sistema permite uma evolução natural e gradual, desbloqueando novas interações, diálogos e descobertas conforme o jogador demonstra proficiência em determinadas categorias.
+
+## Conceitos Fundamentais
+
+### 1. Categorias de Especialização
+
+Cada história define suas próprias categorias de especialização, que representam linhas de investigação ou áreas de conhecimento relevantes para o mistério. As categorias são abstratas e não revelam diretamente elementos da trama, permitindo que qualquer tipo de história utilize a mesma estrutura.
+
+Exemplos conceituais (personalizados para cada história):
+- Análise de Evidências
+- Conhecimento Histórico
+- Interpretação de Comportamento
+- Descoberta Ambiental
+- Conexão de Informações
+
+### 2. Pontos de Especialização
+
+Os jogadores ganham pontos em categorias específicas por meio de várias interações:
+- Examinar objetos relevantes
+- Explorar áreas significativas
+- Discutir tópicos específicos com personagens
+- Conectar pistas corretamente
+
+Os pontos são cumulativos e representam o conhecimento crescente do jogador em cada categoria.
+
+### 3. Níveis de Especialização
+
+Cada categoria tem múltiplos níveis (normalmente 0-3), que são alcançados ao acumular determinada quantidade de pontos:
+- Nível 0: Conhecimento básico/inicial
+- Nível 1: Familiaridade
+- Nível 2: Compreensão aprofundada
+- Nível 3: Especialização completa
+
+### 4. Requisitos para Evolução
+
+Elementos do jogo (objetos, personagens, áreas) podem exigir níveis específicos de especialização para:
+- Revelar detalhes adicionais sobre objetos
+- Desbloquear diálogos mais avançados com personagens
+- Permitir acesso a áreas restritas
+- Compreender pistas complexas
+
+Os requisitos podem envolver uma única categoria ou combinações de várias categorias.
+
+## Fluxo de Funcionamento
+
+1. **Definição das Categorias**:
+   - Cada história define suas próprias categorias de especialização
+   - As categorias são carregadas no início do jogo
+
+2. **Interações do Jogador**:
+   - O jogador explora o ambiente, interage com objetos e conversa com personagens
+   - Cada interação significativa é mapeada para uma ou mais categorias
+
+3. **Concessão de Pontos**:
+   - O sistema verifica se a interação concede pontos
+   - Se for a primeira vez que o jogador realiza essa interação, os pontos são concedidos
+   - Os pontos são adicionados às categorias correspondentes
+
+4. **Cálculo de Níveis**:
+   - Após cada ganho de pontos, o sistema recalcula o nível em cada categoria
+   - Se o jogador atinge pontos suficientes, seu nível na categoria aumenta
+
+5. **Verificação de Requisitos**:
+   - Quando o jogador tenta acessar conteúdo com requisitos de especialização:
+     - Acessando níveis avançados de objetos
+     - Tentando diálogos específicos com personagens
+     - Explorando áreas restritas
+   - O sistema verifica se o jogador possui os níveis necessários nas categorias exigidas
+
+6. **Desbloqueio de Conteúdo**:
+   - Se os requisitos são atendidos, o conteúdo é desbloqueado
+   - Se não, o jogador recebe feedback indicando o que precisa desenvolver
+
+7. **Evolução e Progresso**:
+   - Conforme o jogador desbloqueia mais conteúdo, novas oportunidades de ganhar pontos surgem
+   - O ciclo continua, permitindo exploração e descoberta progressivas
+
+## Vantagens do Sistema
+
+1. **Progressão Natural**: 
+   - O conhecimento evolui organicamente conforme a investigação avança
+   - Evita situações onde o jogador tem acesso muito cedo a informações cruciais
+
+2. **Múltiplos Caminhos**: 
+   - Jogadores podem especializar-se em diferentes áreas primeiro
+   - Vários métodos para ganhar pontos na mesma categoria
+
+3. **Customização por História**:
+   - Cada mistério pode definir suas próprias categorias e requisitos
+   - Flexível para diferentes gêneros e temas
+
+4. **Feedback Claro**:
+   - Os jogadores compreendem o que precisam desenvolver
+   - Sistema de progresso visível e gratificante
+
+5. **Design Modular**:
+   - Fácil modificar requisitos para balancear a dificuldade
+   - Adaptável a vários estilos de jogo e tipos de história
+
+## Implementação Técnica
+
+A implementação utiliza um arquivo `sistema_especializacao.json` que contém:
+
+1. **Definição de Categorias**:
+   - IDs e nomes das categorias
+   - Limiares de pontos para cada nível
+
+2. **Mapeamento de Interações**:
+   - Quais interações concedem pontos
+   - Quantidade de pontos por interação
+   - Categorias afetadas por cada interação
+
+3. **Requisitos de Evolução**:
+   - Níveis de especialização necessários para cada elemento
+   - Combinações de requisitos para conteúdo avançado
+
+A arquitetura mantém separação entre:
+- Definição de conteúdo (objetos, personagens, áreas)
+- Sistema de progresso (pontos, níveis, requisitos)
+
+Isso permite modificar o balanceamento e a progressão sem alterar o conteúdo da história.
+
+## Conclusão
+
+O Sistema de Especialização cria uma mecânica de progressão que espelha o desenvolvimento natural de um investigador real, ganhando conhecimento e intuição em diferentes áreas ao longo do tempo. Ao vincular o acesso a conteúdo aos níveis de especialização, o sistema incentiva exploração completa e atenção aos detalhes, elementos cruciais para jogos de mistério investigativo.
+
+A flexibilidade do sistema permite que seja aplicado a qualquer tipo de história, desde mistérios de assassinato até aventuras de espionagem ou ficção científica, mantendo a mesma estrutura subjacente enquanto adapta as categorias e requisitos específicos para cada cenário.

@@ -1,0 +1,92 @@
+[
+  {
+    "character_id": 3,
+    "name": "Matilda Grey",
+    "base_description": "Cozinheira idosa da Estalagem do Cervo Negro, Matilda é uma instituição por si só, tendo trabalhado na cozinha por mais de quatro décadas. Conhecida por sua comida reconfortante e excelente, ela também cultiva e administra o jardim de ervas da estalagem, sendo versada no conhecimento tradicional de plantas medicinais e culinárias. Seus olhos aguçados e ouvidos atentos fazem dela uma fonte valiosa de informações sobre as atividades e rumores da estalagem.",
+    "personality": "Franca e sem rodeios, Matilda fala o que pensa com pouca preocupação com formalidades. Possui um senso de humor áspero mas caloroso, e uma lealdade feroz à família Blackwood e à estalagem. Desconfiada de estranhos inicialmente, mas acolhedora uma vez que demonstrem caráter. Observadora meticulosa dos hábitos e comportamentos de todos ao seu redor, com uma memória excepcional para detalhes que muitos considerariam triviais. Orgulhosa de seu conhecimento de ervas e remédios tradicionais, e protetora de sua horta e especiarias como se fossem seus filhos.",
+    "appearance": "Uma mulher robusta de aproximadamente 70 anos, com cabelos grisalhos sempre presos em um coque prático. Seu rosto enrugado pelo tempo e pelo calor constante da cozinha ainda mantém uma vivacidade notável, especialmente em seus olhos castanhos perspicazes que parecem notar tudo. Veste-se sempre com roupas práticas – vestidos simples cobertos por aventais engomados que, apesar do trabalho constante na cozinha, mantém impressionantemente limpos. Suas mãos, ásperas e marcadas por décadas de trabalho, são surpreendentemente ágeis quando manipulam ervas ou preparam alimentos.",
+    "is_culprit": false,
+    "motive": "",
+    "location_schedule": {
+      "morning": 4,
+      "afternoon": 4,
+      "evening": 4
+    },
+    "levels": [
+      {
+        "level_number": 0,
+        "knowledge_scope": "Matilda conhece as rotinas diárias de todos os funcionários e hóspedes regulares, incluindo suas preferências alimentares e horários de refeição. Sabe que algumas de suas ervas medicinais desapareceram recentemente, mas não identifica o responsável. Notou que Thaddeus parecia estar passando mal nos dias anteriores à sua morte, com sintomas como falta de apetite e náusea que ele atribuía a problemas digestivos. Tem conhecimento superficial sobre o baú misterioso no porão, apenas como um item guardado para um viajante que nunca retornou.",
+        "narrative_stance": "Ocupada e ligeiramente impaciente, como se a conversa estivesse atrapalhando seu trabalho. Responde perguntas diretamente, mas com certa desconfiança inicial. Tende a misturar informações com opiniões pessoais e observações sobre o caráter das pessoas mencionadas. Não mostra preocupação especial com a investigação da morte de Thaddeus, tratando-a como mais um acontecimento na movimentada vida da estalagem.",
+        "is_defensive": false,
+        "triggers": [
+          {
+            "trigger_id": 7,
+            "trigger_keyword": "ervas",
+            "contextual_condition": "O investigador deve perguntar especificamente sobre ervas desaparecidas ou plantas medicinais",
+            "defensive_response": "Ervas? Tenho centenas delas. O que quer saber especificamente? Estou ocupada preparando o jantar, sabe...",
+            "challenge_question": "Notou alguma planta específica desaparecendo ultimamente, especialmente alguma com propriedades não apenas culinárias?",
+            "success_response": "Hmpf! Estava me perguntando quando alguém notaria isso. Sim, algumas das minhas ervas mais preciosas têm sumido regularmente nos últimos meses. Principalmente aquelas com propriedades medicinais fortes. O pior foi o desaparecimento do 'Suspiro da Viúva' que eu mantinha isolado no jardim dos fundos - planta perigosa, aquela, mas excelente em doses minúsculas para dores severas. Encontrei o canteiro completamente vazio há algumas semanas. Falei com Elenora, mas ela achou que talvez algum animal tivesse arrancado. Animal de dois pés, isso sim! [Baixa a voz] Aquele contador elegante, o Sr. Reed, tem andado muito pelo jardim ultimamente, fazendo perguntas sobre minhas ervas... dizia que tinha interesse em botânica.",
+            "fail_response": "As ervas da minha cozinha estão perfeitamente contabilizadas, obrigada. Se está interessado em culinária, posso recomendar algumas combina",
+            "requirements": [
+              {
+                "requirement_type": "observation",
+                "required_object_id": null,
+                "required_area_id": 23,
+                "required_detail_id": 68,
+                "verification_method": "O jogador deve mencionar ter encontrado evidências de plantas removidas no jardim ou resíduos de ervas em locais suspeitos"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "level_number": 1,
+        "knowledge_scope": "Matilda revela seu conhecimento sobre o 'Suspiro da Viúva' e outras plantas potencialmente tóxicas que desapareceram do jardim. Compartilha suas suspeitas sobre Sebastian Reed estar coletando essas plantas, incluindo observações específicas de seu comportamento no jardim. Relata ter visto Sebastian misturando algo em garrafas de vinho no porão quando ele pensava que ninguém estava por perto. Reconhece que os sintomas de Thaddeus nos dias anteriores à sua morte eram consistentes com envenenamento gradual, algo que ela identificou tarde demais devido à semelhança com problemas digestivos comuns.",
+        "narrative_stance": "Muito mais engajada e preocupada, sentindo-se parcialmente responsável por não ter percebido os sinais de envenenamento antes. Fala mais abertamente sobre suas suspeitas e observações, com um senso de dever em ajudar a resolver o mistério. Ainda mantém seu estilo direto, mas agora direcionado a identificar o culpado em vez de apressar a conversa.",
+        "is_defensive": false,
+        "triggers": [
+          {
+            "trigger_id": 8,
+            "trigger_keyword": "vinho",
+            "contextual_condition": "O investigador deve mencionar o vinho como possível método de envenenamento",
+            "defensive_response": "Vinho? Não cuido das bebidas, isso é trabalho do Owen no bar...",
+            "challenge_question": "Vimos resíduos estranhos em taças e garrafas de vinho. Com seu conhecimento de ervas, conseguiria identificar se são resíduos do 'Suspiro da Viúva'?",
+            "success_response": "Deixe-me ver isso... [Examina cuidadosamente] Sim, sem dúvida. Este resíduo cristalizado tem a coloração característica do extrato concentrado do 'Suspiro da Viúva'. É um processo elaborado, sabia? A planta precisa ser processada de forma específica para liberar suas toxinas mais potentes. Não é conhecimento comum. [Pensativa] Agora me lembro... cerca de dois meses atrás, encontrei Sebastian no porão quando desci para buscar especiarias. Ele estava na área de vinhos, e rapidamente escondeu algo quando me viu. Na época, pensei que estava apenas selecionando uma garrafa e fiquei satisfeita com sua explicação. Mas agora... ele poderia facilmente estar adulterando o vinho reservado para Thaddeus. E o Sr. Ironwood sempre tomava a mesma marca todas as noites, era uma rotina para ele.",
+            "fail_response": "Não tenho nada a ver com o serviço de bebidas. Pergunte ao Owen ou à Elenora sobre isso. Meu domínio termina no que sai da cozinha, e Thaddeus sempre elogiava minha comida. Se algo o matou, não foi o que eu servi.",
+            "requirements": [
+              {
+                "requirement_type": "object",
+                "required_object_id": [10, 15],
+                "verification_method": "O jogador deve apresentar o copo ou a garrafa de vinho com resíduos encontrados no quarto de Thaddeus ou na área de estar"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "level_number": 2,
+        "knowledge_scope": "Matilda compartilha seu conhecimento especializado sobre o 'Suspiro da Viúva', incluindo o elaborado processo de extração necessário para criar um veneno eficaz e gradual. Revela ter encontrado equipamentos de extração escondidos na área de compostagem do jardim, mas não os reportou por não compreender sua finalidade na época. Admite ter observado Sebastian e Thaddeus em conversas tensas várias vezes, e testemunhou Sebastian entrando furtivamente no quarto de Thaddeus pelo menos uma vez quando ele não estava presente. Também revela que Sebastian questionou detalhadamente sobre o efeito de certas ervas nos alimentos e bebidas, aparentemente como interesse acadêmico.",
+        "narrative_stance": "Completamente cooperativa e determinada a ajudar, agora compreendendo a seriedade da situação. Demonstra remorso por não ter conectado os pontos antes e indignação ao perceber como seu conhecimento de plantas foi indiretamente usado para o assassinato. Disposta a fornecer testemunho detalhado e ajudar ativamente na investigação, oferecendo seu conhecimento especializado para confirmar evidências botânicas.",
+        "is_defensive": false,
+        "triggers": [
+          {
+            "trigger_id": 9,
+            "trigger_keyword": "processo",
+            "contextual_condition": "O investigador deve perguntar especificamente sobre o processo de preparação do veneno",
+            "defensive_response": "Processo? Que processo? Não sei nada sobre preparar venenos, se é o que está insinuando...",
+            "challenge_question": "Encontramos um almofariz com resíduos e um caderno com anotações sobre extração. Como especialista em ervas, você reconhece esse método específico?",
+            "success_response": "Por todos os deuses... isto é um manual completo de extração! Veja estas anotações sobre temperatura e tempo de maceração - é exatamente o processo tradicional que minha avó descrevia para medicamentos potentes. O 'Suspiro da Viúva' precisa ser colhido na lua minguante, seco à sombra por exatamente oito dias, depois macerado lentamente em álcool forte. Este caderno detalha tudo perfeitamente, inclusive as proporções para garantir que a toxina seja liberada gradualmente. [Vira a página] E olhe isto - cálculos precisos de dosagem baseados no peso corporal da vítima. Isto não é conhecimento casual de botânica, é um estudo deliberado para assassinato. E este almofariz... veja estas manchas esverdeadas características. Posso jurar que é o mesmo tipo de mancha que encontrei em uma tábua de corte na cozinha que Sebastian pediu emprestada. Na época, ele disse que estava preparando uma cataplasma para uma torção no pulso.",
+            "fail_response": "Sou uma cozinheira e herborista, não uma envenenadora. Conheço plantas medicinais para curar, não para matar. Se está buscando conhecimento sobre venenos, sugiro que consulte livros de toxicologia na biblioteca, não uma velha cozinheira.",
+            "requirements": [
+              {
+                "requirement_type": "evidence",
+                "required_object_id": [11, 9],
+                "verification_method": "O jogador deve apresentar tanto o almofariz com resíduos encontrado na alcova do porão ou no jardim quanto o caderno com anotações sobre extração"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

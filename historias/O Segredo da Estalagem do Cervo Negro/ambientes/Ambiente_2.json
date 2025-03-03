@@ -1,0 +1,142 @@
+[
+  {
+    "location_id": 2,
+    "name": "Quarto do Falecido Thaddeus",
+    "description": "Um dos melhores aposentos da estalagem, este quarto espaçoso no segundo andar permanece intocado desde a morte de Thaddeus Ironwood. Uma fita amarela das autoridades locais cruza a porta, mas Elenora forneceu acesso para a investigação. O cômodo possui uma cama de dossel, uma escrivaninha robusta, um armário entalhado e uma pequena área de estar com vista para a rua principal. Apesar da janela aberta permitir a entrada de ar fresco, um leve odor estranho e adocicado ainda persiste no ambiente. A luz do sol que penetra pela janela revela partículas de poeira flutuando lentamente no ar imóvel, como se o tempo tivesse parado no momento da tragédia.",
+    "is_locked": false,
+    "is_starting_location": false,
+    "areas": [
+      {
+        "area_id": 6,
+        "name": "Área da Cama",
+        "description": "Uma cama de dossel com colunas esculpidas e cortinas de veludo verde-escuro domina esta parte do quarto. Os lençóis estão desarrumados, como se tivessem sido deixados após a remoção do corpo. Uma mesa de cabeceira de cada lado contém itens pessoais, e um baú de madeira fechado repousa aos pés da cama.",
+        "initially_visible": true,
+        "connected_areas": [7, 8],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 15,
+            "name": "Lençóis Manchados",
+            "description": "Os lençóis de linho fino apresentam manchas sutis de suor amarelado, especialmente na área dos travesseiros. Um olhar treinado pode reconhecer o padrão típico causado pelos suores noturnos associados a certos tipos de envenenamento.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 16,
+            "name": "Mesa de Cabeceira",
+            "description": "A mesa de cabeceira contém um castiçal com vela parcialmente consumida, um livro sobre história comercial da região e um pequeno frasco de remédio para problemas digestivos, quase vazio. Uma mancha circular de vinho marca a superfície de madeira.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          },
+          {
+            "detail_id": 17,
+            "name": "Baú aos Pés da Cama",
+            "description": "Um baú de viagem bem conservado com iniciais 'T.I.' gravadas na tampa. Dentro, roupas dobradas cuidadosamente, uma escova de cabelo com fios grisalhos e um compartimento falso no fundo que contém correspondências comerciais cifradas e um pequeno saco com moedas de ouro.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 7,
+        "name": "Escrivaninha e Área de Trabalho",
+        "description": "Junto à janela, uma escrivaninha robusta de mogno com gavetas e compartimentos diversos parece ter sido o local onde Thaddeus passava muito tempo. Papéis estão organizados em pilhas, um tinteiro e penas repousam próximos a um mata-borrão manchado, e uma cadeira estofada está ligeiramente afastada, como se alguém tivesse se levantado às pressas.",
+        "initially_visible": true,
+        "connected_areas": [6, 9],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 18,
+            "name": "Diário Pessoal",
+            "description": "Parcialmente escondido sob outros documentos, um diário encadernado em couro contém anotações detalhadas sobre negociações comerciais. As entradas mais recentes mencionam a 'descoberta extraordinária' e contêm referências codificadas a um 'documento que mudará o equilíbrio de poder'. Algumas páginas parecem ter sido arrancadas.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 19,
+            "name": "Mapa Marcado",
+            "description": "Um mapa da região tem marcações em tinta vermelha em certas propriedades rurais a leste da cidade. Anotações nas margens calculam valores e rendimentos potenciais. O nome 'Reed Estate' aparece riscado em um dos cantos.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 20,
+            "name": "Gaveta Secreta",
+            "description": "Uma pequena alavanca oculta sob a escrivaninha revela uma gaveta secreta contendo um medalhão com o símbolo da família Ironwood e documentos legais antigos relativos a uma disputa de terras com a família Reed, datada de três gerações atrás.",
+            "discovery_level_required": 3,
+            "has_clue": true
+          },
+          {
+            "detail_id": 21,
+            "name": "Copo de Vinho",
+            "description": "Um copo de cristal com resíduos de vinho tinto seco no fundo repousa na escrivaninha. O interior do copo apresenta um residual esverdeado quase imperceptível que não condiz com o sedimento normal de vinho.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 8,
+        "name": "Armário e Área de Vestir",
+        "description": "Um armário grande de madeira escura ocupa parte da parede oposta à cama. Suas portas entalhadas estão parcialmente abertas, revelando roupas finas penduradas organizadamente. Um biombo decorativo cria um pequeno espaço de vestir, e um espelho de corpo inteiro reflete a luz que entra pela janela.",
+        "initially_visible": true,
+        "connected_areas": [6],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 22,
+            "name": "Bolsos do Casaco",
+            "description": "Nos bolsos de um casaco formal, há um lenço de seda com pequenas manchas verdes, um recibo da Biblioteca Municipal pela consulta de documentos históricos e uma chave ornamentada que não corresponde a nenhuma fechadura visível no quarto.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 23,
+            "name": "Fundo Falso do Armário",
+            "description": "Movendo as roupas e pressionando um painel no fundo do armário, revela-se um compartimento escondido contendo uma pequena caixa trancada. A fechadura pode ser aberta com a chave ornamentada encontrada no casaco. Dentro há notas sobre a localização de um documento importante no baú misterioso.",
+            "discovery_level_required": 3,
+            "has_clue": true
+          },
+          {
+            "detail_id": 24,
+            "name": "Botas com Lama Seca",
+            "description": "Um par de botas de couro no fundo do armário contém resíduos de terra avermelhada seca nas solas. Este tipo de solo é característico dos jardins nos fundos da estalagem, especialmente na área restrita próxima ao muro.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 9,
+        "name": "Área de Estar",
+        "description": "Um pequeno espaço aconchegante com duas poltronas voltadas para a janela que oferece vista para a rua principal de Ravenshire. Uma mesinha redonda entre as poltronas contém uma garrafa de vinho pela metade, dois copos (um limpo, outro usado) e um conjunto de peças de xadrez posicionadas em meio a uma partida inacabada.",
+        "initially_visible": true,
+        "connected_areas": [7],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 25,
+            "name": "Garrafa de Vinho",
+            "description": "Uma garrafa de vinho tinto de alta qualidade, similar à encontrada na garrafeira especial do saguão. Examinando o gargalo, percebe-se um resíduo estranho, como se algo tivesse sido adicionado ao vinho. A etiqueta indica um vinhedo específico que fornece exclusivamente para a Guilda dos Mercadores.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 26,
+            "name": "Jogo de Xadrez",
+            "description": "As peças de xadrez estão posicionadas em um jogo claramente interrompido. Curiosamente, as peças brancas (jogadas por Thaddeus, segundo os padrões de digitais) estão em posição vantajosa, indicando que ele não abandonaria voluntariamente a partida. Uma notação ao lado do tabuleiro registra os movimentos e está assinada com as iniciais 'T.I.' e 'S.R.'.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 27,
+            "name": "Cortinas da Janela",
+            "description": "As pesadas cortinas de veludo verde têm um pequeno rasgão perto da barra, onde um pedaço de papel ficou preso. O fragmento contém parte de uma nota escrita às pressas: '...encontre-me na biblioteca amanhã. Descobri o mecanismo do b...'. A caligrafia não pertence a Thaddeus.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          }
+        ]
+      }
+    ]
+  }
+]

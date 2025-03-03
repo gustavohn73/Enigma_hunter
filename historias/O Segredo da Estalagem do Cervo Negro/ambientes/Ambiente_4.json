@@ -1,0 +1,135 @@
+[
+  {
+    "location_id": 4,
+    "name": "Cozinha e Dependências de Serviço",
+    "description": "O coração culinário da estalagem é um ambiente movimentado e aquecido, dominado por um enorme fogão a lenha e uma lareira de cozinha constantemente acesa. O ar é denso com o aroma de pão assando, caldos borbulhando e ervas frescas sendo picadas. O ambiente ressoa com o tilintar de panelas, o corte rítmico de facas e as ocasionais instruções firmes de Matilda Grey, a idosa cozinheira cuja autoridade sobre este domínio é inquestionável. Balcões de madeira gastos pelo uso mostram marcas de inúmeras refeições preparadas ao longo dos anos, e utensílios de cobre polido reluzem nas paredes. Janelas pequenas permitem a entrada de luz natural durante o dia, enquanto à noite, o brilho do fogo e várias lanternas mantêm o espaço iluminado para o preparo das últimas refeições.",
+    "is_locked": false,
+    "is_starting_location": false,
+    "areas": [
+      {
+        "area_id": 14,
+        "name": "Área de Preparo Principal",
+        "description": "O centro da cozinha é dominado por uma grande mesa de trabalho de carvalho, manchada e marcada por anos de uso. Aqui, Matilda e seus assistentes cortam vegetais, amassam pães e preparam os diversos pratos servidos na estalagem. Facas de diferentes tamanhos estão organizadas em uma faixa magnética na parede, e um conjunto impressionante de panelas e caçarolas pendem de um suporte no teto.",
+        "initially_visible": true,
+        "connected_areas": [15, 16, 17],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 41,
+            "name": "Livro de Receitas",
+            "description": "Um volumoso livro de receitas manuscritas, manchado por décadas de uso, repousa em uma estante especial protegida dos respingos. Folheando suas páginas amareladas, encontra-se uma seção sobre ervas e especiarias com uma anotação recente de Matilda sobre ingredientes que sumiram misteriosamente, incluindo algumas ervas medicinais raras.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          },
+          {
+            "detail_id": 42,
+            "name": "Cesto de Ervas",
+            "description": "Um cesto pendurado próximo ao fogão contém maços de ervas frescas e secas para uso culinário. Examinando cuidadosamente, nota-se que um espaço parece vazio, com apenas um pequeno fragmento de uma planta de folhas estriadas - possivelmente da mesma espécie encontrada no quarto de Thaddeus.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 43,
+            "name": "Tábua de Corte Antiga",
+            "description": "Uma grande tábua de corte com manchas verdes peculiares que não parecem ser de alimentos comuns. Matilda explica que Sebastian Reed pediu emprestado alguns utensílios de cozinha recentemente para preparar um 'remédio caseiro para dores de cabeça', incluindo esta tábua que voltou com estas manchas.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 15,
+        "name": "Despensa de Cozinha",
+        "description": "Adjacente à área principal, a despensa é um cômodo menor repleto de prateleiras do chão ao teto. Sacos de farinha e açúcar, potes de conservas, garrafas de azeites e vinagres, e fileiras de temperos em pequenos frascos criam um arco-íris culinário. O ambiente é fresco e seco, ideal para preservar alimentos, e possui uma pequena janela com grades para ventilação.",
+        "initially_visible": true,
+        "connected_areas": [14],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 44,
+            "name": "Armário de Ervas Medicinais",
+            "description": "Um pequeno armário trancado na parede contém ervas medicinais que Matilda utiliza para preparar remédios simples para os funcionários e ocasionalmente para hóspedes. A fechadura foi forçada recentemente e, segundo Matilda, algumas ervas específicas desapareceram, incluindo uma usada tradicionalmente para dores, mas que em doses elevadas pode ser tóxica.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 45,
+            "name": "Caderno de Anotações",
+            "description": "Escondido entre sacos de grãos, um pequeno caderno contém anotações de Matilda sobre comportamentos estranhos na estalagem. Ela registrou ter visto Sebastian na cozinha fora de seu horário habitual, mexendo nas ervas, e também menciona que ele parecia muito interessado nas bebidas servidas a Thaddeus.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 46,
+            "name": "Frasco Abandonado",
+            "description": "No fundo de uma prateleira, atrás de potes de conserva, há um pequeno frasco de vidro vazio com resíduos de um pó esverdeado. Matilda não reconhece o frasco como parte de seu inventário e afirma categoricamente que não pertence à cozinha.",
+            "discovery_level_required": 3,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 16,
+        "name": "Área de Lavagem",
+        "description": "Um espaço dedicado à limpeza, com grandes pias de pedra, baldes e esfregões. Água é bombeada manualmente de um poço próximo, e uma caldeira aquece água para facilitar a limpeza de panelas e utensílios. Pilhas de louça limpa aguardam para retornar ao saguão, enquanto pratos sujos chegam constantemente através de uma pequena janela de passagem.",
+        "initially_visible": true,
+        "connected_areas": [14, 17],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 47,
+            "name": "Taças de Vinho Separadas",
+            "description": "Uma prateleira específica contém taças especiais usadas exclusivamente para os hóspedes mais importantes. Uma dessas taças está separada e marcada com um pedaço de pano amarrado à haste. Owen, o barman, explica que essa era a taça pessoal de Thaddeus, e que agora está guardada como evidência a pedido de Elenora.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          },
+          {
+            "detail_id": 48,
+            "name": "Garrafa com Etiqueta",
+            "description": "No canto da área de lavagem, uma garrafa de vinho vazia aguarda para ser descartada, com uma etiqueta escrita à mão: 'Última garrafa servida ao Sr. Ironwood - Não descarte'. Examinando o interior, é possível notar um sedimento incomum no fundo, diferente do depósito normal de vinho tinto.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 49,
+            "name": "Anotações de Owen",
+            "description": "Pregado na parede próximo à janela de passagem, um pequeno quadro contém notas de serviço escritas por Owen. Uma delas menciona: 'SR solicitou servir o vinho especial para TI - verificar com Elenora antes'. A nota está marcada como 'concluída' e datada de três dias antes da morte de Thaddeus.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 17,
+        "name": "Corredor de Serviço",
+        "description": "Um corredor estreito que conecta a cozinha às demais áreas de serviço da estalagem. O assoalho de madeira gasta range sob os passos, e ganchos na parede sustentam aventais, capas e outros itens de uso diário dos funcionários. Uma pequena escada no final do corredor leva a um acesso alternativo ao porão, usado principalmente para transportar suprimentos.",
+        "initially_visible": true,
+        "connected_areas": [14, 16],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 50,
+            "name": "Quadro de Avisos",
+            "description": "Um simples quadro de cortiça contém avisos para os funcionários, escalas de trabalho e pequenas notas entre a equipe. Um aviso recente, escrito por Elenora, lembra que apenas funcionários autorizados podem acessar o porão, seguido por um comentário manuscrito: 'Isso inclui você, Sr. Reed, por mais que você tente nos encantar com aquele sorriso'.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          },
+          {
+            "detail_id": 51,
+            "name": "Marcas na Parede",
+            "description": "Próximo à escada que leva ao porão, há marcas na parede que parecem ter sido feitas por algo pesado sendo transportado. Pequenas manchas de uma substância verde escura são visíveis na altura aproximada da cintura, como se alguém carregando algo contendo essa substância tivesse se apoiado na parede.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 52,
+            "name": "Esconderijo sob o Degrau",
+            "description": "O primeiro degrau da escada que leva ao porão está solto e revela um pequeno espaço oculto quando movido. Dentro, encontra-se um saquinho de couro contendo moedas de ouro e uma nota com instruções codificadas, assinada apenas com as iniciais 'GMN'. A caligrafia é similar a documentos vistos no quarto de Thaddeus, relacionados à Guilda dos Mercadores.",
+            "discovery_level_required": 3,
+            "has_clue": true
+          }
+        ]
+      }
+    ]
+  }
+]

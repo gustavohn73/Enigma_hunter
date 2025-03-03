@@ -1,0 +1,90 @@
+[
+  {
+    "character_id": 1,
+    "name": "Elenora Blackwood",
+    "base_description": "Proprietária viúva da Estalagem do Cervo Negro, uma mulher de meia-idade com postura elegante e olhar perspicaz. Ela administra seu estabelecimento com eficiência impecável e conhecimento profundo do negócio que herdou do marido há mais de uma década. Respeitada por toda a comunidade de Ravenshire, Elenora mantém padrões elevados e valoriza a reputação centenária de sua estalagem acima de tudo.",
+    "personality": "Determinada, observadora e diplomática, Elenora possui uma inteligência aguçada para negócios e para julgar o caráter das pessoas. Geralmente reservada e formal, mas capaz de calorosa hospitalidade quando apropriado. Meticulosa em todos os aspectos da administração, mantém registros detalhados e raramente deixa passar detalhes importantes. Embora demonstre uma aparência calma e composta em público, a morte suspeita em sua estalagem a deixou profundamente perturbada e determinada a descobrir a verdade.",
+    "appearance": "Uma mulher de aproximadamente 50 anos, com cabelos castanhos grisalhos sempre impecavelmente arrumados em um coque elegante. Veste-se de maneira conservadora mas refinada, favorecendo vestidos de qualidade em cores sóbrias, frequentemente complementados por um broche de prata em forma de cervo – símbolo da estalagem e presente de seu falecido marido. Seu rosto, marcado por linhas sutis de experiência, exibe uma expressão naturalmente digna, embora observadores atentos possam notar a preocupação em seus olhos claros nos últimos dias.",
+    "is_culprit": false,
+    "motive": "",
+    "location_schedule": {
+      "morning": 5,
+      "afternoon": 1,
+      "evening": 1
+    },
+    "levels": [
+      {
+        "level_number": 0,
+        "knowledge_scope": "Elenora conhece todos os detalhes operacionais da estalagem e está ciente da morte de Thaddeus e das circunstâncias oficiais (ataque cardíaco). Ela tem suspeitas sobre ser assassinato, mas sem provas concretas. Sabe sobre o baú misterioso no porão e que Thaddeus demonstrou interesse nele antes de morrer. Tem conhecimento básico sobre todos os hóspedes regulares, incluindo Sebastian Reed, mas sem desconfiar dele especificamente.",
+        "narrative_stance": "Preocupada e cautelosa, Elenora fala de forma controlada e profissional. Ela expressa preocupação genuína com a morte de Thaddeus e preocupação com a reputação da estalagem. Disposta a compartilhar informações básicas, mas mantém discrição sobre seus hóspedes. Apresenta o caso aos investigadores com esperança, mas sem revelar todas as suas suspeitas.",
+        "is_defensive": false,
+        "triggers": [
+          {
+            "trigger_id": 1,
+            "trigger_keyword": "laudo médico",
+            "contextual_condition": "O investigador precisa mencionar detalhes específicos sobre a morte de Thaddeus que sugiram envenenamento",
+            "defensive_response": "Não sei do que está falando. O médico declarou morte natural.",
+            "challenge_question": "Você tem alguma evidência que contradiga o diagnóstico oficial?",
+            "success_response": "Eu também tenho minhas dúvidas... O doutor era amigo de Thaddeus e pareceu apressado demais em sua conclusão. Os sintomas que ele apresentou nos dias anteriores não pareciam de um simples mal-estar... Consegui uma cópia do relatório preliminar através de conexões pessoais, mas não quis tornar isso público para não alarmar os outros hóspedes.",
+            "fail_response": "Entendo sua suspeita, mas sem evidências concretas, precisamos aceitar o diagnóstico oficial. Não posso basear minhas ações em meras especulações, por mais perturbadora que a situação seja.",
+            "requirements": [
+              {
+                "requirement_type": "observation",
+                "required_object_id": 20,
+                "verification_method": "O jogador deve mencionar sintomas específicos de envenenamento que combinam com as manchas nos lençóis do quarto de Thaddeus"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "level_number": 1,
+        "knowledge_scope": "Elenora revela que possui uma cópia do relatório médico preliminar que menciona possíveis sinais de envenenamento, posteriormente desconsiderados na conclusão oficial. Ela compartilha observações sobre o comportamento estranho de Thaddeus nos dias anteriores à sua morte – suores noturnos, tremores e paranoia crescente. Menciona que Thaddeus e Sebastian tiveram várias reuniões privadas nas semanas anteriores, algumas bastante tensas.",
+        "narrative_stance": "Mais aberta e confiante nos investigadores, demonstrando preocupação genuína com a possibilidade de um crime ter ocorrido em sua estalagem. Disposta a compartilhar suas próprias suspeitas e observações, mas ainda cautelosa em fazer acusações diretas.",
+        "is_defensive": false,
+        "triggers": [
+          {
+            "trigger_id": 2,
+            "trigger_keyword": "Sebastian Reed",
+            "contextual_condition": "O investigador deve apresentar evidências concretas ligando Sebastian a atividades suspeitas",
+            "defensive_response": "Sr. Reed é um dos nossos clientes mais respeitados e confiáveis...",
+            "challenge_question": "Você notou algum comportamento incomum da parte dele recentemente, especialmente em relação a Thaddeus ou ao baú misterioso?",
+            "success_response": "Agora que menciona... Sebastian sempre demonstrou um interesse peculiar na história da estalagem, especialmente nas antigas disputas de terras da região. Recentemente, peguei-o tentando acessar o porão sem autorização. Quando questionado, disse que estava procurando por um vinho raro para impressionar um cliente. Também notei que ele e Thaddeus tiveram um desentendimento sério na semana antes da tragédia. Algo sobre documentos históricos...",
+            "fail_response": "O Sr. Reed sempre foi um cavalheiro impecável em minhas instalações. Sem evidências concretas, prefiro não especular sobre o caráter de meus hóspedes regulares. A discrição é um dos pilares da reputação do Cervo Negro.",
+            "requirements": [
+              {
+                "requirement_type": "evidence",
+                "required_object_id": [13, 28],
+                "verification_method": "O jogador deve apresentar pelo menos duas evidências documentais que mostrem Sebastian agindo de forma suspeita (como o livro de registro da adega ou notas sobre seu interesse no baú)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "level_number": 2,
+        "knowledge_scope": "Elenora revela a existência de documentos em seu cofre privado relacionados ao baú misterioso, incluindo o relatório de um especialista confirmando sua provável conexão com a família Reed e documentos de terras valiosos da região. Compartilha sua descoberta de que o baú foi deixado sob falso nome e que recebeu uma carta anônima (possivelmente de Sebastian) sugerindo que entregasse o baú às autoridades por segurança.",
+        "narrative_stance": "Completamente colaborativa e determinada a expor a verdade. Mostra-se pessoalmente envolvida na investigação e disposta a fornecer acesso a todas as áreas da estalagem, incluindo seu escritório particular e cofre. Expressa remorso por não ter agido antes sobre suas suspeitas.",
+        "is_defensive": false,
+        "triggers": [
+          {
+            "trigger_id": 3,
+            "trigger_keyword": "família Reed",
+            "contextual_condition": "O investigador deve apresentar a conexão entre Sebastian Reed e a antiga família proprietária das terras disputadas",
+            "defensive_response": "A família Reed? Uma das antigas famílias fundadoras de Ravenshire, mas não vejo como isso se relaciona com nosso caso atual...",
+            "challenge_question": "Você sabia que Sebastian Reed é na verdade um descendente direto daquela família que perdeu terras valiosas para os antepassados de Thaddeus?",
+            "success_response": "Por todos os deuses... isso explica tudo! O terreno onde a estalagem está construída foi parte daquela disputa histórica. Os registros mostram que os Reed alegavam ter uma escritura original que nunca foi apresentada no tribunal. Se essa escritura estiver dentro daquele baú, e se Sebastian descobriu isso... ele teria motivo não apenas para matar Thaddeus, mas potencialmente para reivindicar propriedade sobre minha estalagem também! Preciso mostrar algo a vocês imediatamente... um documento em meu cofre que confirma essa suspeita.",
+            "fail_response": "Interessante teoria, mas as antigas disputas de terra de Ravenshire são água passada. Muitas famílias mudaram de nome ou se misturaram ao longo das gerações. Sem provas concretas de tal conexão, prefiro nos concentrarmos nos eventos atuais.",
+            "requirements": [
+              {
+                "requirement_type": "document",
+                "required_object_id": [7, 12],
+                "verification_method": "O jogador deve apresentar a árvore genealógica da Biblioteca ou o medalhão de Família Reed"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,190 @@
+[
+  {
+    "location_id": 1,
+    "name": "Saguão Principal da Estalagem",
+    "description": "O coração da Estalagem do Cervo Negro é um espaço amplo de teto alto com vigas de madeira escura expostas. Candelabros de ferro forjado pendem do teto, iluminando o ambiente com uma luz dourada e tremeluzente. Uma grande lareira de pedra domina a parede norte, seu fogo crepitante aquecendo o ambiente e projetando sombras dançantes. O ar carrega o aroma de madeira queimada, comida sendo preparada e o leve odor de cerveja e hidromel. O burburinho constante de conversas e o ocasional tilintar de canecas criam uma atmosfera acolhedora, embora atenta observação revele olhares furtivos e conversas que cessam quando estranhos se aproximam.",
+    "is_locked": false,
+    "is_starting_location": true,
+    "areas": [
+      {
+        "area_id": 1,
+        "name": "Balcão Principal",
+        "description": "Um longo balcão de carvalho polido, escurecido por décadas de uso, estende-se ao longo da parede oeste. Prateleiras atrás exibem uma impressionante variedade de garrafas e jarras. Owen Dixon, o jovem barman, limpa canecas enquanto observa discretamente os clientes. Vários bancos altos convidam os visitantes a se sentarem para uma bebida e talvez alguma fofoca local.",
+        "initially_visible": true,
+        "connected_areas": [2, 3, 5],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 1,
+            "name": "Livro de Registros",
+            "description": "Um grosso livro encadernado em couro repousa numa extremidade do balcão. Suas páginas amareladas contêm os nomes dos hóspedes, datas de chegada e partida, e quartos designados. Uma análise cuidadosa revela que Sebastian Reed frequenta a estalagem toda semana, sempre nas mesmas noites que Thaddeus costumava estar presente.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 2,
+            "name": "Garrafeira Especial",
+            "description": "Uma pequena vitrine trancada contém garrafas de bebidas premium reservadas para clientes especiais. Uma garrafa de vinho tinto com um selo distintivo está meio vazia e tem uma etiqueta indicando que foi reservada para 'Sr. T. Ironwood'.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 3,
+            "name": "Tábua de Avisos",
+            "description": "Uma tábua de cortiça na parede próxima ao balcão contém anúncios locais, ofertas de trabalho e avisos. Um pequeno panfleto sobre uma palestra de botânica na Biblioteca Municipal, focada em 'plantas raras e seus usos', está fixado com o nome de Sebastian Reed escrito à mão no canto.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 2,
+        "name": "Área de Mesas",
+        "description": "O centro do saguão é ocupado por cerca de doze mesas redondas de diferentes tamanhos, cercadas por cadeiras de madeira bem conservadas. Algumas mesas estão ocupadas por viajantes, comerciantes e moradores locais, compartilhando histórias ou discutindo negócios em voz baixa. Uma tapeçaria grande adorna a parede, mostrando uma cena de caça com um majestoso cervo negro.",
+        "initially_visible": true,
+        "connected_areas": [1, 3, 4],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 4,
+            "name": "Mesa no Canto",
+            "description": "Uma mesa parcialmente oculta por um biombo decorativo oferece privacidade. Pequenas marcas de tinta no tampo sugerem que alguém esteve escrevendo ali recentemente. Observando atentamente, é possível notar restos de cera de um selo de carta.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 5,
+            "name": "Tapeçaria de Caça",
+            "description": "A elaborada tapeçaria retrata caçadores perseguindo um cervo negro em uma floresta densa. Olhando com atenção, nota-se que a moldura da tapeçaria tem pequenos símbolos entalhados - incluindo um que se assemelha ao brasão mencionado no diário de Thaddeus.",
+            "discovery_level_required": 2,
+            "has_clue": false
+          },
+          {
+            "detail_id": 6,
+            "name": "Candelabro Caído",
+            "description": "Um pequeno candelabro de mesa tombado em uma das mesas mais afastadas derramou cera sobre alguns papéis abandonados. Entre eles, uma nota parcialmente legível menciona um 'encontro na biblioteca' e 'documentos históricos de propriedade'.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 3,
+        "name": "Escadaria Principal",
+        "description": "Uma impressionante escadaria de madeira entalhada sobe em curva para o segundo andar onde ficam os quartos dos hóspedes. O corrimão polido brilha à luz dos candelabros. Ao pé da escada, há uma pequena mesa com uma campainha de bronze para chamar atendimento.",
+        "initially_visible": true,
+        "connected_areas": [1, 2],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 7,
+            "name": "Quadro de Chaves",
+            "description": "Um discreto quadro de chaves está pendurado na parede ao lado da escada, parcialmente oculto por uma cortina. Cada chave tem uma etiqueta numerada correspondente aos quartos. A chave do quarto que pertencia a Thaddeus (número 7) está presente, apesar do quarto estar interditado.",
+            "discovery_level_required": 1,
+            "has_clue": false
+          },
+          {
+            "detail_id": 8,
+            "name": "Marcas no Degrau",
+            "description": "O terceiro degrau da escada tem marcas sutis de arranhões recentes, como se algo pesado tivesse sido arrastado por ali durante a noite. Pequenos fragmentos de terra seca podem ser encontrados no local.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 4,
+        "name": "Lareira Central",
+        "description": "A enorme lareira de pedra emite calor constante e uma luz alaranjada que dança pelas paredes. Duas poltronas de couro desgastado e um pequeno sofá formam um semicírculo aconchegante em frente ao fogo. É um local favorito dos hóspedes para leitura ou conversas mais reservadas.",
+        "initially_visible": true,
+        "connected_areas": [2, 5],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 9,
+            "name": "Cinzas Recentes",
+            "description": "Entre as cinzas na lareira, pedaços de papel parcialmente queimados são visíveis. Um fragmento preservado mostra o que parece ser o carimbo oficial da Guilda dos Mercadores do Norte.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 10,
+            "name": "Compartimento Oculto",
+            "description": "Uma pedra solta na lateral da lareira revela um pequeno esconderijo. Dentro há um saco de veludo contendo moedas antigas e uma nota cifrada que parece ser um sistema de contabilidade paralelo.",
+            "discovery_level_required": 3,
+            "has_clue": true
+          },
+          {
+            "detail_id": 11,
+            "name": "Retrato da Família Blackwood",
+            "description": "Sobre a lareira, um retrato emoldurado mostra Elenora, seu falecido marido e o que parece ser a estalagem décadas atrás. No fundo da pintura, é possível ver uma versão mais antiga do baú mencionado por Elenora.",
+            "discovery_level_required": 0,
+            "has_clue": false
+          }
+        ]
+      },
+      {
+        "area_id": 5,
+        "name": "Corredor de Acesso",
+        "description": "Um corredor estreito na lateral do saguão leva a outras áreas da estalagem. Quadros de paisagens locais decoram as paredes, e uma porta robusta no final do corredor parece levar ao exterior. Há também uma discreta porta lateral que desce para o porão.",
+        "initially_visible": true,
+        "connected_areas": [1, 4],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 12,
+            "name": "Marca na Parede",
+            "description": "Uma mancha estranha na parede do corredor, aproximadamente na altura dos ombros, parece ser uma marca de mão. Examinando mais de perto, tem uma coloração levemente esverdeada, similar à das plantas descritas nos livros sobre ervas venenosas.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 13,
+            "name": "Porta para o Porão",
+            "description": "Uma porta pesada de madeira com ferragens antigas leva ao porão da estalagem. Normalmente trancada, a fechadura mostra sinais de ter sido forçada recentemente e depois reparada às pressas.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 14,
+            "name": "Brasão da Cidade",
+            "description": "Um pequeno escudo de bronze com o brasão oficial de Ravenshire está pendurado no corredor. Abaixo dele, uma placa comemora o centenário da estalagem e menciona sua importância histórica para as rotas comerciais da região.",
+            "discovery_level_required": 0,
+            "has_clue": false
+          }
+        ]
+      },
+      {
+        "area_id": 31,
+        "name": "Cozinha da Estalagem",
+        "description": "Uma cozinha rústica e bem organizada, onde os alimentos da estalagem são preparados. O ambiente tem um aroma de ervas e especiarias, e as superfícies de madeira mostram sinais de uso diário. Utensílios de cobre e ferro pendem das prateleiras, enquanto uma grande mesa ocupa o centro do cômodo.",
+        "initially_visible": true,
+        "connected_areas": [],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 95,
+            "name": "Área de Lavagem",
+            "description": "Uma pia de pedra desgastada pelo uso, onde os utensílios e copos são lavados. Entre as louças empilhadas, um copo de vinho de Thaddeus foi separado por Elenora como evidência. Há resíduos suspeitos no fundo do copo.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          },
+          {
+            "detail_id": 96,
+            "name": "Despensa da Cozinha",
+            "description": "Um armário de madeira repleto de suprimentos secos e garrafas de vinho. Algumas prateleiras parecem ter sido mexidas recentemente, e uma garrafa está faltando.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 97,
+            "name": "Mesa de Preparação",
+            "description": "Uma grande mesa onde os ingredientes são preparados. Há marcas de cortes recentes na tábua de madeira, possivelmente usadas para misturar especiarias ou outros elementos.",
+            "discovery_level_required": 1,
+            "has_clue": false
+          }
+        ]
+      }      
+    ]
+  }
+]

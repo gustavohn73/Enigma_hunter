@@ -1,0 +1,142 @@
+[
+  {
+    "location_id": 6,
+    "name": "Jardim dos Fundos",
+    "description": "Uma área verde tranquila e bem cuidada que se estende atrás da estalagem, parcialmente cercada por um muro de pedra coberto de hera. Caminhos de cascalho serpenteiam entre canteiros floridos, arbustos bem aparados e árvores frutíferas que fornecem frutas frescas para a cozinha. O ar é perfumado com fragrâncias florais e ervas aromáticas que crescem em abundância. Durante o dia, a luz do sol cria padrões dançantes através das folhagens, enquanto à noite, lanternas estrategicamente posicionadas iluminam os caminhos com um brilho suave e acolhedor. O som suave de um pequeno chafariz mistura-se ao canto dos pássaros e ao ocasional burburinho de vozes vindas das janelas abertas da estalagem. Este espaço serve tanto como área de relaxamento para os hóspedes quanto como fonte de ingredientes frescos para a cozinha.",
+    "is_locked": false,
+    "is_starting_location": false,
+    "areas": [
+      {
+        "area_id": 22,
+        "name": "Área de Descanso",
+        "description": "Uma seção agradável do jardim com bancos de pedra dispostos ao redor de um pequeno chafariz decorativo. Roseiras trepadeiras formam arcos sobre alguns dos assentos, criando recantos sombreados e privados. Mesetas de pedra entre os bancos servem como apoio para bebidas ou livros. Este é um local popular entre os hóspedes para leitura, conversas tranquilas ou simplesmente para desfrutar do ar fresco.",
+        "initially_visible": true,
+        "connected_areas": [23, 24],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 65,
+            "name": "Banco com Inscrições",
+            "description": "Um dos bancos de pedra mais afastados tem marcas sutis entalhadas em sua base. Olhando mais atentamente, percebe-se que são iniciais e datas, como um registro informal de encontros. As iniciais 'S.R.' e 'T.I.' aparecem juntas em várias datas nos últimos meses, indicando encontros regulares entre Sebastian e Thaddeus neste local discreto.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 66,
+            "name": "Cinzas de Papel",
+            "description": "Atrás do banco mais isolado, parcialmente escondido por arbustos, restos de papéis queimados foram descartados descuidadamente. Alguns fragmentos ainda são legíveis, mencionando 'direitos legítimos' e 'propriedade Reed'. A caligrafia é elegante e condiz com outros documentos escritos por Sebastian.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 67,
+            "name": "Recanto do Chafariz",
+            "description": "O pequeno chafariz de pedra representa um cervo bebendo água. Na base da estátua, alguém escondeu um pequeno objeto embrulhado em tecido oleado para protegê-lo da umidade. O pacote contém uma chave antiga e ornamentada que parece corresponder à fechadura do baú misterioso no porão.",
+            "discovery_level_required": 3,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 23,
+        "name": "Horta Culinária",
+        "description": "Uma área organizada em canteiros elevados contém uma impressionante variedade de ervas culinárias, vegetais e plantas comestíveis. Etiquetas de madeira identificam cada espécie, e ferramentas de jardinagem estão arrumadas em um pequeno armário. Matilda, a cozinheira, costuma passar tempo aqui todas as manhãs, colhendo ingredientes frescos para as refeições do dia.",
+        "initially_visible": true,
+        "connected_areas": [22, 25],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 68,
+            "name": "Seção de Ervas Medicinais",
+            "description": "Uma área cercada da horta é dedicada a plantas com propriedades medicinais. Um pequeno cartaz explica que essas ervas são usadas para remédios caseiros para hóspedes e funcionários. Um espaço vazio e recentemente cavado sugere que uma planta foi completamente removida, raízes inclusive. A etiqueta caída próxima identifica o espaço como dedicado ao 'Suspiro da Viúva - APENAS USO MEDICINAL CONTROLADO'.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 69,
+            "name": "Diário de Plantio",
+            "description": "Um caderno resistente à água dentro do armário de ferramentas contém registros detalhados de plantio, colheita e uso das plantas da horta. Entradas recentes mostram que Matilda notou interferências na seção medicinal e suspeitava que alguém estava colhendo certas ervas sem sua permissão. Uma nota específica menciona ter visto Sebastian 'muito interessado nas propriedades do Suspiro da Viúva' durante uma conversa casual.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 70,
+            "name": "Ferramenta Estranha",
+            "description": "Escondida sob uma pilha de vasos, uma ferramenta que não pertence ao conjunto normal de jardinagem - parece ser um pequeno almofariz portátil com resíduos de uma substância verde escura. Próximo a ele, um pedaço de papel contém anotações sobre métodos de extração de compostos de plantas, escritas em uma caligrafia que corresponde à de Sebastian.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 24,
+        "name": "Caramanchão das Glicínias",
+        "description": "Uma estrutura de madeira coberta por glicínias centenárias cria um espaço encantador de sombra densa e perfumada. Cachos de flores roxas pendem do teto entrelaçado, e uma mesa rústica com bancos oferece um local ideal para refeições ao ar livre ou encontros privados. O interior do caramanchão fica parcialmente oculto da vista do restante do jardim, proporcionando privacidade.",
+        "initially_visible": true,
+        "connected_areas": [22],
+        "discovery_level_required": 0,
+        "details": [
+          {
+            "detail_id": 71,
+            "name": "Mesa Entalhada",
+            "description": "A superfície da mesa de madeira tem vários entalhes e marcas feitas por visitantes ao longo dos anos. Um conjunto de marcas recentes parece ser um diagrama ou mapa, possivelmente representando o mecanismo de abertura do baú misterioso. Próximo ao desenho, as iniciais 'T.I.' foram entalhadas cuidadosamente.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 72,
+            "name": "Garrafa Abandonada",
+            "description": "Parcialmente escondida sob um dos bancos, uma garrafa de vinho vazia do mesmo tipo encontrado no quarto de Thaddeus. Examinando o interior, nota-se um resíduo cristalizado no fundo que não corresponde aos sedimentos normais do vinho. A etiqueta tem uma pequena marca a lápis que parece ser a letra 'S'.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 73,
+            "name": "Fenda na Estrutura",
+            "description": "Uma pequena abertura na estrutura de madeira do caramanchão revela um espaço onde alguém escondeu um pequeno caderno de anotações. As páginas contêm observações detalhadas sobre os movimentos de Thaddeus na estalagem, horários de refeições e bebidas preferidas, escritas na caligrafia de Sebastian. A última entrada, datada de três dias antes da morte, diz apenas: 'Dosagem final aplicada. Agora é aguardar. O velho não durará mais que 72 horas.'",
+            "discovery_level_required": 3,
+            "has_clue": true
+          }
+        ]
+      },
+      {
+        "area_id": 25,
+        "name": "Área de Compostagem",
+        "description": "Uma seção utilitária escondida por arbustos altos no canto mais distante do jardim. Caixas de compostagem bem mantidas processam resíduos orgânicos da cozinha, e ferramentas de jardinagem maiores são armazenadas em um pequeno galpão. Esta área raramente é visitada por hóspedes, sendo principalmente utilizada pelos funcionários responsáveis pela manutenção do jardim.",
+        "initially_visible": false,
+        "connected_areas": [23],
+        "discovery_level_required": 2,
+        "details": [
+          {
+            "detail_id": 74,
+            "name": "Solo Perturbado",
+            "description": "Atrás do galpão de ferramentas, uma área de terra foi recentemente cavada e depois cuidadosamente recomposta para disfarçar a interferência. Cavando superficialmente, é possível descobrir os restos de várias plantas que parecem ter sido cultivadas secretamente - exemplares jovens de 'Suspiro da Viúva' e outras ervas conhecidas por suas propriedades tóxicas quando combinadas corretamente.",
+            "discovery_level_required": 0,
+            "has_clue": true
+          },
+          {
+            "detail_id": 75,
+            "name": "Frasco Enterrado",
+            "description": "Parcialmente enterrado próximo às plantas, um pequeno frasco de vidro escuro contém restos de um líquido viscoso esverdeado. A tampa tem uma etiqueta desbotada com a letra 'T' escrita à mão. O conteúdo tem o mesmo odor adocicado detectado sutilmente no quarto de Thaddeus.",
+            "discovery_level_required": 1,
+            "has_clue": true
+          },
+          {
+            "detail_id": 76,
+            "name": "Páginas do Diário",
+            "description": "Dentro de um saco impermeável escondido em uma pilha de composto seco, várias páginas que parecem ter sido arrancadas do diário de Thaddeus. Elas detalham sua descoberta sobre o mecanismo secreto do baú e sua suspeita crescente de que Sebastian estava de alguma forma conectado à história da família Reed e tinha interesse específico no conteúdo do baú.",
+            "discovery_level_required": 2,
+            "has_clue": true
+          },
+          {
+            "detail_id": 77,
+            "name": "Medalha de Família",
+            "description": "Embrulhado cuidadosamente em um pedaço de tecido e escondido dentro de um vaso quebrado, um medalhão antigo de prata com o brasão da família Reed. O medalhão tem uma inscrição na parte de trás: 'A terra sempre retorna ao seu verdadeiro senhor'. A peça parece antiga e valiosa, possivelmente uma relíquia de família.",
+            "discovery_level_required": 3,
+            "has_clue": true
+          }
+        ]
+      }
+    ]
+  }
+]

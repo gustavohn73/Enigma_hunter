@@ -1,0 +1,69 @@
+{
+  "test_routes": [
+    {
+      "name": "Rota do Envenenamento",
+      "description": "Testa a descoberta e compreensão do método de assassinato",
+      "steps": [
+        {
+          "action": "scan_qr",
+          "uuid": "loc_thaddeus_room"
+        },
+        {
+          "action": "scan_qr",
+          "uuid": "area_thaddeus_room_sitting"
+        },
+        {
+          "action": "examine",
+          "detail_id": 25
+        },
+        {
+          "action": "collect",
+          "object_id": 10
+        },
+        {
+          "action": "scan_qr",
+          "uuid": "loc_kitchen"
+        },
+        {
+          "action": "scan_qr",
+          "uuid": "char_matilda"
+        },
+        {
+          "action": "talk",
+          "keyword": "ervas"
+        },
+        {
+          "action": "scan_qr",
+          "uuid": "loc_garden"
+        },
+        {
+          "action": "scan_qr",
+          "uuid": "area_garden_herbs"
+        },
+        {
+          "action": "examine",
+          "detail_id": 68
+        },
+        {
+          "action": "scan_qr",
+          "uuid": "char_lydia_garden"
+        },
+        {
+          "action": "talk",
+          "keyword": "Suspiro da Viúva"
+        },
+        {
+          "action": "show",
+          "object_id": 10
+        }
+      ],
+      "expected_outcome": {
+        "clues_discovered": [1, 2, 5, 11, 14],
+        "character_levels": [
+          {"character_id": 3, "min_level": 1},
+          {"character_id": 5, "min_level": 1}
+        ]
+      }
+    }
+  ]
+}

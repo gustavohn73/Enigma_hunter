@@ -1,0 +1,567 @@
+[
+  {
+    "object_id": 1,
+    "name": "Baú Misterioso",
+    "base_description": "Um baú antigo de madeira escura com reforços de metal ornamentados. Sua fechadura complexa e mecanismo secreto protegem o que parece ser um documento histórico valioso. O baú apresenta marcas de tentativas recentes de arrombamento e tem um símbolo quase apagado que lembra o brasão da família Reed gravado na tampa.",
+    "is_collectible": false,
+    "initial_location_id": 3,
+    "initial_area_id": 11,
+    "discovery_condition": "Explorar a área de armazenamento do porão",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Um baú antigo trancado que parece conter algo valioso. Thaddeus demonstrou grande interesse nele antes de sua morte. A fechadura é complexa e impossível de abrir sem a chave correta.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Ao examinar a fechadura, você percebe que há um encaixe específico para uma chave ornamentada. Sem essa chave, o baú não pode ser aberto.",
+        "evolution_trigger": "Examinar a fechadura após encontrar a Chave Ornamentada"
+      },
+      {
+        "level_number": 2,
+        "level_description": "Examinando o baú mais detalhadamente, você percebe um mecanismo oculto que sugere uma forma específica de abri-lo. Marcas sutis no metal indicam que ele pertencia à família Reed, conforme documentado em registros históricos da biblioteca.",
+        "evolution_trigger": "Encontrar informações sobre o mecanismo do baú nos documentos de Thaddeus",
+        "related_clue_id": 3
+      },
+      {
+        "level_number": 3,
+        "level_description": "O baú pode ser aberto usando a chave ornamentada e ativando o mecanismo secreto na ordem correta. Dentro, há uma escritura original de terras que prova legalmente que a família Reed é a verdadeira proprietária de terras valiosas atualmente sob controle da família Ironwood, incluindo a propriedade onde a Estalagem do Cervo Negro está construída.",
+        "evolution_trigger": "Usar a Chave Ornamentada e aplicar o conhecimento do mecanismo secreto",
+        "related_clue_id": 12
+      }
+    ]
+  },
+  {
+    "object_id": 2,
+    "name": "Diário de Thaddeus",
+    "base_description": "Um diário encadernado em couro marrom escuro, com as iniciais 'T.I.' gravadas na capa. Várias páginas foram arrancadas, e seções importantes estão escritas em uma cifra pessoal. O diário documenta as descobertas de Thaddeus sobre o baú misterioso e suas suspeitas crescentes sobre Sebastian Reed.",
+    "is_collectible": true,
+    "initial_location_id": 2,
+    "initial_area_id": 7,
+    "discovery_condition": "Explorar a escrivaninha no quarto de Thaddeus",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Um diário pessoal parcialmente cifrado. Muitas entradas falam sobre negócios comerciais, mas as páginas mais recentes mencionam uma 'descoberta extraordinária' relacionada ao baú no porão. Algumas páginas foram claramente arrancadas.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Com ajuda da chave de cifra encontrada, você consegue decifrar mais do conteúdo. Thaddeus documentou sua descoberta sobre o mecanismo do baú e a existência de uma escritura de terras valiosa dentro dele. Ele também expressa suspeitas crescentes sobre o interesse de Sebastian no baú.",
+        "evolution_trigger": "Encontrar a chave da cifra nas páginas arrancadas do diário",
+        "related_clue_id": 4
+      },
+      {
+        "level_number": 2,
+        "level_description": "Totalmente decifrado, o diário revela que Thaddeus descobriu a verdadeira identidade de Sebastian como descendente da família Reed e sua provável conexão com a Guilda dos Mercadores. A última entrada legível menciona: 'Confrontarei Reed amanhã. Seu interesse no baú vai muito além da curiosidade acadêmica. Temo que ele seja capaz de medidas extremas para obter a escritura.'",
+        "evolution_trigger": "Combinar com as páginas arrancadas encontradas no jardim",
+        "related_clue_id": 7
+      }
+    ]
+  },
+  {
+    "object_id": 3,
+    "name": "Frasco de Veneno",
+    "base_description": "Um pequeno frasco de vidro escuro contendo resíduos de um pó esverdeado. A substância tem um odor sutilmente adocicado quando aberto. Análise revela ser um extrato concentrado da planta 'Suspiro da Viúva', conhecida por suas propriedades letais quando adequadamente processada.",
+    "is_collectible": true,
+    "initial_location_id": 6,
+    "initial_area_id": 25,
+    "discovery_condition": "Investigar a área de compostagem no jardim com pelo menos nível 1 de exploração",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Um frasco misterioso contendo resíduos de um pó esverdeado com odor adocicado. Parece ter sido parcialmente enterrado para escondê-lo.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Examinando mais detalhadamente, você identifica que o frasco contém resíduos de um extrato da planta 'Suspiro da Viúva', conhecida por suas propriedades tóxicas que podem causar sintomas semelhantes a um ataque cardíaco quando administrada gradualmente.",
+        "evolution_trigger": "Mostrar para Matilda Grey ou Lydia Hemlock",
+        "related_clue_id": 5
+      },
+      {
+        "level_number": 2,
+        "level_description": "Análise completa do frasco revela traços de impressões digitais compatíveis com Sebastian Reed. O método de extração usado é sofisticado e corresponde exatamente às técnicas documentadas no livro de botânica encontrado na biblioteca. Resíduos idênticos foram encontrados no copo de vinho de Thaddeus.",
+        "evolution_trigger": "Realizar teste químico com a ajuda de Lydia Hemlock",
+        "related_clue_id": 14
+      }
+    ]
+  },
+  {
+    "object_id": 4,
+    "name": "Chave Ornamentada",
+    "base_description": "Uma chave antiga de bronze com desenhos intrincados na haste e uma cabeça em forma de cervo estilizado. Pequenos símbolos gravados nela correspondem a marcações no baú misterioso. A chave é surpreendentemente pesada e parece ter mecanismos adicionais ocultos.",
+    "is_collectible": true,
+    "initial_location_id": 6,
+    "initial_area_id": 22,
+    "discovery_condition": "Investigar o recanto do chafariz no jardim com pelo menos nível 2 de exploração",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Uma chave antiga e ornamentada que parece abrir algo importante. Tem símbolos gravados que você não reconhece imediatamente.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Examinando mais detalhadamente, você percebe que os símbolos na chave correspondem a marcações no baú misterioso. A cabeça em forma de cervo estilizado sugere uma conexão com a família Reed, conforme visto em outros emblemas históricos.",
+        "evolution_trigger": "Comparar com as marcações no baú misterioso",
+        "related_clue_id": 3
+      },
+      {
+        "level_number": 2,
+        "level_description": "Um exame minucioso revela que a chave tem um mecanismo giratório oculto que deve ser ativado de maneira específica para abrir o baú. Além disso, pequenas iniciais 'E.R.' (Elias Reed) estão gravadas na parte inferior da cabeça, confirmando sua origem.",
+        "evolution_trigger": "Aprender sobre o mecanismo do baú a partir do diário de Thaddeus decifrado",
+        "related_clue_id": 12
+      }
+    ]
+  },
+  {
+    "object_id": 5,
+    "name": "Carta Selada",
+    "base_description": "Uma carta em papel de alta qualidade dobrada e selada com cera vermelha contendo o emblema da Guilda dos Mercadores do Norte. A carta contém instruções detalhadas para Sebastian Reed sobre a localização e importância da escritura contida no baú misterioso.",
+    "is_collectible": true,
+    "initial_location_id": 5,
+    "initial_area_id": 21,
+    "discovery_condition": "Acessar o cofre particular de Elenora (requer nível 3 de exploração)",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Uma carta formal selada com o emblema da Guilda dos Mercadores do Norte. O selo está intacto e o destinatário não está claramente identificado no envelope.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Ao abrir a carta, você descobre que é endereçada a 'Agente Corvinus' (codinome de Sebastian) com instruções para localizar e recuperar 'documentos históricos de significativo valor comercial' do baú na estalagem. A carta enfatiza a importância de manter discrição e evitar 'métodos excessivos'.",
+        "evolution_trigger": "Abrir a carta e ler seu conteúdo",
+        "related_clue_id": 8
+      },
+      {
+        "level_number": 2,
+        "level_description": "Uma análise mais detalhada revela uma mensagem oculta nas margens da carta, escrita com tinta invisível que aparece quando aquecida. A mensagem adicional indica que a verdadeira missão de Sebastian era recuperar e destruir a escritura para evitar qualquer contestação futura da propriedade das terras.",
+        "evolution_trigger": "Usar técnicas de revelação de tinta invisível (aprendidas com o Capitão Frost)",
+        "related_clue_id": 15
+      }
+    ]
+  },
+  {
+    "object_id": 6,
+    "name": "Mapa Antigo de Ravenshire",
+    "base_description": "Um mapa detalhado da região de Ravenshire com mais de cem anos, preservado em um tubo protetor de couro. O mapa mostra a distribuição original das terras entre as famílias fundadoras da cidade, com anotações manuscritas sobre disputas territoriais e transferências de propriedade.",
+    "is_collectible": true,
+    "initial_location_id": 7,
+    "initial_area_id": 27,
+    "discovery_condition": "Pesquisar na sala de documentos históricos da biblioteca",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Um mapa antigo da região de Ravenshire mostrando a distribuição territorial de aproximadamente cem anos atrás. Certas propriedades estão marcadas com tinta vermelha, incluindo a área onde atualmente se encontra a Estalagem do Cervo Negro.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Examinando mais detalhadamente, você nota anotações nas margens detalhando uma disputa legal entre as famílias Reed e Ironwood. A propriedade onde se encontra a estalagem está claramente identificada como 'Terras Reed' nos registros originais, depois reclassificada como 'Propriedade Ironwood' após uma decisão judicial controversa.",
+        "evolution_trigger": "Comparar com os registros históricos na biblioteca",
+        "related_clue_id": 9
+      },
+      {
+        "level_number": 2,
+        "level_description": "Com conhecimento adicional da disputa, você percebe marcações quase invisíveis no mapa que indicam a localização de um esconderijo secreto onde os Reed poderiam ter ocultado a escritura original antes que fosse usada no tribunal. Este local corresponde exatamente ao porão da atual Estalagem do Cervo Negro.",
+        "evolution_trigger": "Combinar com a história da família Reed encontrada nos arquivos da biblioteca",
+        "related_clue_id": 12
+      }
+    ]
+  },
+  {
+    "object_id": 7,
+    "name": "medalhão de Família Reed",
+    "base_description": "Um medalhão antigo de prata em forma oval com o brasão da família Reed em relevo: um cervo sob um carvalho com três estrelas acima. A parte traseira contém a inscrição 'A terra sempre retorna ao seu verdadeiro senhor'. A medalha é claramente uma relíquia de família passada por gerações.",
+    "is_collectible": true,
+    "initial_location_id": 6,
+    "initial_area_id": 25,
+    "discovery_condition": "Investigar minuciosamente a área de compostagem no jardim (requer nível 3 de exploração)",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Um medalhão antigo de prata com o brasão de uma família: um cervo sob um carvalho com três estrelas acima. Parece ter sido deliberadamente escondido.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Ao limpar o medalhão, você consegue ler a inscrição no verso: 'A terra sempre retorna ao seu verdadeiro senhor'. Pesquisa identifica o brasão como pertencente à família Reed, uma das fundadoras de Ravenshire que perdeu grande parte de suas propriedades em uma disputa judicial três gerações atrás.",
+        "evolution_trigger": "Limpar o medalhão e pesquisar o brasão na biblioteca",
+        "related_clue_id": 6
+      },
+      {
+        "level_number": 2,
+        "level_description": "Uma análise mais profunda revela que o medalhão tem uma porta secreta minúscula que, quando aberta, contém um retrato em miniatura mostrando um jovem Sebastian Reed junto com um homem mais velho usando o mesmo medalhão. Isto confirma conclusivamente sua verdadeira identidade como herdeiro da linhagem Reed.",
+        "evolution_trigger": "Mostrar o medalhão para o Capitão Frost ou para Elenora no nível 2",
+        "related_clue_id": 10
+      }
+    ]
+  },
+  {
+    "object_id": 8,
+    "name": "Livro de Botânica",
+    "base_description": "Um livro acadêmico encadernado em couro verde intitulado 'Propriedades Medicinais de Plantas Raras'. O livro contém informações detalhadas sobre diversas plantas tóxicas, com ênfase especial na planta 'Suspiro da Viúva', incluindo métodos de extração e efeitos no corpo humano.",
+    "is_collectible": true,
+    "initial_location_id": 3,
+    "initial_area_id": 13,
+    "discovery_condition": "Descobrir a alcova oculta no porão (requer nível 2 de exploração)",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Um livro acadêmico sobre plantas medicinais raras. Várias páginas estão marcadas, particularmente nas seções sobre plantas com propriedades tóxicas.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Examinando as anotações nas margens, você descobre cálculos detalhados de dosagem para o 'Suspiro da Viúva', especificamente adaptados para adicionar a bebidas alcoólicas sem alterar significativamente o sabor ou aparência. As anotações estão na caligrafia de Sebastian Reed.",
+        "evolution_trigger": "Mostrar para Lydia Hemlock",
+        "related_clue_id": 5
+      },
+      {
+        "level_number": 2,
+        "level_description": "Uma análise mais detalhada revela um esquema completo de envenenamento gradual, cuidadosamente planejado para imitar sintomas de problemas cardíacos. O plano inclui cronogramas precisos, métodos de administração e técnicas para evitar detecção. Um recibo de compra entre as páginas confirma que Sebastian adquiriu o livro seis meses antes da morte de Thaddeus.",
+        "evolution_trigger": "Comparar com os sintomas de Thaddeus antes da morte (informações de Matilda ou Elenora)",
+        "related_clue_id": 14
+      }
+    ]
+  },
+  {
+    "object_id": 9,
+    "name": "Caderno de Anotações",
+    "base_description": "Um pequeno caderno de capa preta contendo observações detalhadas sobre os movimentos de Thaddeus na estalagem, seus horários de refeições e bebidas preferidas. O caderno também contém informações sobre o cultivo e processamento do 'Suspiro da Viúva', tudo na caligrafia elegante de Sebastian.",
+    "is_collectible": true,
+    "initial_location_id": 6,
+    "initial_area_id": 24,
+    "discovery_condition": "Investigar a fenda na estrutura do caramanchão (requer nível 3 de exploração)",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Um caderno com anotações sobre horários e hábitos de alguém identificado apenas como 'T.I.', além de notas sobre plantas e procedimentos de extração.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Analisando as anotações, você identifica que 'T.I.' é Thaddeus Ironwood e que o caderno contém uma vigilância meticulosa de seus hábitos diários. Também inclui notas detalhadas sobre o cultivo e processamento da planta 'Suspiro da Viúva' para maximizar suas propriedades tóxicas.",
+        "evolution_trigger": "Comparar a caligrafia com outros documentos escritos por Sebastian",
+        "related_clue_id": 5
+      },
+      {
+        "level_number": 2,
+        "level_description": "A última entrada do caderno, datada de três dias antes da morte de Thaddeus, é particularmente incriminadora: 'Dosagem final aplicada. Agora é aguardar. O velho não durará mais que 72 horas. Com ele fora do caminho, terei tempo suficiente para abrir o baú e recuperar o que é legitimamente meu antes que alguém descubra a verdade.'",
+        "evolution_trigger": "Decifrar as páginas finais escritas em código (com ajuda da chave de cifra)",
+        "related_clue_id": 17
+      }
+    ]
+  },
+  {
+    "object_id": 10,
+    "name": "Taça de Vinho de Thaddeus",
+    "base_description": "Uma taça de cristal com resíduos secos de vinho tinto no fundo, separada e preservada como evidência a pedido de Elenora. Examinando cuidadosamente, é possível notar um resíduo esverdeado quase imperceptível que não condiz com sedimentos normais de vinho.",
+    "is_collectible": true,
+    "initial_location_id": 4,
+    "initial_area_id": 16,
+    "discovery_condition": "Investigar a área de lavagem na cozinha",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Uma taça de cristal separada das demais, com resíduos de vinho seco no fundo. Uma etiqueta indica que era a taça pessoal de Thaddeus Ironwood.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Examinando cuidadosamente sob luz adequada, você nota um resíduo cristalizado esverdeado que não é característico de sedimentos normais de vinho. O padrão de distribuição sugere que algo foi dissolvido na bebida.",
+        "evolution_trigger": "Examinar com luz adequada (disponível no escritório de Elenora)",
+        "related_clue_id": 2
+      },
+      {
+        "level_number": 2,
+        "level_description": "Análise química confirma a presença de traços do 'Suspiro da Viúva', perfeitamente combinando com os resíduos encontrados no frasco de veneno. A concentração sugere administração gradual por vários dias, consistente com os sintomas progressivos relatados antes da morte de Thaddeus.",
+        "evolution_trigger": "Realizar teste químico com a ajuda de Lydia Hemlock",
+        "related_clue_id": 14
+      }
+    ]
+  },
+  {
+    "object_id": 11,
+    "name": "Almofariz com Resíduos",
+    "base_description": "Um pequeno almofariz de pedra com pilão, encontrado escondido na alcova do porão. O interior contém resíduos de um pó esverdeado, e a superfície mostra sinais de uso intenso recente para macerar substâncias vegetais.",
+    "is_collectible": true,
+    "initial_location_id": 3,
+    "initial_area_id": 13,
+    "discovery_condition": "Explorar a mesa de trabalho improvisada na alcova oculta do porão",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Um almofariz de pedra com pilão, mostrando sinais de uso recente. Contém resíduos de alguma substância esverdeada não identificada.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Examinando os resíduos, você identifica características da planta 'Suspiro da Viúva' em forma processada. O método de maceração corresponde às técnicas descritas no livro de botânica para extrair componentes tóxicos de maneira potente.",
+        "evolution_trigger": "Mostrar para Matilda Grey ou Lydia Hemlock",
+        "related_clue_id": 5
+      },
+      {
+        "level_number": 2,
+        "level_description": "Uma inspeção minuciosa revela impressões digitais parciais no cabo do pilão, que podem ser comparadas com as de Sebastian. Além disso, pequenas manchas no fundo do almofariz correspondem exatamente aos resíduos encontrados no copo de vinho de Thaddeus.",
+        "evolution_trigger": "Usar técnicas de investigação do Capitão Frost para analisar impressões digitais",
+        "related_clue_id": 14
+      }
+    ]
+  },
+  {
+    "object_id": 12,
+    "name": "Árvore Genealógica da Família Reed",
+    "base_description": "Um elaborado documento da biblioteca mostrando a linhagem completa da família Reed ao longo de várias gerações. A árvore genealógica revela claramente que Sebastian Reed (nascido Sebastian Corvinus) é o último descendente direto da linhagem principal da família.",
+    "is_collectible": true,
+    "initial_location_id": 7,
+    "initial_area_id": 30,
+    "discovery_condition": "Pesquisar nos arquivos de periódicos antigos da biblioteca (requer nível 2 de exploração)",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Uma árvore genealógica detalhada da família Reed, uma das fundadoras de Ravenshire. O documento mostra a linhagem através de várias gerações até algumas décadas atrás.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Examinando mais cuidadosamente, você nota anotações recentes a lápis conectando o último membro conhecido da família Reed com um tal 'S.C.' (Sebastian Corvinus). Notas nas margens calculam a posição exata na linha sucessória para reivindicação de propriedades.",
+        "evolution_trigger": "Combinar com informações sobre a identidade de Sebastian",
+        "related_clue_id": 6
+      },
+      {
+        "level_number": 2,
+        "level_description": "Pesquisa adicional nos registros oficiais anexados confirma que Sebastian Corvinus mudou legalmente seu nome para Sebastian Reed há aproximadamente cinco anos. Um documento de adoção mostra que ele foi criado por uma família distante após a morte de seus pais, explicando a mudança de sobrenome e ocultação de sua verdadeira linhagem.",
+        "evolution_trigger": "Pesquisar registros oficiais de mudança de nome na biblioteca",
+        "related_clue_id": 10
+      }
+    ]
+  },
+  {
+    "object_id": 13,
+    "name": "Registro de Contas da Estalagem",
+    "base_description": "Um livro contábil grande e encadernado em couro contendo os registros financeiros meticulosos da Estalagem do Cervo Negro, mantido por Elenora. O livro documenta receitas, despesas e padrões incomuns de pagamento.",
+    "is_collectible": false,
+    "initial_location_id": 5,
+    "initial_area_id": 18,
+    "discovery_condition": "Examinar a escrivaninha no escritório de Elenora",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Um detalhado livro contábil da estalagem contendo registros de hospedagem, refeições e bebidas servidas. Parece meticulosamente mantido por Elenora.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Analisando os registros, você nota entradas incomuns sobre pagamentos substanciais feitos por Sebastian Reed, sempre em dinheiro, por estadias que não constam no registro de hóspedes. Há também anotações sobre a conta de Thaddeus, com várias refeições privadas solicitadas nos últimos meses.",
+        "evolution_trigger": "Analisar cuidadosamente os padrões de pagamento",
+        "related_clue_id": 8
+      },
+      {
+        "level_number": 2,
+        "level_description": "Um exame minucioso revela um padrão: Sebastian sempre fazia pagamentos extras nos dias em que Thaddeus estava presente, especificamente para acesso ao salão privado ou áreas normalmente restritas. Nos dias anteriores à morte, ele pagou três vezes o valor normal por 'acesso irrestrito às instalações após o horário regular' sem explicação registrada.",
+        "evolution_trigger": "Comparar com o registro de hóspedes e movimento da estalagem",
+        "related_clue_id": 15
+      }
+    ]
+  },
+  {
+    "object_id": 14,
+    "name": "Páginas Arrancadas do Diário",
+    "base_description": "Várias páginas que parecem ter sido arrancadas do diário de Thaddeus, encontradas escondidas na área de compostagem do jardim. As páginas contêm informações cruciais sobre a descoberta do mecanismo do baú e suspeitas sobre Sebastian.",
+    "is_collectible": true,
+    "initial_location_id": 6,
+    "initial_area_id": 25,
+    "discovery_condition": "Investigar cuidadosamente a área de compostagem no jardim",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Páginas arrancadas de um diário, parcialmente sujas e amassadas. A caligrafia parece corresponder à de Thaddeus Ironwood, mas o conteúdo é difícil de ler sem contexto adicional.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Após limpar e organizar as páginas, você consegue ler passagens reveladoras onde Thaddeus descreve sua descoberta do mecanismo secreto do baú e sua intenção de abri-lo. Ele também menciona uma 'suspeita perturbadora' sobre a verdadeira identidade de Sebastian.",
+        "evolution_trigger": "Limpar e restaurar as páginas danificadas",
+        "related_clue_id": 4
+      },
+      {
+        "level_number": 2,
+        "level_description": "Combinando estas páginas com o diário principal, você revela o conteúdo completo, incluindo a descoberta de Thaddeus de que Sebastian é um descendente da família Reed com interesse pessoal na escritura. A última página contém uma chave para a cifra usada no resto do diário, permitindo decodificar completamente seu conteúdo.",
+        "evolution_trigger": "Combinar com o diário principal de Thaddeus",
+        "related_clue_id": 17
+      }
+    ]
+  },
+  {
+    "object_id": 15,
+    "name": "Garrafa de Vinho Especial",
+    "base_description": "Uma garrafa de vinho tinto de alta qualidade com um selo distintivo, marcada como reservada exclusivamente para Thaddeus Ironwood. A garrafa mostra sinais de ter sido adulterada, com o selo rompido e cuidadosamente recolocado.",
+    "is_collectible": true,
+    "initial_location_id": 5,
+    "initial_area_id": 20,
+    "discovery_condition": "Examinar a adega no escritório de Elenora (requer nível 2 de exploração)",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Uma garrafa cara de vinho tinto marcada como 'Reserva Especial - Apenas para T.I.'. O selo está ligeiramente deslocado, como se tivesse sido mexido. O vinho dentro parece normal.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Examinando cuidadosamente, você percebe que o selo foi rompido e depois cuidadosamente recolocado. Há uma quantidade mínima de um resíduo estranho no gargalo da garrafa, similar ao encontrado no copo de vinho de Thaddeus, mas não identificável sem uma análise química.",
+        "evolution_trigger": "Examinar com lupa ou sob luz adequada",
+        "related_clue_id": 2
+      },
+      {
+        "level_number": 2,
+        "level_description": "Análise química confirma resíduos do veneno 'Suspiro da Viúva' no gargalo e interior da garrafa. O padrão de adulteração sugere que o veneno foi adicionado diretamente à garrafa selada usando uma seringa fina, uma técnica que requer conhecimento especializado e planejamento cuidadoso.",
+        "evolution_trigger": "Realizar teste químico com ajuda de Lydia Hemlock",
+        "related_clue_id": 14
+      }
+    ]
+  },
+  {
+    "object_id": 16,
+    "name": "Nota Cifrada da Guilda",
+    "base_description": "Um pequeno pedaço de papel dobrado várias vezes contendo uma mensagem codificada da Guilda dos Mercadores para Sebastian Reed. A mensagem utiliza um código especial conhecido apenas por agentes da facção Corvo Negro.",
+    "is_collectible": true,
+    "initial_location_id": 4,
+    "initial_area_id": 17,
+    "discovery_condition": "Investigar o esconderijo sob o degrau no corredor de serviço (requer nível 3 de exploração)",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Um pequeno pedaço de papel dobrado contendo símbolos estranhos e códigos que não fazem sentido imediato. Há uma assinatura apenas com as iniciais 'GMN'.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Com ajuda de conhecimento sobre códigos, você identifica que esta é uma mensagem codificada usando um sistema específico da Guilda dos Mercadores do Norte. A mensagem parece conter instruções para uma operação, mas o código completo ainda não pode ser decifrado.",
+        "evolution_trigger": "Mostrar para o Capitão Frost, que tem conhecimento de códigos da Guilda",
+        "related_clue_id": 8
+      },
+      {
+        "level_number": 2,
+        "level_description": "Totalmente decifrada, a nota contém instruções explícitas para Sebastian: 'Operação Escritura comprometida. Ironwood descobriu mecanismo do baú. Elimine ameaça e recupere documento antes que seja tornado público. Use métodos discretos. Destrua após leitura.' A mensagem está assinada por um alto oficial da facção Corvo Negro.",
+        "evolution_trigger": "Obter a chave completa de decodificação após confrontar Victor Thorn no nível 2",
+        "related_clue_id": 17
+      }
+    ]
+  },
+  {
+    "object_id": 17,
+    "name": "Escritura Original das Terras",
+    "base_description": "Um documento legal antigo, escrito em pergaminho de alta qualidade e protegido por um cilindro lacrado de prata. A escritura prova definitivamente que as terras onde está a Estalagem do Cervo Negro, bem como propriedades adjacentes valiosas, pertencem legalmente à família Reed.",
+    "is_collectible": true,
+    "initial_location_id": 3,
+    "initial_area_id": 11,
+    "discovery_condition": "Abrir o baú misterioso com a chave ornamentada e conhecimento do mecanismo correto",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Um documento legal antigo e claramente valioso, protegido por um cilindro lacrado de prata. O selo é ornamentado com o símbolo da família Reed. O documento parece frágil e requer cuidado para manuseio.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Ao examinar cuidadosamente sem quebrar o selo, você percebe que este é o documento central de toda a investigação - a escritura original que prova a propriedade legítima das terras da família Reed, incluindo a área onde a Estalagem do Cervo Negro foi construída. O documento nunca foi apresentado no tribunal durante a disputa histórica.",
+        "evolution_trigger": "Examinar com cuidado sem quebrar o selo",
+        "related_clue_id": 12
+      },
+      {
+        "level_number": 2,
+        "level_description": "Um estudo completo do documento revela que está legalmente válido até hoje. Contém assinaturas e selos oficiais que estabelecem sem dúvida a propriedade Reed das terras. Inclui uma cláusula que permite reivindicação por qualquer descendente direto, independentemente do tempo decorrido, desde que o documento original seja apresentado. Isto explica completamente o motivo de Sebastian para eliminar Thaddeus e recuperar a escritura.",
+        "evolution_trigger": "Mostrar para Elenora ou autoridade legal para validação",
+        "related_clue_id": 20
+      }
+    ]
+  },
+  {
+    "object_id": 18,
+    "name": "Relatório Médico de Thaddeus",
+    "base_description": "Uma cópia do relatório médico preliminar sobre a morte de Thaddeus, obtida por Elenora através de contatos pessoais. O documento indica possíveis sinais de envenenamento que foram posteriormente desconsiderados na conclusão oficial.",
+    "is_collectible": true,
+    "initial_location_id": 5,
+    "initial_area_id": 21,
+    "discovery_condition": "Acessar o cofre particular de Elenora (requer nível 3 de exploração)",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Uma cópia do relatório médico sobre a morte de Thaddeus Ironwood, obtida extraoficialmente. A conclusão oficial indica morte natural por ataque cardíaco.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Lendo cuidadosamente as observações preliminares do médico, você nota menções a 'possíveis sinais de toxicidade' e 'coloração incomum dos tecidos' que foram desconsideradas na conclusão final. Há também notas sobre suores noturnos, náuseas e tremores nos dias anteriores à morte.",
+        "evolution_trigger": "Analisar o relatório com conhecimento médico (ou ajuda de Lydia Hemlock)",
+        "related_clue_id": 1
+      },
+      {
+        "level_number": 2,
+        "level_description": "Comparando os sintomas descritos com os efeitos conhecidos do 'Suspiro da Viúva', há uma correspondência perfeita com envenenamento gradual por esta substância. As anotações marginais de Elenora indicam que ela suspeitava disso, mas o médico (amigo próximo de Thaddeus) parecia apressado em encerrar o caso sem investigação adicional.",
+        "evolution_trigger": "Comparar com informações sobre os efeitos do 'Suspiro da Viúva'",
+        "related_clue_id": 14
+      }
+    ]
+  },
+  {
+    "object_id": 19,
+    "name": "Documento Falsificado",
+    "base_description": "Um documento legal aparentemente antigo, mas na verdade cuidadosamente falsificado, encontrado entre os pertences pessoais de Sebastian. O documento parece ser uma tentativa de criar uma versão alternativa da escritura das terras que eliminaria qualquer reivindicação da família Ironwood.",
+    "is_collectible": true,
+    "initial_location_id": 7,
+    "initial_area_id": 29,
+    "discovery_condition": "Investigar a sala de estudos privativa na biblioteca (requer nível 2 de exploração)",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Um documento legal aparentemente antigo relacionado a propriedade de terras. Parece ser uma escritura ou contrato importante.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Examinando mais detalhadamente, você percebe inconsistências sutis no documento - o papel parece artificialmente envelhecido e certas frases legais não correspondem ao período em que supostamente foi escrito. Este parece ser um documento falsificado.",
+        "evolution_trigger": "Examinar com lupa ou mostrar para o Capitão Frost",
+        "related_clue_id": 16
+      },
+      {
+        "level_number": 2,
+        "level_description": "Uma análise completa revela que este é um documento falsificado criado recentemente para parecer uma escritura alternativa das terras Reed. Parece ter sido criado como plano de contingência caso Sebastian não conseguisse encontrar a escritura original. Notas nas margens, na caligrafia de Sebastian, indicam frustração com a qualidade da falsificação.",
+        "evolution_trigger": "Comparar com documentos autênticos da mesma época",
+        "related_clue_id": 16
+      }
+    ]
+  },
+  {
+    "object_id": 20,
+    "name": "Lençóis Manchados",
+    "base_description": "Os lençóis da cama onde Thaddeus dormia antes de sua morte, preservados a pedido de Elenora. Apresentam manchas sutis de suor amarelado, especialmente na área dos travesseiros, consistentes com os efeitos de certos tipos de envenenamento.",
+    "is_collectible": false,
+    "initial_location_id": 2,
+    "initial_area_id": 6,
+    "discovery_condition": "Examinar cuidadosamente a cama no quarto de Thaddeus",
+    "levels": [
+      {
+        "level_number": 0,
+        "level_description": "Os lençóis da cama onde Thaddeus dormia estão desarrumados, como deixados após a remoção do corpo. Há manchas de suor visíveis na área dos travesseiros.",
+        "evolution_trigger": null
+      },
+      {
+        "level_number": 1,
+        "level_description": "Examinando as manchas mais detalhadamente, você nota que o suor tem uma coloração amarelada incomum, particularmente concentrada na área da cabeça e pescoço. Este padrão é consistente com os suores noturnos associados a certos tipos de envenenamento.",
+        "evolution_trigger": "Examinar com luz adequada (disponível no escritório de Elenora na área 18) ou com lupa (disponível com Lydia Hemlock)",
+        "related_clue_id": 1
+      },
+      {
+        "level_number": 2,
+        "level_description": "Análise química das manchas confirma a presença de traços do veneno 'Suspiro da Viúva', excretado através do suor durante os últimos dias de vida de Thaddeus. A concentração e padrão das manchas são consistentes com envenenamento gradual ao longo de aproximadamente uma semana.",
+        "evolution_trigger": "Realizar teste químico com a ajuda de Lydia Hemlock",
+        "related_clue_id": 14
+      }
+    ]
+  }
+]
