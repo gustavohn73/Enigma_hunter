@@ -1,5 +1,4 @@
-#src/models/db-models.py
-
+# src/models/db_models.py
 """
 Definição dos modelos SQLAlchemy para o sistema Enigma Hunter.
 Este arquivo contém todas as entidades do banco de dados para o sistema.
@@ -36,7 +35,6 @@ player_game_association = Table(
 )
 
 # Entidades principais
-
 class Story(Base):
     """História/caso completo para jogar"""
     __tablename__ = 'story'
@@ -243,7 +241,6 @@ class Clue(Base):
     # Relacionamentos
     story = relationship("Story", back_populates="clues")
     area_details = relationship("AreaDetail", back_populates="clue")
-    player_discoveries = relationship("PlayerClueDiscovery", back_populates="clue")
 
 
 class QRCode(Base):
@@ -330,7 +327,6 @@ class PlayerSession(Base):
     qr_scans = relationship("QRCodeScan", back_populates="session")
     solutions = relationship("PlayerSolution", back_populates="session")
     specializations = relationship("PlayerSpecialization", back_populates="session")
-    hint_requests = relationship("HintRequest", back_populates="session")
 
 
 class PlayerInventory(Base):
@@ -587,143 +583,3 @@ class IAConversationLog(Base):
     
     # Relacionamentos
     template = relationship("PromptTemplate", back_populates="logs")
-
-
-class PlayerClueDiscovery(Base):
-    """Registro de pistas descobertas por jogadores"""
-    __tablename__ = 'player_clue_discovery'
-    
-    discovery_id = Column(Integer, primary_key=True)
-    session_id = Column(Integer, ForeignKey('player_session.session_id'))
-    clue_id = Column(Integer, ForeignKey('clue.clue_id'))
-    discovery_time = Column(DateTime, default=func.now())
-    discovery_method = Column(String(50))  # Como a pista foi encontrada
-    related_object_id = Column(Integer, ForeignKey('game_object.object_id'), nullable=True)
-    related_location_id = Column(Integer, ForeignKey('location.location_id'), nullable=True)
-    related_character_id = Column(Integer, ForeignKey('character.character_id'), nullable=True)
-    
-    # Relacionamentos
-    clue = relationship("Clue", back_populates="player_discoveries")
-
-
-class PlayerTheory(Base):
-    """Teorias formuladas pelos jogadores"""
-    __tablename__ = 'player_theory'
-    
-    theory_id = Column(Integer, primary_key=True)
-    session_id = Column(Integer, ForeignKey('player_session.session_id'))
-    title = Column(String(255))
-    description = Column(Text)
-    suspect_character_id = Column(Integer, ForeignKey('character.character_id'), nullable=True)
-    method_hypothesis = Column(Text)
-    motive_hypothesis = Column(Text)
-    connected_clues = Column(JSON)  # Lista de IDs de pistas conectadas
-    confidence_level = Column(Integer)  # 1-5
-    created_time = Column(DateTime, default=func.now())
-    last_updated = Column(DateTime, default=func.now())
-    system_feedback = Column(Text)  # Feedback do sistema
-
-
-class HintRequest(Base):
-    """Solicitações de dicas dos jogadores"""
-    __tablename__ = 'hint_request'
-    
-    hint_id = Column(Integer, primary_key=True)
-    session_id = Column(Integer, ForeignKey('player_session.session_id'))
-    request_time = Column(DateTime, default=func.now())
-    hint_type = Column(String(50))  # general, location, character, object
-    hint_level = Column(Integer)  # 1-3, crescente em especificidade
-    target_id = Column(Integer, nullable=True)  # ID do alvo da dica (local, personagem, etc.)
-    context = Column(JSON)  # Contexto da solicitação
-    hint_provided = Column(Text)  # Dica fornecida
-    penalty_applied = Column(JSON)  # Penalidades aplicadas
-    
-    # Relacionamentos
-    session = relationship("PlayerSession", back_populates="hint_requests")
-
-
-class GameMetrics(Base):
-    """Métricas agregadas de jogabilidade"""
-    __tablename__ = 'game_metrics'
-    
-    metric_id = Column(Integer, primary_key=True)
-    story_id = Column(Integer, ForeignKey('story.story_id'))
-    date = Column(DateTime, default=func.now())
-    total_sessions = Column(Integer, default=0)
-    avg_completion_time_minutes = Column(Float)
-    success_rate = Column(Float)  # Porcentagem de soluções corretas
-    most_missed_clues = Column(JSON)  # Pistas frequentemente não descobertas
-    common_blockers = Column(JSON)  # Pontos de bloqueio comuns
-    popular_characters = Column(JSON)  # Personagens mais interagidos
-    hint_usage_stats = Column(JSON)  # Estatísticas de uso de dicas
-
-
-class EvidenceUse(Base):
-    """Registro de usos de evidência em diálogos"""
-    __tablename__ = 'evidence_use'
-    
-    use_id = Column(Integer, primary_key=True)
-    session_id = Column(Integer, ForeignKey('player_session.session_id'))
-    dialogue_id = Column(Integer, ForeignKey('dialogue_history.history_id'))
-    object_id = Column(Integer, ForeignKey('game_object.object_id'))
-    character_id = Column(Integer, ForeignKey('character.character_id'))
-    timestamp = Column(DateTime, default=func.now())
-    presentation_context = Column(Text)  # Contexto da apresentação
-    object_level = Column(Integer)  # Nível do objeto no momento da apresentação
-    character_reaction = Column(Text)  # Reação do personagem
-    was_effective = Column(Boolean)  # Se a evidência foi efetiva
-    
-    # Relacionamentos
-    session = relationship("PlayerSession")
-    dialogue = relationship("DialogueHistory")
-    object = relationship("GameObject")
-    character = relationship("Character")
-
-
-class ObjectCombination(Base):
-    """Registro de combinações de objetos pelo jogador"""
-    __tablename__ = 'object_combination'
-    
-    combination_id = Column(Integer, primary_key=True)
-    session_id = Column(Integer, ForeignKey('player_session.session_id'))
-    timestamp = Column(DateTime, default=func.now())
-    combination_type = Column(String(50))  # Tipo de combinação
-    result_object_id = Column(Integer, ForeignKey('game_object.object_id'), nullable=True)
-    success = Column(Boolean, default=True)
-    specialization_points_awarded = Column(Integer, default=0)
-    
-    # Relacionamentos
-    session = relationship("PlayerSession")
-    result_object = relationship("GameObject")
-    components = relationship("CombinationComponent", back_populates="combination")
-
-
-class CombinationComponent(Base):
-    """Objetos usados em uma combinação"""
-    __tablename__ = 'combination_component'
-    
-    component_id = Column(Integer, primary_key=True)
-    combination_id = Column(Integer, ForeignKey('object_combination.combination_id'))
-    object_id = Column(Integer, ForeignKey('game_object.object_id'))
-    
-    # Relacionamentos
-    combination = relationship("ObjectCombination", back_populates="components")
-    object = relationship("GameObject")
-
-
-class ActionLog(Base):
-    """Registro detalhado de ações do jogador"""
-    __tablename__ = 'action_log'
-    
-    action_id = Column(Integer, primary_key=True)
-    session_id = Column(Integer, ForeignKey('player_session.session_id'))
-    timestamp = Column(DateTime, default=func.now())
-    action_type = Column(String(50))
-    action_target_type = Column(String(50), nullable=True)  # character, object, location
-    action_target_id = Column(Integer, nullable=True)
-    action_details = Column(JSON)
-    action_success = Column(Boolean, default=True)
-    action_result = Column(JSON, nullable=True)
-    
-    # Relacionamentos
-    session = relationship("PlayerSession")

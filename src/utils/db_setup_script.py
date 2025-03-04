@@ -1,4 +1,4 @@
-#src/utils/db-setup-script.py
+# src/utils/db-setup-script.py
 """
 Script para inicializar o banco de dados do Enigma Hunter e carregar dados iniciais.
 Este script cria as tabelas no banco de dados e carrega os dados de histórias,
@@ -19,9 +19,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 # Importa os modelos definidos
-from src.models import Base, Story, Location, LocationArea, AreaDetail, Character, CharacterLevel
-from src.models import EvolutionTrigger, EvidenceRequirement, GameObject, ObjectLevel, Clue
-from src.models import QRCode, PromptTemplate, IAConversationLog
+from src.models.db_models import Base, Story, Location, LocationArea, AreaDetail, Character, CharacterLevel
+from src.models.db_models import EvolutionTrigger, EvidenceRequirement, GameObject, ObjectLevel, Clue
+from src.models.db_models import QRCode, PromptTemplate, IAConversationLog
 
 # Configuração de logging
 logging.basicConfig(

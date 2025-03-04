@@ -1,8 +1,4 @@
-#src/models/dB-models-init.py
-"""
-Exporta todos os modelos do banco de dados para fácil importação
-"""
-
+# src/models/__init__.py
 from .db_models import (
     Base,
     Story, Location, LocationArea, AreaDetail,
@@ -13,8 +9,5 @@ from .db_models import (
     PlayerCharacterLevel, PlayerEnvironmentLevel,
     DialogueHistory, QRCodeScan, PlayerSolution,
     PlayerSpecialization, GameMaster, SystemLog,
-    PlayerFeedback, PromptTemplate, IAConversationLog,
-    PlayerClueDiscovery, PlayerTheory, HintRequest,
-    GameMetrics, EvidenceUse, ObjectCombination,
-    CombinationComponent, ActionLog
+    PlayerFeedback, PromptTemplate, IAConversationLog
 )
