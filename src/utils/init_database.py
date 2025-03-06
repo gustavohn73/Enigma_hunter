@@ -4,6 +4,7 @@ import os
 import sys
 import argparse
 from pathlib import Path
+from src.utils.db_setup_script import main
 
 # Garante que src esteja no path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
@@ -68,8 +69,8 @@ def init_database():
     
     # Executa o script de setup
     print("\nExecutando script de inicialização do banco de dados...")
-    os.system(" ".join(cmd))
-    
+    main(db_url=f'sqlite:///{db_dir}/enigma_hunter.db', story_dir=str(story_dir), reset=args.reset)
+
     print("\nInicialização do banco de dados e carregamento de dados JSON concluídos!")
     print(f"Dados carregados do diretório: {story_dir}")
 

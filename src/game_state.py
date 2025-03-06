@@ -476,105 +476,67 @@ class GameStateManager:
     progresso dos jogadores e persistência dos dados.
     """
     
-    def __init__(self, save_dir: str = "database"):
-        self.save_dir = Path(save_dir)
-        self.save_dir.mkdir(exist_ok=True, parents=True)
+    def __init__(self, db: Session, save_dir: str = "database"): # db added here
+        self.db = db  # Database session
+        self.active_sessions: Dict[str, PlayerProgress] = {}  # Keep this for efficiency
         
         self.active_sessions: Dict[str, PlayerProgress] = {}
     
-    def create_session(self, player_id: str, story_id: str) -> PlayerProgress:
-        """
-        Cria uma nova sessão de jogo para um jogador.
-        """
+    def create_session(self, player_id: str, story_id: str, db: Session) -> PlayerProgress:
         progress = PlayerProgress(player_id, story_id)
         self.active_sessions[progress.session_id] = progress
+
+        # Directly add the PlayerProgress data to the database.  You'll need a PlayerProgress model defined in db_models.py
+        # Assuming you have a database table mirroring PlayerProgress attributes
+        new_progress_record = PlayerProgressModel(**progress.to_dict())  # PlayerProgressModel from db_models.py
+        db.add(new_progress_record)
+        db.commit()
+        db.refresh(new_progress_record) # Get the ID if it's auto-generated
         return progress
     
-    def load_session(self, session_id: str) -> Optional[PlayerProgress]:
-        """
-        Carrega uma sessão existente pelo ID.
-        """
-        # Verifica se a sessão já está ativa na memória
+    def load_session(self, session_id: str, db: Session) -> Optional[PlayerProgress]:
+        # Try to load from memory first
         if session_id in self.active_sessions:
             return self.active_sessions[session_id]
-        
-        # Tenta carregar a sessão do disco
-        session_file = self.save_dir / f"session_{session_id}.json"
-        if session_file.exists():
-            try:
-                with open(session_file, 'r', encoding='utf-8') as file:
-                    data = json.load(file)
-                    progress = PlayerProgress.from_dict(data)
-                    self.active_sessions[session_id] = progress
-                    return progress
-            except (json.JSONDecodeError, KeyError) as e:
-                print(f"Erro ao carregar a sessão {session_id}: {e}")
-        
+
+        # Load from the database
+        progress_record = db.query(PlayerProgressModel).filter_by(session_id=session_id).first() # PlayerProgressModel from db_models.py
+        if progress_record:
+            progress = PlayerProgress.from_dict(progress_record.__dict__) # Convert to PlayerProgress object
+            self.active_sessions[session_id] = progress
+            return progress
         return None
     
-    def save_session(self, session_id: str) -> bool:
-        """
-        Salva uma sessão ativa no disco.
-        """
+    def save_session(self, session_id: str, db: Session) -> bool:
         if session_id not in self.active_sessions:
             return False
-        
+
         progress = self.active_sessions[session_id]
-        session_file = self.save_dir / f"session_{session_id}.json"
-        
-        with open(session_file, 'w', encoding='utf-8') as file:
-            json.dump(progress.to_dict(), file, indent=2)
-        
-        return True
+        # Directly update the database record.
+        progress_record = db.query(PlayerProgressModel).filter_by(session_id=session_id).first()
+        if progress_record:
+            for key, value in progress.to_dict().items():
+                setattr(progress_record, key, value) # Set attributes of the database model
+            db.commit()
+            return True
+        return False
     
-    def close_session(self, session_id: str) -> bool:
-        """
-        Fecha uma sessão ativa, salvando-a antes.
-        """
+    def close_session(self, session_id: str, db: Session) -> bool:
         if session_id not in self.active_sessions:
             return False
-        
-        # Salva a sessão antes de fechá-la
-        self.save_session(session_id)
-        
-        # Remove da lista de sessões ativas
+        self.save_session(session_id, db)  # Save before closing
         del self.active_sessions[session_id]
-        
         return True
     
-    def list_player_sessions(self, player_id: str) -> List[str]:
-        """
-        Lista todas as sessões de um jogador específico.
-        """
-        # Verifica as sessões ativas na memória
-        active_sessions = [
-            session_id for session_id, progress in self.active_sessions.items()
-            if progress.player_id == player_id
-        ]
-        
-        # Verifica as sessões salvas no disco
-        saved_sessions = []
-        for file_path in self.save_dir.glob("session_*.json"):
-            try:
-                with open(file_path, 'r', encoding='utf-8') as file:
-                    data = json.load(file)
-                    if data.get("player_id") == player_id:
-                        saved_sessions.append(data.get("session_id"))
-            except (json.JSONDecodeError, KeyError):
-                continue
-        
-        # Combina as sessões (removendo duplicatas)
-        all_sessions = list(set(active_sessions + saved_sessions))
-        return all_sessions
+    def list_player_sessions(self, player_id: str, db: Session) -> List[str]:
+        # Query the database directly
+        session_records = db.query(PlayerProgressModel).filter_by(player_id=player_id).all()
+        return [record.session_id for record in session_records]
     
-    def auto_save_all(self) -> int:
-        """
-        Salva automaticamente todas as sessões ativas.
-        Retorna o número de sessões salvas.
-        """
+    def auto_save_all(self, db:Session) -> int:
         count = 0
         for session_id in self.active_sessions:
-            if self.save_session(session_id):
+            if self.save_session(session_id, db):
                 count += 1
         return count
 

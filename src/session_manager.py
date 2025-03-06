@@ -1,14 +1,17 @@
 # session_manager.py
 import os
+import sys
 import json
 import time
 import logging
 import uuid
 from typing import Dict, List, Any, Optional, Tuple
 from pathlib import Path
-
-from data_loader import DataLoader
-from game_state import PlayerProgress, GameStateManager
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent)) # Adicione o diretorio pai
+from src.data_loader import DataLoader
+from src.game_state import PlayerProgress, GameStateManager
+from sqlalchemy.orm import Session
+from src.game_state import PlayerProgress, GameStateManager
 
 class SessionManager:
     """
@@ -18,7 +21,7 @@ class SessionManager:
     gerenciando o ciclo de vida completo de uma sessão de jogo.
     """
     
-    def __init__(self, data_loader: DataLoader, storage_dir: str = "database/sessions"):
+    def __init__(self, data_loader: DataLoader, db: Session, storage_dir: str = "database/sessions"):
         """
         Inicializa o gerenciador de sessões.
         
@@ -30,7 +33,7 @@ class SessionManager:
         self.storage_dir = Path(storage_dir)
         self.storage_dir.mkdir(exist_ok=True, parents=True)
         
-        self.game_state_manager = GameStateManager(str(self.storage_dir))
+        self.game_state_manager = GameStateManager(db)  # Passe db aqui
         self.active_sessions: Dict[str, Dict[str, Any]] = {}
         
         self.logger = logging.getLogger(__name__)
@@ -44,8 +47,9 @@ class SessionManager:
             self.logger.addHandler(handler)
             
         self.logger.info("SessionManager inicializado.")
+        self.db = db # Store the database session
         
-    def create_session(self, player_id: str, story_id: str) -> Dict[str, Any]:
+    def create_session(self, player_id: str, story_id: str, db: Session) -> Dict[str, Any]:
         """
         Cria uma nova sessão de jogo para um jogador.
         
@@ -62,7 +66,7 @@ class SessionManager:
             return {"success": False, "error": "História não encontrada"}
         
         # Cria a sessão no GameStateManager
-        progress = self.game_state_manager.create_session(player_id, story_id)
+        progress = self.game_state_manager.create_session(player_id, story_id, self.db) # Pass db to GameStateManager
         session_id = progress.session_id
         
         # Inicializa o jogador na localização inicial da história
@@ -96,7 +100,7 @@ class SessionManager:
             "initial_location": starting_location
         }
         
-    def load_session(self, session_id: str) -> Dict[str, Any]:
+    def load_session(self, session_id: str, db: Session) -> Dict[str, Any]: 
         """
         Carrega uma sessão existente.
         
@@ -116,7 +120,7 @@ class SessionManager:
             }
         
         # Tenta carregar a sessão
-        progress = self.game_state_manager.load_session(session_id)
+        progress = self.game_state_manager.load_session(session_id, self.db) # Pass db to GameStateManager
         if not progress:
             self.logger.warning(f"Sessão {session_id} não encontrada.")
             return {"success": False, "error": "Sessão não encontrada"}
@@ -144,7 +148,7 @@ class SessionManager:
             "session_data": session_meta
         }
     
-    def get_session_state(self, session_id: str) -> Dict[str, Any]:
+    def get_session_state(self, session_id: str, db: Session) -> Dict[str, Any]:
         """
         Obtém o estado atual de uma sessão de jogo.
         
@@ -161,7 +165,7 @@ class SessionManager:
                 return {"success": False, "error": "Sessão não encontrada"}
         
         # Obtém o progresso do jogador
-        progress = self.game_state_manager.load_session(session_id)
+        progress = self.game_state_manager.load_session(session_id, self.db)
         if not progress:
             return {"success": False, "error": "Sessão corrompida"}
         
@@ -177,7 +181,7 @@ class SessionManager:
             "state": state
         }
     
-    def update_session_state(self, session_id: str, updates: Dict[str, Any]) -> Dict[str, Any]:
+    def update_session_state(self, session_id: str, updates: Dict[str, Any], db: Session) -> Dict[str, Any]:
         """
         Atualiza o estado de uma sessão com base nas ações do jogador.
         
@@ -189,7 +193,7 @@ class SessionManager:
             Estado atualizado da sessão
         """
         # Carrega a sessão
-        progress = self.game_state_manager.load_session(session_id)
+        progress = self.game_state_manager.load_session(session_id, self.db)
         if not progress:
             return {"success": False, "error": "Sessão não encontrada"}
         
@@ -278,7 +282,7 @@ class SessionManager:
                     )
         
         # Salva as alterações
-        self.game_state_manager.save_session(session_id)
+        self.game_state_manager.save_session(session_id, self.db) # Pass db to GameStateManager
         
         # Atualiza timestamp de atividade
         self.active_sessions[session_id]["last_activity"] = time.time()
@@ -290,7 +294,7 @@ class SessionManager:
             "state": self._build_session_state(progress)
         }
     
-    def close_session(self, session_id: str) -> Dict[str, Any]:
+    def close_session(self, session_id: str, db: Session) -> Dict[str, Any]:
         """
         Fecha uma sessão de jogo.
         
@@ -307,7 +311,7 @@ class SessionManager:
                 return {"success": False, "error": "Sessão não encontrada"}
         
         # Fecha a sessão no GameStateManager
-        success = self.game_state_manager.close_session(session_id)
+        success = self.game_state_manager.close_session(session_id, self.db) 
         
         # Remove da lista de sessões ativas
         if session_id in self.active_sessions:
@@ -320,7 +324,7 @@ class SessionManager:
             self.logger.error(f"Erro ao fechar sessão {session_id}.")
             return {"success": False, "error": "Erro ao fechar sessão"}
             
-    def list_player_sessions(self, player_id: str) -> Dict[str, Any]:
+    def list_player_sessions(self, player_id: str, db: Session) -> Dict[str, Any]: 
         """
         Lista todas as sessões de um jogador.
         
@@ -341,7 +345,7 @@ class SessionManager:
                 sessions.append(self.active_sessions[session_id])
             else:
                 # Tenta carregar a sessão
-                progress = self.game_state_manager.load_session(session_id)
+                progress = self.game_state_manager.load_session(session_id, self.db)
                 if progress:
                     session_meta = {
                         "session_id": session_id,
@@ -389,7 +393,7 @@ class SessionManager:
             "remaining_count": len(self.active_sessions)
         }
     
-    def submit_solution(self, session_id: str, solution_data: Dict[str, Any]) -> Dict[str, Any]:
+    def submit_solution(self, session_id: str, solution_data: Dict[str, Any], db: Session) -> Dict[str, Any]: 
         """
         Submete uma solução para o mistério.
         
@@ -401,7 +405,7 @@ class SessionManager:
             Resultado da verificação da solução
         """
         # Carrega a sessão
-        progress = self.game_state_manager.load_session(session_id)
+        progress = self.game_state_manager.load_session(session_id, self.db) 
         if not progress:
             return {"success": False, "error": "Sessão não encontrada"}
         
@@ -460,7 +464,7 @@ class SessionManager:
         progress.session_data["solution_correct"] = is_correct
         
         # Salva a sessão
-        self.game_state_manager.save_session(session_id)
+        self.game_state_manager.save_session(session_id, self.db)
         
         # Gera feedback com base nos resultados
         feedback = self._generate_solution_feedback(
@@ -493,7 +497,7 @@ class SessionManager:
             
         return result
     
-    def get_available_hints(self, session_id: str) -> Dict[str, Any]:
+    def get_available_hints(self, session_id: str, db: Session) -> Dict[str, Any]:
         """
         Obtém dicas disponíveis para o jogador com base no progresso atual.
         
@@ -504,7 +508,7 @@ class SessionManager:
             Lista de dicas disponíveis
         """
         # Carrega a sessão
-        progress = self.game_state_manager.load_session(session_id)
+        progress = self.game_state_manager.load_session(session_id, self.db)
         if not progress:
             return {"success": False, "error": "Sessão não encontrada"}
         

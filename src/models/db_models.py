@@ -13,7 +13,35 @@ import uuid
 import json
 import os
 
+from sqlalchemy.dialects.postgresql import UUID
+
 Base = declarative_base()
+
+class PlayerProgressModel(Base):
+    __tablename__ = "player_progress"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    player_id = Column(String, nullable=False)
+    story_id = Column(Integer, ForeignKey("story.story_id"), nullable=False) # Assuming story_id is an integer foreign key
+    session_id = Column(String, unique=True, nullable=False)
+    start_time = Column(DateTime, nullable=False)
+    last_activity = Column(DateTime, nullable=False)
+    current_location_id = Column(Integer)
+    current_area_id = Column(Integer)
+    discovered_locations = Column(JSON, default=[])
+    discovered_areas = Column(JSON, default={})
+    location_exploration_level = Column(JSON, default={})
+    area_exploration_level = Column(JSON, default={})
+    inventory = Column(JSON, default=[])
+    object_level = Column(JSON, default={})
+    character_level = Column(JSON, default={})
+    dialogue_history = Column(JSON, default={})
+    discovered_clues = Column(JSON, default=[])
+    scanned_qr_codes = Column(JSON, default=[])
+    action_history = Column(JSON, default=[])
+    specialization_points = Column(JSON, default={})
+    specialization_levels = Column(JSON, default={})
+    completed_interactions = Column(JSON, default={"objetos": [], "personagens": [], "areas": [], "pistas": [], "combinacoes": []})
+    session_data = Column(JSON, default={}) # For additional session data, use JSON for flexibility
 
 # Tabelas de associação para relacionamentos many-to-many
 story_character_association = Table(
@@ -276,7 +304,7 @@ class Player(Base):
     
     # Relacionamentos
     sessions = relationship("PlayerSession", back_populates="player")
-    game_sessions = relationship("GameSession", secondary=player_game_association)
+    game_sessions = relationship("GameSession", secondary="player_game", back_populates="players")
     feedback = relationship("PlayerFeedback", back_populates="player")
 
 
@@ -298,7 +326,8 @@ class GameSession(Base):
     story = relationship("Story", back_populates="game_sessions")
     game_master = relationship("GameMaster", back_populates="sessions")
     player_sessions = relationship("PlayerSession", back_populates="game_session")
-    players = relationship("Player", secondary=player_game_association)
+    players = relationship("Player", secondary="player_game", back_populates="game_sessions", overlaps="game_sessions")
+
 
 
 class PlayerSession(Base):
@@ -583,3 +612,33 @@ class IAConversationLog(Base):
     
     # Relacionamentos
     template = relationship("PromptTemplate", back_populates="logs")
+
+class PlayerProgress(Base):
+    __tablename__ = "player_progress"
+    player_id = Column(Integer, primary_key=True, autoincrement=True)
+    uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, nullable=False)
+    story_id = Column(Integer, ForeignKey("story.story_id"))
+    username = Column(String(50), unique=True, nullable=False)
+    current_location_id = Column(Integer)
+    inventory = Column(Text, default="{}") # armazena o inventario como JSON
+    knowledge = Column(Text, default="{}") # armazena o conhecimento como JSON
+    specialization = Column(String(50))
+    created_at = Column(DateTime, server_default=func.now())
+    is_active = Column(Boolean, default=True)
+    dialogue_history = relationship("DialogueHistory", back_populates="player")
+
+
+    # Adicione este método para facilitar a transformação em dicionário para testes
+    def to_dict(self):
+        return {
+            "player_id": self.player_id,
+            "uuid": str(self.uuid),
+            "story_id": self.story_id,
+            "username": self.username,
+            "current_location_id": self.current_location_id,
+            "inventory": json.loads(self.inventory),
+            "knowledge": json.loads(self.knowledge),
+            "specialization": self.specialization,
+            "created_at": str(self.created_at),
+            "is_active": self.is_active
+        }
