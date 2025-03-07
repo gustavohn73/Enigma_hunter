@@ -1,0 +1,818 @@
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/node_ng.py", line 184, in infer
+    for i, result in enumerate(self._infer(context=context, **kwargs)):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 142, in raise_if_nothing_inferred
+    yield next(generator)
+          ^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 111, in wrapped
+    for res in _func(node, context, **kwargs):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/inference.py", line 358, in infer_attribute
+    for owner in self.expr.infer(context):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/node_ng.py", line 184, in infer
+    for i, result in enumerate(self._infer(context=context, **kwargs)):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 142, in raise_if_nothing_inferred
+    yield next(generator)
+          ^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 111, in wrapped
+    for res in _func(node, context, **kwargs):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/bases.py", line 176, in _infer_stmts
+    for inf in stmt.infer(context=context):  # type: ignore[union-attr]
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/node_ng.py", line 184, in infer
+    for i, result in enumerate(self._infer(context=context, **kwargs)):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 142, in raise_if_nothing_inferred
+    yield next(generator)
+          ^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 111, in wrapped
+    for res in _func(node, context, **kwargs):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/inference.py", line 1152, in infer_assign
+    stmts = list(self.assigned_stmts(context=context))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 142, in raise_if_nothing_inferred
+    yield next(generator)
+          ^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/protocols.py", line 492, in assign_assigned_stmts
+    yield from _resolve_assignment_parts(
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/protocols.py", line 526, in _resolve_assignment_parts
+    for part in parts:
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/node_ng.py", line 184, in infer
+    for i, result in enumerate(self._infer(context=context, **kwargs)):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 142, in raise_if_nothing_inferred
+    yield next(generator)
+          ^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 111, in wrapped
+    for res in _func(node, context, **kwargs):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/inference.py", line 270, in infer_call
+    for callee in self.func.infer(context):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/node_ng.py", line 184, in infer
+    for i, result in enumerate(self._infer(context=context, **kwargs)):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 142, in raise_if_nothing_inferred
+    yield next(generator)
+          ^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 111, in wrapped
+    for res in _func(node, context, **kwargs):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/inference.py", line 358, in infer_attribute
+    for owner in self.expr.infer(context):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/node_ng.py", line 184, in infer
+    for i, result in enumerate(self._infer(context=context, **kwargs)):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 142, in raise_if_nothing_inferred
+    yield next(generator)
+          ^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 111, in wrapped
+    for res in _func(node, context, **kwargs):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/bases.py", line 176, in _infer_stmts
+    for inf in stmt.infer(context=context):  # type: ignore[union-attr]
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/node_ng.py", line 184, in infer
+    for i, result in enumerate(self._infer(context=context, **kwargs)):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 142, in raise_if_nothing_inferred
+    yield next(generator)
+          ^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 111, in wrapped
+    for res in _func(node, context, **kwargs):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/bases.py", line 176, in _infer_stmts
+    for inf in stmt.infer(context=context):  # type: ignore[union-attr]
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/node_ng.py", line 184, in infer
+    for i, result in enumerate(self._infer(context=context, **kwargs)):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 142, in raise_if_nothing_inferred
+    yield next(generator)
+          ^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 111, in wrapped
+    for res in _func(node, context, **kwargs):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/inference.py", line 270, in infer_call
+    for callee in self.func.infer(context):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/node_ng.py", line 184, in infer
+    for i, result in enumerate(self._infer(context=context, **kwargs)):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 142, in raise_if_nothing_inferred
+    yield next(generator)
+          ^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 111, in wrapped
+    for res in _func(node, context, **kwargs):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/inference.py", line 358, in infer_attribute
+    for owner in self.expr.infer(context):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/node_ng.py", line 184, in infer
+    for i, result in enumerate(self._infer(context=context, **kwargs)):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 142, in raise_if_nothing_inferred
+    yield next(generator)
+          ^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 111, in wrapped
+    for res in _func(node, context, **kwargs):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/bases.py", line 176, in _infer_stmts
+    for inf in stmt.infer(context=context):  # type: ignore[union-attr]
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/node_ng.py", line 184, in infer
+    for i, result in enumerate(self._infer(context=context, **kwargs)):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 142, in raise_if_nothing_inferred
+    yield next(generator)
+          ^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 111, in wrapped
+    for res in _func(node, context, **kwargs):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/inference.py", line 341, in infer_import_from
+    stmts = module.getattr(name, ignore_locals=module is self.root())
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/scoped_nodes/scoped_nodes.py", line 412, in getattr
+    result = [self.import_module(name, relative_only=True)]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/scoped_nodes/scoped_nodes.py", line 527, in import_module
+    return AstroidManager().ast_from_module_name(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/manager.py", line 232, in ast_from_module_name
+    return self.ast_from_file(found_spec.location, modname, fallback=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/manager.py", line 124, in ast_from_file
+    return AstroidBuilder(self).file_build(filepath, modname)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/builder.py", line 145, in file_build
+    return self._post_build(module, builder, encoding)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/builder.py", line 173, in _post_build
+    module = self._manager.visit_transforms(module)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/manager.py", line 95, in visit_transforms
+    return self._transform.visit(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/transforms.py", line 89, in visit
+    return self._visit(module)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/transforms.py", line 54, in _visit
+    visited = self._visit_generic(value)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/transforms.py", line 61, in _visit_generic
+    return [self._visit_generic(child) for child in node]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/transforms.py", line 67, in _visit_generic
+    return self._visit(node)
+           ^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/transforms.py", line 57, in _visit
+    return self._transform(node)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/transforms.py", line 38, in _transform
+    if predicate is None or predicate(node):
+                            ^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/brain/brain_namedtuple_enum.py", line 613, in _is_enum_subclass
+    for klass in cls.mro()
+                 ^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/scoped_nodes/scoped_nodes.py", line 3043, in mro
+    return self._compute_mro(context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/scoped_nodes/scoped_nodes.py", line 3012, in _compute_mro
+    inferred_bases = list(self._inferred_bases(context=context))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/scoped_nodes/scoped_nodes.py", line 2995, in _inferred_bases
+    baseobj = next(
+              ^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/scoped_nodes/scoped_nodes.py", line 2995, in <genexpr>
+    baseobj = next(
+                  ^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/node_ng.py", line 184, in infer
+    for i, result in enumerate(self._infer(context=context, **kwargs)):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 142, in raise_if_nothing_inferred
+    yield next(generator)
+          ^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 111, in wrapped
+    for res in _func(node, context, **kwargs):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/bases.py", line 176, in _infer_stmts
+    for inf in stmt.infer(context=context):  # type: ignore[union-attr]
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/node_ng.py", line 184, in infer
+    for i, result in enumerate(self._infer(context=context, **kwargs)):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 142, in raise_if_nothing_inferred
+    yield next(generator)
+          ^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/decorators.py", line 111, in wrapped
+    for res in _func(node, context, **kwargs):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/inference.py", line 334, in infer_import_from
+    module = self.do_import_module()
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/_base_nodes.py", line 146, in do_import_module
+    return mymodule.import_module(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/nodes/scoped_nodes/scoped_nodes.py", line 527, in import_module
+    return AstroidManager().ast_from_module_name(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/manager.py", line 232, in ast_from_module_name
+    return self.ast_from_file(found_spec.location, modname, fallback=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/manager.py", line 124, in ast_from_file
+    return AstroidBuilder(self).file_build(filepath, modname)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/builder.py", line 144, in file_build
+    module, builder = self._data_build(data, modname, path)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/builder.py", line 204, in _data_build
+    module = builder.visit_module(node, modname, node_file, package)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/rebuilder.py", line 254, in visit_module
+    [self.visit(child, newnode) for child in node.body],
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/astroid/rebuilder.py", line 603, in visit
+    visit_method = getattr(self, visit_name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'TreeRebuilder' object has no attribute 'visit_typealias'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/pylint/utils/ast_walker.py", line 91, in walk
+    callback(astroid)
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/pylint/checkers/refactoring/refactoring_checker.py", line 1520, in visit_assign
+    self._append_context_managers_to_stack(node)
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/pylint/checkers/refactoring/refactoring_checker.py", line 1572, in _append_context_managers_to_stack
+    inferred = utils.safe_infer(value.func)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gustavo/anaconda3/lib/python3.12/site-packages/pylint/checkers/utils.py", line 1374, in safe_infer
+    raise AstroidError from e
+astroid.exceptions.AstroidError
+pytest.py:1:0: F0002: /home/gustavo/Detetive_Game/pytest.py: Fatal error while checking '/home/gustavo/Detetive_Game/pytest.py'. Please open an issue in our bug tracker so we address this. There is a pre-filled template that you can use in '/home/gustavo/.cache/pylint/pylint-crash-2025-03-06-19-22-54.txt'. (astroid-error)
+pytest.py:2:0: C0411: third party import "from fastapi.testclient import TestClient" should be placed before "import pytest" (wrong-import-order)
+pytest.py:3:0: C0411: third party import "from sqlalchemy import text, create_engine" should be placed before "import pytest" (wrong-import-order)
+pytest.py:4:0: C0411: third party import "from sqlalchemy.orm import sessionmaker" should be placed before "import pytest" (wrong-import-order)
+pytest.py:6:0: C0411: third party import "from sqlalchemy.exc import IntegrityError" should be placed before "import pytest" (wrong-import-order)
+pytest.py:8:0: C0411: standard import "import os" should be placed before "from fastapi.testclient import TestClient" (wrong-import-order)
+pytest.py:9:0: C0411: standard import "import logging" should be placed before "from fastapi.testclient import TestClient" (wrong-import-order)
+pytest.py:6:0: C0412: Imports from package sqlalchemy are not grouped (ungrouped-imports)
+pytest.py:7:0: C0412: Imports from package src are not grouped (ungrouped-imports)
+************* Module Detetive_Game.src.gerenciador_personagens
+src/gerenciador_personagens.py:8:0: C0301: Line too long (107/100) (line-too-long)
+src/gerenciador_personagens.py:10:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:11:0: C0301: Line too long (107/100) (line-too-long)
+src/gerenciador_personagens.py:21:0: C0301: Line too long (106/100) (line-too-long)
+src/gerenciador_personagens.py:23:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:41:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:55:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:57:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:61:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:64:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:67:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:73:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:75:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:92:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:93:0: C0301: Line too long (103/100) (line-too-long)
+src/gerenciador_personagens.py:107:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:109:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:113:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:119:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:122:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:124:0: C0301: Line too long (104/100) (line-too-long)
+src/gerenciador_personagens.py:125:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:128:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:130:0: C0301: Line too long (107/100) (line-too-long)
+src/gerenciador_personagens.py:131:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:137:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:144:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:149:0: C0301: Line too long (102/100) (line-too-long)
+src/gerenciador_personagens.py:151:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:152:0: C0301: Line too long (110/100) (line-too-long)
+src/gerenciador_personagens.py:165:0: C0301: Line too long (107/100) (line-too-long)
+src/gerenciador_personagens.py:167:0: C0301: Line too long (108/100) (line-too-long)
+src/gerenciador_personagens.py:168:0: C0301: Line too long (102/100) (line-too-long)
+src/gerenciador_personagens.py:169:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:193:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:200:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:203:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:205:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:227:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:229:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:232:0: C0301: Line too long (101/100) (line-too-long)
+src/gerenciador_personagens.py:236:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:240:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:241:81: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:257:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:260:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:263:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:269:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:271:0: C0301: Line too long (105/100) (line-too-long)
+src/gerenciador_personagens.py:273:0: C0301: Line too long (101/100) (line-too-long)
+src/gerenciador_personagens.py:274:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:279:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:281:0: C0301: Line too long (105/100) (line-too-long)
+src/gerenciador_personagens.py:285:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:287:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:304:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:307:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:310:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:314:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:324:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:326:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:344:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:345:0: C0301: Line too long (115/100) (line-too-long)
+src/gerenciador_personagens.py:358:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:361:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:368:0: C0301: Line too long (113/100) (line-too-long)
+src/gerenciador_personagens.py:371:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:377:0: C0303: Trailing whitespace (trailing-whitespace)
+src/gerenciador_personagens.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/gerenciador_personagens.py:1:0: F0002: /home/gustavo/Detetive_Game/src/gerenciador_personagens.py: Fatal error while checking '/home/gustavo/Detetive_Game/src/gerenciador_personagens.py'. Please open an issue in our bug tracker so we address this. There is a pre-filled template that you can use in '/home/gustavo/.cache/pylint/pylint-crash-2025-03-06-19-22-54.txt'. (astroid-error)
+************* Module Detetive_Game.src.qr_code_processor
+src/qr_code_processor.py:12:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:21:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:27:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:30:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:38:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:42:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:50:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:53:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:60:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:63:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:66:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:68:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:77:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:86:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:91:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:94:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:100:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:109:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:114:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:122:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:127:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:134:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:138:26: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:141:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:145:26: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:148:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:155:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:201:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:225:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:226:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:250:0: C0301: Line too long (102/100) (line-too-long)
+src/qr_code_processor.py:296:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:299:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:301:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:303:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:305:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:307:35: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:310:0: C0303: Trailing whitespace (trailing-whitespace)
+src/qr_code_processor.py:311:0: C0304: Final newline missing (missing-final-newline)
+src/qr_code_processor.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/qr_code_processor.py:1:0: F0002: /home/gustavo/Detetive_Game/src/qr_code_processor.py: Fatal error while checking '/home/gustavo/Detetive_Game/src/qr_code_processor.py'. Please open an issue in our bug tracker so we address this. There is a pre-filled template that you can use in '/home/gustavo/.cache/pylint/pylint-crash-2025-03-06-19-22-54.txt'. (astroid-error)
+************* Module Detetive_Game.src.game_state
+src/game_state.py:14:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:21:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:25:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:31:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:35:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:39:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:42:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:45:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:59:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:60:70: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:68:0: C0301: Line too long (108/100) (line-too-long)
+src/game_state.py:76:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:80:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:85:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:89:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:91:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:95:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:98:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:110:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:113:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:116:0: C0301: Line too long (110/100) (line-too-long)
+src/game_state.py:126:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:171:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:176:0: C0301: Line too long (118/100) (line-too-long)
+src/game_state.py:186:0: C0301: Line too long (155/100) (line-too-long)
+src/game_state.py:187:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:190:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:193:73: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:211:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:216:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:225:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:237:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:241:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:245:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:248:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:255:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:257:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:263:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:267:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:269:0: C0301: Line too long (101/100) (line-too-long)
+src/game_state.py:270:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:276:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:280:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:283:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:289:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:292:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:301:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:308:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:316:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:321:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:328:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:337:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:344:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:353:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:360:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:361:89: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:368:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:376:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:378:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:385:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:391:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:394:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:404:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:407:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:422:0: C0301: Line too long (106/100) (line-too-long)
+src/game_state.py:437:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:451:0: C0301: Line too long (112/100) (line-too-long)
+src/game_state.py:452:0: C0301: Line too long (104/100) (line-too-long)
+src/game_state.py:478:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:482:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:484:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:489:0: C0301: Line too long (123/100) (line-too-long)
+src/game_state.py:491:0: C0301: Line too long (112/100) (line-too-long)
+src/game_state.py:496:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:503:0: C0301: Line too long (136/100) (line-too-long)
+src/game_state.py:505:0: C0301: Line too long (108/100) (line-too-long)
+src/game_state.py:509:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:523:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:530:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:535:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:546:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:550:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:556:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:558:69: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:559:0: C0301: Line too long (131/100) (line-too-long)
+src/game_state.py:560:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:568:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:572:0: C0301: Line too long (105/100) (line-too-long)
+src/game_state.py:577:0: C0303: Trailing whitespace (trailing-whitespace)
+src/game_state.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/game_state.py:1:0: F0002: /home/gustavo/Detetive_Game/src/game_state.py: Fatal error while checking '/home/gustavo/Detetive_Game/src/game_state.py'. Please open an issue in our bug tracker so we address this. There is a pre-filled template that you can use in '/home/gustavo/.cache/pylint/pylint-crash-2025-03-06-19-22-54.txt'. (astroid-error)
+************* Module Detetive_Game.src.main
+src/main.py:47:0: C0301: Line too long (117/100) (line-too-long)
+src/main.py:59:0: C0301: Line too long (120/100) (line-too-long)
+src/main.py:66:0: C0303: Trailing whitespace (trailing-whitespace)
+src/main.py:77:0: C0301: Line too long (136/100) (line-too-long)
+src/main.py:84:0: C0303: Trailing whitespace (trailing-whitespace)
+src/main.py:93:0: C0301: Line too long (113/100) (line-too-long)
+src/main.py:104:0: C0303: Trailing whitespace (trailing-whitespace)
+src/main.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/main.py:3:0: E0401: Unable to import 'fastapi' (import-error)
+src/main.py:4:0: E0401: Unable to import 'fastapi.responses' (import-error)
+src/main.py:7:0: E0401: Unable to import 'src.models.db_models' (import-error)
+src/main.py:8:0: E0401: Unable to import 'src.session_manager' (import-error)
+src/main.py:9:0: E0401: Unable to import 'src.data_loader' (import-error)
+src/main.py:10:0: E0401: Unable to import 'src.qr_code_processor' (import-error)
+src/main.py:11:0: E0401: Unable to import 'src.gerenciador_personagens' (import-error)
+src/main.py:1:0: F0002: /home/gustavo/Detetive_Game/src/main.py: Fatal error while checking '/home/gustavo/Detetive_Game/src/main.py'. Please open an issue in our bug tracker so we address this. There is a pre-filled template that you can use in '/home/gustavo/.cache/pylint/pylint-crash-2025-03-06-19-22-55.txt'. (astroid-error)
+************* Module Detetive_Game.src.session_manager
+src/session_manager.py:23:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:24:0: C0301: Line too long (101/100) (line-too-long)
+src/session_manager.py:35:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:38:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:41:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:48:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:51:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:67:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:69:0: C0301: Line too long (117/100) (line-too-long)
+src/session_manager.py:71:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:77:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:80:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:90:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:93:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:94:0: C0301: Line too long (101/100) (line-too-long)
+src/session_manager.py:95:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:102:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:103:75: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:121:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:123:0: C0301: Line too long (106/100) (line-too-long)
+src/session_manager.py:127:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:139:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:142:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:144:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:150:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:166:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:171:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:174:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:177:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:183:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:184:0: C0301: Line too long (108/100) (line-too-long)
+src/session_manager.py:199:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:205:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:209:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:213:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:217:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:220:48: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:227:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:230:45: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:237:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:241:51: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:250:47: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:257:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:268:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:274:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:278:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:283:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:286:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:289:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:296:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:312:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:314:76: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:315:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:319:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:326:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:327:82: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:339:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:359:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:365:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:378:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:383:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:387:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:389:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:395:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:396:109: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:396:0: C0301: Line too long (109/100) (line-too-long)
+src/session_manager.py:408:76: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:411:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:415:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:417:0: C0301: Line too long (104/100) (line-too-long)
+src/session_manager.py:419:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:422:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:426:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:429:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:432:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:439:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:441:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:444:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:448:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:461:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:465:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:468:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:471:23: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:472:28: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:473:27: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:474:27: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:477:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:490:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:497:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:499:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:514:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:518:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:525:0: C0301: Line too long (116/100) (line-too-long)
+src/session_manager.py:527:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:532:0: C0301: Line too long (115/100) (line-too-long)
+src/session_manager.py:534:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:543:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:550:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:558:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:563:0: C0301: Line too long (159/100) (line-too-long)
+src/session_manager.py:565:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:571:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:575:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:581:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:586:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:588:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:615:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:618:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:620:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:621:82: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:622:78: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:626:0: C0301: Line too long (117/100) (line-too-long)
+src/session_manager.py:627:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:629:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:632:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:635:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:638:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:640:0: C0301: Line too long (114/100) (line-too-long)
+src/session_manager.py:641:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:643:0: C0303: Trailing whitespace (trailing-whitespace)
+src/session_manager.py:644:0: C0304: Final newline missing (missing-final-newline)
+src/session_manager.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/session_manager.py:1:0: F0002: /home/gustavo/Detetive_Game/src/session_manager.py: Fatal error while checking '/home/gustavo/Detetive_Game/src/session_manager.py'. Please open an issue in our bug tracker so we address this. There is a pre-filled template that you can use in '/home/gustavo/.cache/pylint/pylint-crash-2025-03-06-19-22-55.txt'. (astroid-error)
+************* Module Detetive_Game.src.data_loader
+src/data_loader.py:12:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:24:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:35:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:37:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:45:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:48:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:50:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:56:60: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:57:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:60:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:62:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:106:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:110:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:114:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:116:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:130:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:132:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:136:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:140:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:142:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:156:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:158:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:162:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:168:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:174:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:178:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:183:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:190:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:197:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:202:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:208:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:214:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:220:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:224:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:228:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:232:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:236:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:240:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:251:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:258:0: C0303: Trailing whitespace (trailing-whitespace)
+src/data_loader.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/data_loader.py:1:0: F0002: /home/gustavo/Detetive_Game/src/data_loader.py: Fatal error while checking '/home/gustavo/Detetive_Game/src/data_loader.py'. Please open an issue in our bug tracker so we address this. There is a pre-filled template that you can use in '/home/gustavo/.cache/pylint/pylint-crash-2025-03-06-19-22-55.txt'. (astroid-error)
+************* Module Detetive_Game.src.models.__init__
+src/models/__init__.py:13:0: C0304: Final newline missing (missing-final-newline)
+************* Module Detetive_Game.src.models
+src/models/__init__.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/gerenciador_personagens.py:2:0: C0411: standard import "import json" should be placed before "import requests" (wrong-import-order)
+src/gerenciador_personagens.py:3:0: C0411: standard import "import os" should be placed before "import requests" (wrong-import-order)
+src/qr_code_processor.py:2:0: C0411: standard import "import json" should be placed before "import requests" (wrong-import-order)
+src/qr_code_processor.py:3:0: C0411: standard import "import logging" should be placed before "import requests" (wrong-import-order)
+src/qr_code_processor.py:4:0: C0411: standard import "from pathlib import Path" should be placed before "import requests" (wrong-import-order)
+src/game_state.py:2:0: C0411: standard import "import json" should be placed before "import requests" (wrong-import-order)
+src/game_state.py:3:0: C0411: standard import "import time" should be placed before "import requests" (wrong-import-order)
+src/game_state.py:4:0: C0411: standard import "import uuid" should be placed before "import requests" (wrong-import-order)
+src/game_state.py:5:0: C0411: standard import "from pathlib import Path" should be placed before "import requests" (wrong-import-order)
+src/main.py:2:0: C0411: standard import "import os" should be placed before "import requests" (wrong-import-order)
+src/session_manager.py:2:0: C0411: standard import "import os" should be placed before "import requests" (wrong-import-order)
+src/session_manager.py:3:0: C0411: standard import "import sys" should be placed before "import requests" (wrong-import-order)
+src/session_manager.py:4:0: C0411: standard import "import json" should be placed before "import requests" (wrong-import-order)
+src/session_manager.py:5:0: C0411: standard import "import time" should be placed before "import requests" (wrong-import-order)
+src/session_manager.py:6:0: C0411: standard import "import logging" should be placed before "import requests" (wrong-import-order)
+src/session_manager.py:7:0: C0411: standard import "import uuid" should be placed before "import requests" (wrong-import-order)
+src/data_loader.py:2:0: C0411: standard import "import os" should be placed before "import requests" (wrong-import-order)
+src/data_loader.py:3:0: C0411: standard import "import json" should be placed before "import requests" (wrong-import-order)
+src/data_loader.py:4:0: C0411: standard import "from pathlib import Path" should be placed before "import requests" (wrong-import-order)
+src/qr_code_processor.py:2:0: C0412: Imports from package json are not grouped (ungrouped-imports)
+src/game_state.py:2:0: C0412: Imports from package json are not grouped (ungrouped-imports)
+src/game_state.py:5:0: C0412: Imports from package pathlib are not grouped (ungrouped-imports)
+src/main.py:2:0: C0412: Imports from package os are not grouped (ungrouped-imports)
+src/session_manager.py:4:0: C0412: Imports from package json are not grouped (ungrouped-imports)
+src/session_manager.py:5:0: C0412: Imports from package time are not grouped (ungrouped-imports)
+src/session_manager.py:6:0: C0412: Imports from package logging are not grouped (ungrouped-imports)
+src/session_manager.py:7:0: C0412: Imports from package uuid are not grouped (ungrouped-imports)
+src/data_loader.py:2:0: C0412: Imports from package os are not grouped (ungrouped-imports)
+src/data_loader.py:3:0: C0412: Imports from package json are not grouped (ungrouped-imports)
+src/data_loader.py:4:0: C0412: Imports from package pathlib are not grouped (ungrouped-imports)
+************* Module Detetive_Game.src.utils.__init__
+src/utils/__init__.py:1:0: C0304: Final newline missing (missing-final-newline)
+************* Module Detetive_Game.src.utils.organize_json_files
+src/utils/organize_json_files.py:12:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/organize_json_files.py:15:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/organize_json_files.py:20:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/organize_json_files.py:24:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/organize_json_files.py:29:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/organize_json_files.py:32:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/organize_json_files.py:35:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/organize_json_files.py:44:0: C0301: Line too long (118/100) (line-too-long)
+src/utils/organize_json_files.py:50:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/organize_json_files.py:59:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/organize_json_files.py:62:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/organize_json_files.py:65:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/organize_json_files.py:72:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/organize_json_files.py:79:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/organize_json_files.py:84:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/organize_json_files.py:89:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/organize_json_files.py:94:0: C0304: Final newline missing (missing-final-newline)
+src/utils/organize_json_files.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/utils/organize_json_files.py:9:0: R0914: Too many local variables (18/15) (too-many-locals)
+src/utils/organize_json_files.py:30:8: C0103: Variable name "d" doesn't conform to snake_case naming style (invalid-name)
+src/utils/organize_json_files.py:48:71: C0103: Variable name "f" doesn't conform to snake_case naming style (invalid-name)
+src/utils/organize_json_files.py:60:86: C0103: Variable name "f" doesn't conform to snake_case naming style (invalid-name)
+src/utils/organize_json_files.py:3:0: W0611: Unused import os (unused-import)
+src/utils/organize_json_files.py:4:0: W0611: Unused import sys (unused-import)
+************* Module Detetive_Game.src.utils.setup_environment
+src/utils/setup_environment.py:10:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_environment.py:22:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_environment.py:26:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_environment.py:42:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_environment.py:51:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_environment.py:56:0: C0304: Final newline missing (missing-final-newline)
+src/utils/setup_environment.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/utils/setup_environment.py:4:0: W0611: Unused import os (unused-import)
+************* Module Detetive_Game.src.utils.db_setup_script
+src/utils/db_setup_script.py:28:0: C0301: Line too long (107/100) (line-too-long)
+src/utils/db_setup_script.py:29:0: C0301: Line too long (101/100) (line-too-long)
+src/utils/db_setup_script.py:45:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:48:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:50:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:53:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:60:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:133:0: C0301: Line too long (113/100) (line-too-long)
+src/utils/db_setup_script.py:168:0: C0301: Line too long (110/100) (line-too-long)
+src/utils/db_setup_script.py:171:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:175:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:177:0: C0301: Line too long (102/100) (line-too-long)
+src/utils/db_setup_script.py:181:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:189:0: W0311: Bad indentation. Found 6 spaces, expected 8 (bad-indentation)
+src/utils/db_setup_script.py:190:0: W0311: Bad indentation. Found 8 spaces, expected 12 (bad-indentation)
+src/utils/db_setup_script.py:218:0: W0311: Bad indentation. Found 6 spaces, expected 8 (bad-indentation)
+src/utils/db_setup_script.py:237:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:247:0: C0301: Line too long (109/100) (line-too-long)
+src/utils/db_setup_script.py:252:0: C0301: Line too long (114/100) (line-too-long)
+src/utils/db_setup_script.py:380:0: C0301: Line too long (114/100) (line-too-long)
+src/utils/db_setup_script.py:384:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:388:0: W0311: Bad indentation. Found 18 spaces, expected 20 (bad-indentation)
+src/utils/db_setup_script.py:395:33: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:403:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:433:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:497:0: C0301: Line too long (104/100) (line-too-long)
+src/utils/db_setup_script.py:498:0: C0301: Line too long (107/100) (line-too-long)
+src/utils/db_setup_script.py:533:0: C0301: Line too long (118/100) (line-too-long)
+src/utils/db_setup_script.py:561:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:679:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:759:0: C0301: Line too long (117/100) (line-too-long)
+src/utils/db_setup_script.py:765:85: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:776:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:779:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:783:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:789:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/db_setup_script.py:801:0: C0304: Final newline missing (missing-final-newline)
+src/utils/db_setup_script.py:16:0: E0401: Unable to import 'src.models.db_models' (import-error)
+src/utils/db_setup_script.py:24:0: C0413: Import "from sqlalchemy import create_engine" should be placed at the top of the module (wrong-import-position)
+src/utils/db_setup_script.py:25:0: C0413: Import "from sqlalchemy.orm import sessionmaker" should be placed at the top of the module (wrong-import-position)
+src/utils/db_setup_script.py:28:0: E0401: Unable to import 'src.models.db_models' (import-error)
+src/utils/db_setup_script.py:28:0: C0413: Import "from src.models.db_models import Base, Story, Location, LocationArea, AreaDetail, Character, CharacterLevel" should be placed at the top of the module (wrong-import-position)
+src/utils/db_setup_script.py:29:0: E0401: Unable to import 'src.models.db_models' (import-error)
+src/utils/db_setup_script.py:29:0: C0413: Import "from src.models.db_models import EvolutionTrigger, EvidenceRequirement, GameObject, ObjectLevel, Clue" should be placed at the top of the module (wrong-import-position)
+src/utils/db_setup_script.py:30:0: E0401: Unable to import 'src.models.db_models' (import-error)
+src/utils/db_setup_script.py:30:0: C0413: Import "from src.models.db_models import QRCode, PromptTemplate, IAConversationLog" should be placed at the top of the module (wrong-import-position)
+src/utils/db_setup_script.py:44:4: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+src/utils/db_setup_script.py:1:0: F0002: /home/gustavo/Detetive_Game/src/utils/db_setup_script.py: Fatal error while checking '/home/gustavo/Detetive_Game/src/utils/db_setup_script.py'. Please open an issue in our bug tracker so we address this. There is a pre-filled template that you can use in '/home/gustavo/.cache/pylint/pylint-crash-2025-03-06-19-22-55.txt'. (astroid-error)
+************* Module Detetive_Game.src.utils.setup_enigma_hunter
+src/utils/setup_enigma_hunter.py:10:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_enigma_hunter.py:13:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_enigma_hunter.py:27:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_enigma_hunter.py:31:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_enigma_hunter.py:34:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_enigma_hunter.py:37:0: C0301: Line too long (557/100) (line-too-long)
+src/utils/setup_enigma_hunter.py:40:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_enigma_hunter.py:49:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_enigma_hunter.py:55:76: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_enigma_hunter.py:64:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_enigma_hunter.py:77:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_enigma_hunter.py:85:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_enigma_hunter.py:88:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_enigma_hunter.py:96:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_enigma_hunter.py:99:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/setup_enigma_hunter.py:104:0: C0304: Final newline missing (missing-final-newline)
+src/utils/setup_enigma_hunter.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/utils/setup_enigma_hunter.py:2:0: C0413: Import "import os" should be placed at the top of the module (wrong-import-position)
+src/utils/setup_enigma_hunter.py:3:0: C0413: Import "import sys" should be placed at the top of the module (wrong-import-position)
+src/utils/setup_enigma_hunter.py:4:0: C0413: Import "import subprocess" should be placed at the top of the module (wrong-import-position)
+src/utils/setup_enigma_hunter.py:5:0: C0413: Import "from pathlib import Path" should be placed at the top of the module (wrong-import-position)
+src/utils/setup_enigma_hunter.py:44:54: C0103: Variable name "f" doesn't conform to snake_case naming style (invalid-name)
+src/utils/setup_enigma_hunter.py:57:60: C0103: Variable name "f" doesn't conform to snake_case naming style (invalid-name)
+src/utils/setup_enigma_hunter.py:70:66: C0103: Variable name "f" doesn't conform to snake_case naming style (invalid-name)
+src/utils/setup_enigma_hunter.py:81:62: C0103: Variable name "f" doesn't conform to snake_case naming style (invalid-name)
+src/utils/setup_enigma_hunter.py:87:4: W1510: 'subprocess.run' used without explicitly defining the value for 'check'. (subprocess-run-check)
+src/utils/setup_enigma_hunter.py:92:56: C0103: Variable name "f" doesn't conform to snake_case naming style (invalid-name)
+src/utils/setup_enigma_hunter.py:98:4: W1510: 'subprocess.run' used without explicitly defining the value for 'check'. (subprocess-run-check)
+src/utils/db_setup_script.py:15:0: C0411: standard import "import uuid" should be placed before "from sqlalchemy import exc" (wrong-import-order)
+src/utils/db_setup_script.py:24:0: C0411: third party import "from sqlalchemy import create_engine" should be placed before "from src.models.db_models import PlayerProgress" (wrong-import-order)
+src/utils/db_setup_script.py:25:0: C0411: third party import "from sqlalchemy.orm import sessionmaker" should be placed before "from src.models.db_models import PlayerProgress" (wrong-import-order)
+src/utils/setup_enigma_hunter.py:2:0: C0411: standard import "import os" should be placed before "from sqlalchemy import exc" (wrong-import-order)
+src/utils/setup_enigma_hunter.py:3:0: C0411: standard import "import sys" should be placed before "from sqlalchemy import exc" (wrong-import-order)
+src/utils/setup_enigma_hunter.py:4:0: C0411: standard import "import subprocess" should be placed before "from sqlalchemy import exc" (wrong-import-order)
+src/utils/setup_enigma_hunter.py:5:0: C0411: standard import "from pathlib import Path" should be placed before "from sqlalchemy import exc" (wrong-import-order)
+src/utils/setup_enigma_hunter.py:2:0: C0412: Imports from package os are not grouped (ungrouped-imports)
+src/utils/setup_enigma_hunter.py:3:0: C0412: Imports from package sys are not grouped (ungrouped-imports)
+src/utils/setup_enigma_hunter.py:5:0: C0412: Imports from package pathlib are not grouped (ungrouped-imports)
+src/utils/db_setup_script.py:24:0: C0412: Imports from package sqlalchemy are not grouped (ungrouped-imports)
+src/utils/db_setup_script.py:28:0: C0412: Imports from package src are not grouped (ungrouped-imports)
+src/utils/setup_enigma_hunter.py:2:0: W0611: Unused import os (unused-import)
+************* Module Detetive_Game.src.utils.init_database
+src/utils/init_database.py:15:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/init_database.py:26:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/init_database.py:34:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/init_database.py:37:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/init_database.py:41:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/init_database.py:47:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/init_database.py:51:97: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/init_database.py:52:0: C0301: Line too long (125/100) (line-too-long)
+src/utils/init_database.py:54:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/init_database.py:62:0: C0301: Line too long (117/100) (line-too-long)
+src/utils/init_database.py:69:0: C0303: Trailing whitespace (trailing-whitespace)
+src/utils/init_database.py:78:0: C0304: Final newline missing (missing-final-newline)
+src/utils/init_database.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+src/utils/init_database.py:7:0: E0401: Unable to import 'src.utils.db_setup_script' (import-error)
+src/utils/init_database.py:1:0: R0801: Similar lines in 2 files
+==Detetive_Game.src.gerenciador_personagens:[184:191]
+==Detetive_Game.src.utils.db_setup_script:[79:86]
+INSTRUÇÕES ESPECIAIS:
+1. Mantenha-se fiel ao personagem e seu estágio atual de conhecimento.
+2. Não revele informações além do que o personagem sabe no estágio atual.
+3. Responda de forma natural e conversacional, mantendo o estilo de fala do personagem.
+4. Suas respostas devem ter no máximo 3 parágrafos.
+
+HISTÓRICO DA CONVERSA: (duplicate-code)
+src/utils/init_database.py:1:0: R0801: Similar lines in 2 files
+==Detetive_Game.src.utils.setup_enigma_hunter:[15:20]
+==Detetive_Game.src.utils.setup_environment:[11:16]
+    directories = [
+        "src",
+        "src/models",
+        "src/utils",
+        "database", (duplicate-code)
+
+------------------------------------------------------------------
+Your code has been rated at 0.00/10 (previous run: 0.00/10, +0.00)

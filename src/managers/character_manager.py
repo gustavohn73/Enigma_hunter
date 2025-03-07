@@ -1,5 +1,4 @@
-# src/gerenciador_personagem.py
-
+# src/managers/character_manager.py
 
 import json
 import logging
@@ -7,11 +6,10 @@ from typing import Dict, List, Any, Optional
 
 import requests
 from sqlalchemy.orm import Session
-from sqlalchemy import func 
+from sqlalchemy import func
 
-from src.models.db_models import Character, CharacterLevel, EvolutionTrigger, DialogueHistory, PlayerCharacterLevel, PlayerSession, EvidenceRequirement
-
-
+from src.models.db_models import DialogueHistory, PlayerCharacterLevel, PlayerSession
+from src.repositories.character_repository import CharacterRepository
 
 class CharacterManager:
     """
@@ -21,12 +19,12 @@ class CharacterManager:
     - Gerenciar diálogos com os personagens usando IA
     - Controlar a evolução dos personagens com base nas interações
     - Processar gatilhos para revelação de informações
-    - Persistir o histórico de diálogos e estado dos personagens no banco de dados
+    - Persistir o histórico de diálogos e estado dos personagens
     """
     
     def __init__(
         self,
-        db: Session,
+        character_repository: CharacterRepository,
         ai_model: str = "llama3",
         api_url: str = "http://localhost:11434/api/generate"
     ):
@@ -34,11 +32,11 @@ class CharacterManager:
         Inicializa o gerenciador de personagens.
         
         Args:
-            db: Sessão do banco de dados SQLAlchemy
+            character_repository: Repositório para acesso aos dados de personagens
             ai_model: Modelo de IA a ser utilizado (padrão: llama3)
             api_url: URL da API do modelo de IA
         """
-        self.db = db
+        self.character_repository = character_repository
         self.ai_model = ai_model
         self.api_url = api_url
         self.logger = logging.getLogger(__name__)
@@ -50,82 +48,26 @@ class CharacterManager:
             handler.setFormatter(formatter)
             self.logger.addHandler(handler)
             self.logger.setLevel(logging.INFO)
-        
-        # Cache temporário para melhor desempenho
-        self.character_cache = {}
     
-    def get_character(self, character_id: int) -> Optional[Dict[str, Any]]:
+    def get_character(self, db: Session, character_id: int) -> Optional[Dict[str, Any]]:
         """
-        Obtém os dados de um personagem do banco de dados.
+        Obtém os dados de um personagem.
         
         Args:
+            db: Sessão do banco de dados
             character_id: ID do personagem
             
         Returns:
             Dados do personagem ou None se não encontrado
         """
-        # Verifica se o personagem já está no cache
-        if character_id in self.character_cache:
-            return self.character_cache[character_id]
-        
-        # Busca o personagem no banco de dados
-        character = self.db.query(Character).filter_by(character_id=character_id).first()
-        
-        if not character:
-            self.logger.error(f"Personagem ID {character_id} não encontrado no banco de dados")
-            return None
-        
-        # Obtém os níveis do personagem
-        levels = self.db.query(CharacterLevel).filter_by(character_id=character_id).order_by(CharacterLevel.level_number).all()
-        
-        # Obtém os gatilhos para cada nível
-        character_data = {
-            "id": character.character_id,
-            "name": character.name,
-            "base_description": character.base_description,
-            "personality": character.personality,
-            "appearance": character.appearance,
-            "is_culprit": character.is_culprit,
-            "motive": character.motive,
-            "levels": []
-        }
-        
-        for level in levels:
-            # Obtém os gatilhos para este nível
-            triggers = self.db.query(EvolutionTrigger).filter_by(level_id=level.level_id).all()
-            
-            level_data = {
-                "level_id": level.level_id,
-                "level_number": level.level_number,
-                "knowledge_scope": level.knowledge_scope,
-                "narrative_stance": level.narrative_stance,
-                "is_defensive": level.is_defensive,
-                "dialogue_parameters": level.dialogue_parameters,
-                "triggers": [
-                    {
-                        "trigger_id": trigger.trigger_id,
-                        "trigger_keyword": trigger.trigger_keyword,
-                        "contextual_condition": trigger.contextual_condition,
-                        "defensive_response": trigger.defensive_response,
-                        "success_response": trigger.success_response,
-                        "fail_response": trigger.fail_response
-                    }
-                    for trigger in triggers
-                ]
-            }
-            
-            character_data["levels"].append(level_data)
-        
-        # Armazena no cache para futuras consultas
-        self.character_cache[character_id] = character_data
-        
-        return character_data
+        return self.character_repository.get_character_with_levels(db, character_id)
     
-    def get_player_character_level(self, player_id: int, character_id: int) -> int:
+    def get_player_character_level(self, db: Session, player_id: int, character_id: int) -> int:
         """
         Obtém o nível atual de interação entre um jogador e um personagem.
         
         Args:
+            db: Sessão do banco de dados
             player_id: ID do jogador
             character_id: ID do personagem
             
@@ -133,7 +75,7 @@ class CharacterManager:
             Nível atual do personagem para este jogador
         """
         # Busca o progresso do jogador com este personagem
-        character_progress = self.db.query(PlayerCharacterLevel).filter_by(
+        character_progress = db.query(PlayerCharacterLevel).filter_by(
             player_id=player_id,
             character_id=character_id
         ).first()
@@ -144,11 +86,12 @@ class CharacterManager:
         
         return character_progress.current_level
     
-    def update_character_level(self, player_id: int, character_id: int, new_level: int) -> bool:
+    def update_character_level(self, db: Session, player_id: int, character_id: int, new_level: int) -> bool:
         """
         Atualiza o nível de interação entre um jogador e um personagem.
         
         Args:
+            db: Sessão do banco de dados
             player_id: ID do jogador
             character_id: ID do personagem
             new_level: Novo nível
@@ -158,7 +101,7 @@ class CharacterManager:
         """
         try:
             # Busca o progresso do jogador com este personagem
-            character_progress = self.db.query(PlayerCharacterLevel).filter_by(
+            character_progress = db.query(PlayerCharacterLevel).filter_by(
                 player_id=player_id,
                 character_id=character_id
             ).first()
@@ -170,27 +113,28 @@ class CharacterManager:
                     character_id=character_id,
                     current_level=new_level
                 )
-                self.db.add(character_progress)
+                db.add(character_progress)
             else:
                 # Só atualiza se o novo nível for maior que o atual
                 if new_level > character_progress.current_level:
                     character_progress.current_level = new_level
                     character_progress.last_interaction = func.now()
             
-            self.db.commit()
+            db.commit()
             self.logger.info(f"Nível do personagem {character_id} para o jogador {player_id} atualizado para {new_level}")
             return True
             
         except Exception as e:
-            self.db.rollback()
+            db.rollback()
             self.logger.error(f"Erro ao atualizar nível: {e}")
             return False
     
-    def get_dialogue_history(self, player_id: int, character_id: int, limit: int = 20) -> List[Dict[str, Any]]:
+    def get_dialogue_history(self, db: Session, player_id: int, character_id: int, limit: int = 20) -> List[Dict[str, Any]]:
         """
         Obtém o histórico de diálogo entre um jogador e um personagem.
         
         Args:
+            db: Sessão do banco de dados
             player_id: ID do jogador
             character_id: ID do personagem
             limit: Número máximo de mensagens a retornar
@@ -199,7 +143,7 @@ class CharacterManager:
             Lista de mensagens do histórico
         """
         # Obtém a sessão do jogador ativa
-        player_session = self.db.query(PlayerSession).filter_by(
+        player_session = db.query(PlayerSession).filter_by(
             player_id=player_id,
             game_status='active'
         ).order_by(PlayerSession.start_time.desc()).first()
@@ -209,7 +153,7 @@ class CharacterManager:
             return []
         
         # Busca o histórico de diálogo
-        dialogue_history = self.db.query(DialogueHistory).filter_by(
+        dialogue_history = db.query(DialogueHistory).filter_by(
             session_id=player_session.session_id,
             character_id=character_id
         ).order_by(DialogueHistory.timestamp.desc()).limit(limit).all()
@@ -230,12 +174,13 @@ class CharacterManager:
         
         return history
     
-    def add_dialogue_entry(self, player_id: int, character_id: int, player_statement: str, character_response: str, 
-                         detected_keywords: List[str] = None) -> bool:
+    def add_dialogue_entry(self, db: Session, player_id: int, character_id: int, player_statement: str, 
+                          character_response: str, detected_keywords: List[str] = None) -> bool:
         """
         Adiciona uma entrada ao histórico de diálogo.
         
         Args:
+            db: Sessão do banco de dados
             player_id: ID do jogador
             character_id: ID do personagem
             player_statement: Mensagem do jogador
@@ -247,7 +192,7 @@ class CharacterManager:
         """
         try:
             # Obtém a sessão do jogador ativa
-            player_session = self.db.query(PlayerSession).filter_by(
+            player_session = db.query(PlayerSession).filter_by(
                 player_id=player_id,
                 game_status='active'
             ).order_by(PlayerSession.start_time.desc()).first()
@@ -257,7 +202,7 @@ class CharacterManager:
                 return False
             
             # Obtém o nível atual do personagem para este jogador
-            current_level = self.get_player_character_level(player_id, character_id)
+            current_level = self.get_player_character_level(db, player_id, character_id)
             
             # Cria uma nova entrada no histórico
             dialogue_entry = DialogueHistory(
@@ -269,21 +214,22 @@ class CharacterManager:
                 character_level=current_level
             )
             
-            self.db.add(dialogue_entry)
-            self.db.commit()
+            db.add(dialogue_entry)
+            db.commit()
             
             return True
             
         except Exception as e:
-            self.db.rollback()
+            db.rollback()
             self.logger.error(f"Erro ao adicionar diálogo: {e}")
             return False
     
-    def start_conversation(self, player_id: int, character_id: int) -> Dict[str, Any]:
+    def start_conversation(self, db: Session, player_id: int, character_id: int) -> Dict[str, Any]:
         """
         Inicia uma conversa com um personagem.
         
         Args:
+            db: Sessão do banco de dados
             player_id: ID do jogador
             character_id: ID do personagem
             
@@ -291,7 +237,7 @@ class CharacterManager:
             Dicionário com a mensagem inicial e metadata
         """
         # Obtém os dados do personagem
-        character_data = self.get_character(character_id)
+        character_data = self.get_character(db, character_id)
         if not character_data:
             return {
                 "success": False,
@@ -299,7 +245,7 @@ class CharacterManager:
             }
         
         # Obtém o nível atual para este jogador
-        current_level = self.get_player_character_level(player_id, character_id)
+        current_level = self.get_player_character_level(db, player_id, character_id)
         
         # Obtém os dados do nível atual
         if current_level >= len(character_data["levels"]):
@@ -312,6 +258,7 @@ class CharacterManager:
         
         # Registra esta mensagem inicial no histórico
         self.add_dialogue_entry(
+            db=db,
             player_id=player_id,
             character_id=character_id,
             player_statement="",  # Não há mensagem do jogador inicialmente
@@ -324,6 +271,8 @@ class CharacterManager:
             "character_name": character_data["name"],
             "character_level": current_level
         }
+    
+    # Métodos privados para lógica interna
     
     def _generate_initial_message(self, character_data: Dict[str, Any], level_data: Dict[str, Any]) -> str:
         """
@@ -346,11 +295,12 @@ class CharacterManager:
         else:
             return f"Olá! Eu sou {character_name}. Como posso ajudá-lo?"
     
-    def send_message(self, player_id: int, character_id: int, message: str) -> Dict[str, Any]:
+    def send_message(self, db: Session, player_id: int, character_id: int, message: str) -> Dict[str, Any]:
         """
         Envia uma mensagem a um personagem e processa sua resposta.
         
         Args:
+            db: Sessão do banco de dados
             player_id: ID do jogador
             character_id: ID do personagem
             message: Mensagem do jogador
@@ -359,7 +309,7 @@ class CharacterManager:
             Dicionário com a resposta e metadados
         """
         # Obtém os dados do personagem
-        character_data = self.get_character(character_id)
+        character_data = self.get_character(db, character_id)
         if not character_data:
             return {
                 "success": False,
@@ -367,7 +317,7 @@ class CharacterManager:
             }
         
         # Obtém o nível atual para este jogador
-        current_level = self.get_player_character_level(player_id, character_id)
+        current_level = self.get_player_character_level(db, player_id, character_id)
         
         # Obtém os dados do nível atual
         if current_level >= len(character_data["levels"]):
@@ -376,7 +326,7 @@ class CharacterManager:
         level_data = character_data["levels"][current_level]
         
         # Obtém o histórico de diálogo recente
-        dialogue_history = self.get_dialogue_history(player_id, character_id)
+        dialogue_history = self.get_dialogue_history(db, player_id, character_id)
         
         # Verifica se a mensagem ativa algum gatilho
         trigger_result = self._check_triggers(character_data, level_data, message)
@@ -387,6 +337,7 @@ class CharacterManager:
             
             # Registra no histórico
             self.add_dialogue_entry(
+                db=db,
                 player_id=player_id,
                 character_id=character_id,
                 player_statement=message,
@@ -411,28 +362,14 @@ class CharacterManager:
         # Limpa a resposta
         cleaned_response = self._clean_response(ai_response)
         
-        # Verifica se há evolução com base na resposta
-        evolution_check = self._check_evolution(character_data, level_data, message, cleaned_response)
-        
         # Registra a conversa no histórico
         self.add_dialogue_entry(
+            db=db,
             player_id=player_id,
             character_id=character_id,
             player_statement=message,
             character_response=cleaned_response
         )
-        
-        # Se houve evolução, atualiza o nível
-        if evolution_check["evolved"]:
-            new_level = current_level + 1
-            self.update_character_level(player_id, character_id, new_level)
-            
-            return {
-                "success": True,
-                "message": cleaned_response,
-                "evolution": True,
-                "new_level": new_level
-            }
         
         # Extrai possíveis pistas reveladas
         revealed_clues = self._extract_clues(character_data, level_data, message, cleaned_response)
@@ -448,12 +385,13 @@ class CharacterManager:
         
         return result
     
-    def process_challenge_response(self, player_id: int, character_id: int, challenge_id: int, 
+    def process_challenge_response(self, db: Session, player_id: int, character_id: int, challenge_id: int, 
                                   response: str, evidence_ids: List[int] = None) -> Dict[str, Any]:
         """
         Processa a resposta do jogador a um desafio de gatilho.
         
         Args:
+            db: Sessão do banco de dados
             player_id: ID do jogador
             character_id: ID do personagem
             challenge_id: ID do desafio/gatilho
@@ -464,7 +402,7 @@ class CharacterManager:
             Resultado do processamento do desafio
         """
         # Obtém o gatilho específico
-        trigger = self.db.query(EvolutionTrigger).filter_by(trigger_id=challenge_id).first()
+        trigger = self.character_repository.get_trigger_by_id(db, challenge_id)
         
         if not trigger:
             return {
@@ -473,7 +411,7 @@ class CharacterManager:
             }
         
         # Obtém os requisitos para este gatilho
-        requirements = self.db.query(EvidenceRequirement).filter_by(trigger_id=challenge_id).all()
+        requirements = self.character_repository.get_trigger_requirements(db, challenge_id)
         
         # Verifica se os requisitos foram atendidos
         requirements_met = True
@@ -483,7 +421,8 @@ class CharacterManager:
             # Verifica o tipo de requisito
             if req.requirement_type == "object" and evidence_ids:
                 # Verifica se o objeto necessário foi apresentado
-                if req.required_object_id not in evidence_ids:
+                required_object_id = json.loads(req.required_object_id) if isinstance(req.required_object_id, str) else req.required_object_id
+                if required_object_id not in evidence_ids:
                     requirements_met = False
                     failed_requirement = req
                     break
@@ -494,12 +433,13 @@ class CharacterManager:
         # Determina o resultado
         if requirements_met:
             # Atualiza o nível do personagem
-            current_level = self.get_player_character_level(player_id, character_id)
+            current_level = self.get_player_character_level(db, player_id, character_id)
             new_level = current_level + 1
-            self.update_character_level(player_id, character_id, new_level)
+            self.update_character_level(db, player_id, character_id, new_level)
             
             # Registra o sucesso no histórico
             self.add_dialogue_entry(
+                db=db,
                 player_id=player_id,
                 character_id=character_id,
                 player_statement=response,
@@ -515,6 +455,7 @@ class CharacterManager:
         else:
             # Registra a falha no histórico
             self.add_dialogue_entry(
+                db=db,
                 player_id=player_id,
                 character_id=character_id,
                 player_statement=response,
@@ -530,6 +471,9 @@ class CharacterManager:
                 "evolution": False,
                 "hint": hint
             }
+    
+    # Resto dos métodos para verificação de gatilhos, criação de prompts, etc.
+    # (Os métodos internos podem permanecer basicamente os mesmos)
     
     def _check_triggers(self, character_data: Dict[str, Any], level_data: Dict[str, Any], 
                       message: str) -> Dict[str, Any]:
@@ -581,24 +525,6 @@ class CharacterManager:
                 return result
         
         return result
-    
-    def _check_evolution(self, character_data: Dict[str, Any], level_data: Dict[str, Any], 
-                       user_message: str, ai_response: str) -> Dict[str, Any]:
-        """
-        Verifica se uma interação deve levar à evolução do personagem.
-        
-        Args:
-            character_data: Dados do personagem
-            level_data: Dados do nível atual
-            user_message: Mensagem do jogador
-            ai_response: Resposta da IA
-            
-        Returns:
-            Dicionário indicando se houve evolução
-        """
-        # Por enquanto, assumimos que a evolução só ocorre via gatilhos específicos processados
-        # em process_challenge_response
-        return {"evolved": False}
     
     def _create_prompt(self, character_data: Dict[str, Any], level_data: Dict[str, Any], 
                      dialogue_history: List[Dict[str, str]], user_message: str) -> str:

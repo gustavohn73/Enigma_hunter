@@ -10,38 +10,15 @@ from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.sql import func
 import datetime
 import uuid
+from sqlalchemy.dialects.postgresql import UUID # Added this line
+
 import json
-import os
+
 
 from sqlalchemy.dialects.postgresql import UUID
 
 Base = declarative_base()
 
-class PlayerProgressModel(Base):
-    __tablename__ = "player_progress"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    player_id = Column(String, nullable=False)
-    story_id = Column(Integer, ForeignKey("story.story_id"), nullable=False) # Assuming story_id is an integer foreign key
-    session_id = Column(String, unique=True, nullable=False)
-    start_time = Column(DateTime, nullable=False)
-    last_activity = Column(DateTime, nullable=False)
-    current_location_id = Column(Integer)
-    current_area_id = Column(Integer)
-    discovered_locations = Column(JSON, default=[])
-    discovered_areas = Column(JSON, default={})
-    location_exploration_level = Column(JSON, default={})
-    area_exploration_level = Column(JSON, default={})
-    inventory = Column(JSON, default=[])
-    object_level = Column(JSON, default={})
-    character_level = Column(JSON, default={})
-    dialogue_history = Column(JSON, default={})
-    discovered_clues = Column(JSON, default=[])
-    scanned_qr_codes = Column(JSON, default=[])
-    action_history = Column(JSON, default=[])
-    specialization_points = Column(JSON, default={})
-    specialization_levels = Column(JSON, default={})
-    completed_interactions = Column(JSON, default={"objetos": [], "personagens": [], "areas": [], "pistas": [], "combinacoes": []})
-    session_data = Column(JSON, default={}) # For additional session data, use JSON for flexibility
 
 # Tabelas de associação para relacionamentos many-to-many
 story_character_association = Table(
@@ -356,7 +333,7 @@ class PlayerSession(Base):
     qr_scans = relationship("QRCodeScan", back_populates="session")
     solutions = relationship("PlayerSolution", back_populates="session")
     specializations = relationship("PlayerSpecialization", back_populates="session")
-
+    
 
 class PlayerInventory(Base):
     """Itens coletados por um jogador"""
@@ -458,23 +435,27 @@ class PlayerEnvironmentLevel(Base):
 
 
 class DialogueHistory(Base):
-    """Histórico de diálogos com personagens"""
-    __tablename__ = 'dialogue_history'
+    __tablename__ = "dialogue_history"
     
-    history_id = Column(Integer, primary_key=True)
-    session_id = Column(Integer, ForeignKey('player_session.session_id'))
-    character_id = Column(Integer, ForeignKey('character.character_id'))
-    timestamp = Column(DateTime, default=func.now())
+    dialogue_id = Column(Integer, primary_key=True)
+    session_id = Column(Integer, ForeignKey("player_sessions.session_id"))
+    player_id = Column(Integer, ForeignKey("players.player_id"))
+    character_id = Column(Integer, ForeignKey("characters.character_id"))
     player_statement = Column(Text)
     character_response = Column(Text)
-    detected_keywords = Column(JSON)  # Palavras-chave detectadas
-    triggered_verification = Column(Boolean, default=False)
-    verification_passed = Column(Boolean, default=False)
-    evidence_presented = Column(JSON)  # Evidências apresentadas
-    
+    detected_keywords = Column(ARRAY(String))
+    character_level = Column(Integer)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+    is_key_interaction = Column(Boolean, default=False)
+    evolution_event = Column(Boolean, default=False)
+    trigger_id = Column(Integer, ForeignKey("evolution_triggers.trigger_id"), nullable=True)
+    topic = Column(String)
+    context_level = Column(Integer, default=0)
+
     # Relacionamentos
-    session = relationship("PlayerSession", back_populates="dialogue_history")
-    character = relationship("Character", back_populates="dialogue_history")
+    session = relationship("PlayerSession", back_populates="dialogues")
+    character = relationship("Character", back_populates="dialogues")
+    trigger = relationship("EvolutionTrigger", back_populates="dialogues")
 
 
 class QRCodeScan(Base):
@@ -642,3 +623,29 @@ class PlayerProgress(Base):
             "created_at": str(self.created_at),
             "is_active": self.is_active
         }
+    
+class PlayerProgressModel(Base):
+    __tablename__ = "player_progress"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    player_id = Column(String, nullable=False)
+    story_id = Column(Integer, ForeignKey("story.story_id"), nullable=False)
+    session_id = Column(String, unique=True, nullable=False)
+    start_time = Column(DateTime, nullable=False)
+    last_activity = Column(DateTime, nullable=False)
+    current_location_id = Column(Integer)
+    current_area_id = Column(Integer)
+    discovered_locations = Column(JSON, default=[])
+    discovered_areas = Column(JSON, default={})
+    location_exploration_level = Column(JSON, default={})
+    area_exploration_level = Column(JSON, default={})
+    inventory = Column(JSON, default=[])
+    object_level = Column(JSON, default={})
+    character_level = Column(JSON, default={})
+    dialogue_history = Column(JSON, default={})
+    discovered_clues = Column(JSON, default=[])
+    scanned_qr_codes = Column(JSON, default=[])
+    action_history = Column(JSON, default=[])
+    specialization_points = Column(JSON, default={})
+    specialization_levels = Column(JSON, default={})
+    completed_interactions = Column(JSON, default={"objetos": [], "personagens": [], "areas": [], "pistas": [], "combinacoes": []})
+    session_data = Column(JSON, default={})

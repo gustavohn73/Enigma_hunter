@@ -4,9 +4,12 @@ Especificações Técnicas e Lógicas.txt
 estrutura.txt
 frontend
 historias
+__init__.py
 Lógica do Sistema de Especialização.txt
 __pycache__
+pylint_result.txt
 pytest.py
+README.md
 src
 static
 tests
@@ -61,12 +64,18 @@ pytest.cpython-312.pyc
 data_loader.py
 game_state.py
 gerenciador_personagens.py
+__init__.py
 main.py
+managers
 models
 __pycache__
 qr_code_processor.py
+repositories
 session_manager.py
 utils
+
+./src/managers:
+character_manager.py
 
 ./src/models:
 db_models.py
@@ -80,8 +89,21 @@ __init__.cpython-312.pyc
 ./src/__pycache__:
 data_loader.cpython-312.pyc
 game_state.cpython-312.pyc
+__init__.cpython-312.pyc
 main.cpython-312.pyc
 session_manager.cpython-312.pyc
+
+./src/repositories:
+base_repository.py
+character_repository.py
+clue_repository.py
+DialogueRepository.py
+location_repository.py
+object_repository.py
+player_progress_repository.py
+player_repository.py
+qrcode_repository.py
+story_repository.py
 
 ./src/utils:
 db_setup_script.py
