@@ -1,5 +1,6 @@
+# src/repositories/dialogue_repository.py
 from typing import List, Optional, Dict, Any
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session
 from sqlalchemy import func
 from datetime import datetime
 import json
@@ -12,8 +13,6 @@ from src.models.db_models import (
     CharacterLevel,
     EvolutionTrigger,
     PlayerInventory,
-    PlayerDiscoveredClues,
-    ActiveTrigger,
     EvidenceRequirement
 )
 from src.repositories.base_repository import BaseRepository
@@ -23,6 +22,7 @@ logger = logging.getLogger(__name__)
 class DialogueRepository(BaseRepository[DialogueHistory]):
     """
     Repositório para operações de banco de dados relacionadas a diálogos.
+    Gerencia históricos de diálogos, detecção de gatilhos e evolução de personagens.
     """
     
     def __init__(self):
@@ -72,7 +72,7 @@ class DialogueRepository(BaseRepository[DialogueHistory]):
             "role": "user" if entry.player_statement else "assistant",
             "content": entry.player_statement or entry.character_response,
             "timestamp": entry.timestamp,
-            "detected_keywords": entry.detected_keywords,
+            "detected_keywords": json.loads(entry.detected_keywords) if isinstance(entry.detected_keywords, str) else entry.detected_keywords,
             "character_level": entry.character_level
         } for entry in reversed(dialogue_history)]
     
@@ -100,14 +100,18 @@ class DialogueRepository(BaseRepository[DialogueHistory]):
             if not session:
                 return False
             
+            # Garantir que keywords sejam armazenadas como JSON se o campo for string
+            keywords_data = detected_keywords or []
+            
             entry = DialogueHistory(
                 session_id=session.session_id,
                 character_id=character_id,
                 player_statement=player_statement,
                 character_response=character_response,
-                detected_keywords=detected_keywords or [],
+                detected_keywords=json.dumps(keywords_data) if isinstance(DialogueHistory.detected_keywords.property.columns[0].type, str) else keywords_data,
                 character_level=character_level,
-                timestamp=datetime.utcnow()
+                timestamp=datetime.utcnow(),
+                is_key_interaction=bool(detected_keywords)
             )
             
             db.add(entry)
@@ -115,6 +119,7 @@ class DialogueRepository(BaseRepository[DialogueHistory]):
             return True
             
         except Exception as e:
+            self.logger.error(f"Erro ao adicionar diálogo: {str(e)}")
             db.rollback()
             return False
     
@@ -137,20 +142,31 @@ class DialogueRepository(BaseRepository[DialogueHistory]):
         dialogues = db.query(DialogueHistory).filter(
             DialogueHistory.session_id == session.session_id,
             DialogueHistory.character_id == character_id,
-            DialogueHistory.detected_keywords != []
+            DialogueHistory.detected_keywords != '[]',
+            DialogueHistory.detected_keywords.is_not(None)
         ).order_by(DialogueHistory.timestamp).all()
         
-        return [{
-            "timestamp": dialogue.timestamp,
-            "keywords": dialogue.detected_keywords,
-            "level": dialogue.character_level,
-            "context": {
-                "player_statement": dialogue.player_statement,
-                "character_response": dialogue.character_response
-            }
-        } for dialogue in dialogues]
+        results = []
+        for dialogue in dialogues:
+            try:
+                keywords = json.loads(dialogue.detected_keywords) if isinstance(dialogue.detected_keywords, str) else dialogue.detected_keywords
+                if keywords:
+                    results.append({
+                        "timestamp": dialogue.timestamp,
+                        "keywords": keywords,
+                        "level": dialogue.character_level,
+                        "context": {
+                            "player_statement": dialogue.player_statement,
+                            "character_response": dialogue.character_response
+                        }
+                    })
+            except (json.JSONDecodeError, TypeError):
+                # Ignora entradas com formato inválido
+                pass
+                
+        return results
     
-    def get_key_interactions(self, db: Session, player_id: int, character_id: int) -> List[Dict[str, Any]]:
+    def get_key_interactions(self, db: Session, player_id: int, character_id: int) -> List[DialogueHistory]:
         """
         Obtém interações importantes com gatilhos ou evoluções.
         
@@ -197,7 +213,11 @@ class DialogueRepository(BaseRepository[DialogueHistory]):
         Returns:
             Lista de diálogos do jogador
         """
-        query = db.query(DialogueHistory).filter(DialogueHistory.player_id == player_id)
+        session = self.get_active_session(db, player_id)
+        if not session:
+            return []
+            
+        query = db.query(DialogueHistory).filter(DialogueHistory.session_id == session.session_id)
         
         if character_id:
             query = query.filter(DialogueHistory.character_id == character_id)
@@ -216,55 +236,83 @@ class DialogueRepository(BaseRepository[DialogueHistory]):
         Returns:
             Dicionário com o contexto do diálogo
         """
+        session = self.get_active_session(db, player_id)
+        if not session:
+            return {
+                "character_level": 0,
+                "recent_dialogues": [],
+                "last_interaction": None,
+                "total_interactions": 0
+            }
+            
         # Busca o nível atual do personagem para este jogador
-        character_level = db.query(CharacterLevel).filter(
-            CharacterLevel.character_id == character_id
-        ).order_by(CharacterLevel.level_number.desc()).first()
+        character_level_record = db.query(PlayerCharacterLevel).filter(
+            PlayerCharacterLevel.session_id == session.session_id,
+            PlayerCharacterLevel.character_id == character_id
+        ).first()
+        
+        character_level = character_level_record.current_level if character_level_record else 0
         
         # Busca os últimos diálogos
         recent_dialogues = db.query(DialogueHistory).filter(
-            DialogueHistory.character_id == character_id,
-            DialogueHistory.player_id == player_id
+            DialogueHistory.session_id == session.session_id,
+            DialogueHistory.character_id == character_id
         ).order_by(DialogueHistory.timestamp.desc()).limit(5).all()
         
+        total_interactions = db.query(func.count(DialogueHistory.dialogue_id)).filter(
+            DialogueHistory.session_id == session.session_id,
+            DialogueHistory.character_id == character_id
+        ).scalar() or 0
+        
         return {
-            "character_level": character_level.level_number if character_level else 0,
+            "character_level": character_level,
             "recent_dialogues": recent_dialogues,
             "last_interaction": recent_dialogues[0].timestamp if recent_dialogues else None,
-            "total_interactions": db.query(func.count(DialogueHistory.dialogue_id)).filter(
-                DialogueHistory.character_id == character_id,
-                DialogueHistory.player_id == player_id
-            ).scalar()
+            "total_interactions": total_interactions
         }
     
     def create_dialogue(self, db: Session, dialogue_data: Dict[str, Any]) -> DialogueHistory:
-        """Corrigindo player_message para player_statement"""
-        dialogue = DialogueHistory(
-            player_id=dialogue_data["player_id"],
-            character_id=dialogue_data["character_id"],
-            player_statement=dialogue_data.get("player_statement"),  # Corrigido
-            character_response=dialogue_data.get("character_response"),
-            detected_keywords=dialogue_data.get("detected_keywords", []),
-            context_level=dialogue_data.get("context_level", 0),
-            timestamp=dialogue_data.get("timestamp", datetime.utcnow()),
-            is_key_interaction=dialogue_data.get("is_key_interaction", False),
-            trigger_id=dialogue_data.get("trigger_id")  # Corrigido
-        )
-        
-        db.add(dialogue)
-        db.commit()
-        db.refresh(dialogue)
-        
-        return dialogue
-    
-    def update_dialogue_context(self, db: Session, dialogue_id: int, context_data: Dict[str, Any]) -> Optional[DialogueHistory]:
         """
-        Atualiza o contexto de um diálogo.
+        Cria uma nova entrada de diálogo.
+        
+        Args:
+            db: Sessão do banco de dados
+            dialogue_data: Dados do diálogo
+            
+        Returns:
+            Diálogo criado
+        """
+        try:
+            dialogue = DialogueHistory(
+                session_id=dialogue_data.get("session_id"),
+                character_id=dialogue_data.get("character_id"),
+                player_statement=dialogue_data.get("player_statement"),
+                character_response=dialogue_data.get("character_response"),
+                detected_keywords=dialogue_data.get("detected_keywords", []),
+                character_level=dialogue_data.get("character_level", 0),
+                timestamp=dialogue_data.get("timestamp", datetime.utcnow()),
+                is_key_interaction=dialogue_data.get("is_key_interaction", False),
+                trigger_id=dialogue_data.get("trigger_id")
+            )
+            
+            db.add(dialogue)
+            db.commit()
+            db.refresh(dialogue)
+            
+            return dialogue
+        except Exception as e:
+            self.logger.error(f"Erro ao criar diálogo: {str(e)}")
+            db.rollback()
+            raise
+    
+    def update_dialogue(self, db: Session, dialogue_id: int, dialogue_data: Dict[str, Any]) -> Optional[DialogueHistory]:
+        """
+        Atualiza um diálogo existente.
         
         Args:
             db: Sessão do banco de dados
             dialogue_id: ID do diálogo
-            context_data: Dados do contexto a serem atualizados
+            dialogue_data: Dados a serem atualizados
             
         Returns:
             Diálogo atualizado ou None
@@ -273,46 +321,66 @@ class DialogueRepository(BaseRepository[DialogueHistory]):
         if not dialogue:
             return None
             
-        for key, value in context_data.items():
-            setattr(dialogue, key, value)
+        try:
+            for key, value in dialogue_data.items():
+                if hasattr(dialogue, key):
+                    setattr(dialogue, key, value)
+                    
+            db.commit()
+            db.refresh(dialogue)
             
-        db.commit()
-        db.refresh(dialogue)
-        
-        return dialogue
+            return dialogue
+        except Exception as e:
+            self.logger.error(f"Erro ao atualizar diálogo: {str(e)}")
+            db.rollback()
+            return None
     
-    def get_evolution_triggers(self, db: Session, dialogue_id: int) -> List[Dict[str, Any]]:
+    def check_triggers(self, db: Session, player_id: int, character_id: int, message: str) -> List[Dict[str, Any]]:
         """
-        Obtém os gatilhos de evolução detectados em um diálogo.
+        Verifica se uma mensagem ativa algum gatilho para o personagem.
         
         Args:
             db: Sessão do banco de dados
-            dialogue_id: ID do diálogo
+            player_id: ID do jogador
+            character_id: ID do personagem
+            message: Mensagem do jogador
             
         Returns:
-            Lista de gatilhos de evolução
+            Lista de gatilhos ativados
         """
-        dialogue = self.get_by_id(db, dialogue_id)
-        if not dialogue:
-            return []
-            
-        return dialogue.evolution_triggers
-    
-    def check_triggers(self, db: Session, player_id: int, character_id: int, message: str) -> List[Dict[str, Any]]:
-        """Adicionando tratamento de erros"""
         try:
-            triggers = db.query(EvolutionTrigger).join(
-                CharacterLevel, 
-                CharacterLevel.level_id == EvolutionTrigger.level_id
-            ).filter(
-                CharacterLevel.character_id == character_id
+            session = self.get_active_session(db, player_id)
+            if not session:
+                return []
+                
+            # Obtém o nível atual do personagem
+            character_level_record = db.query(PlayerCharacterLevel).filter(
+                PlayerCharacterLevel.session_id == session.session_id,
+                PlayerCharacterLevel.character_id == character_id
+            ).first()
+            
+            current_level = character_level_record.current_level if character_level_record else 0
+            
+            # Busca informações do nível atual do personagem
+            character_level = db.query(CharacterLevel).filter(
+                CharacterLevel.character_id == character_id,
+                CharacterLevel.level_number == current_level
+            ).first()
+            
+            if not character_level:
+                return []
+            
+            # Busca gatilhos para este nível
+            triggers = db.query(EvolutionTrigger).filter(
+                EvolutionTrigger.level_id == character_level.level_id
             ).all()
             
             activated_triggers = []
             message_lower = message.lower()
             
             for trigger in triggers:
-                if trigger.trigger_keyword.lower() in message_lower:
+                trigger_keyword = trigger.trigger_keyword.lower() if trigger.trigger_keyword else ""
+                if trigger_keyword and trigger_keyword in message_lower:
                     activated_triggers.append({
                         "trigger_id": trigger.trigger_id,
                         "keyword": trigger.trigger_keyword,
@@ -323,160 +391,172 @@ class DialogueRepository(BaseRepository[DialogueHistory]):
             
             return activated_triggers
         except Exception as e:
-            logging.error(f"Erro ao verificar triggers: {str(e)}")
+            self.logger.error(f"Erro ao verificar triggers: {str(e)}")
             return []
 
-    def check_evolution_requirements(self, db: Session, player_id: int, character_id: int, 
-                                trigger_id: int) -> Dict[str, bool]:
+    def check_evolution_requirements(self, db: Session, player_id: int, trigger_id: int) -> Dict[str, Any]:
         """
         Verifica se os requisitos para evolução do personagem foram atendidos.
+        
+        Args:
+            db: Sessão do banco de dados
+            player_id: ID do jogador
+            trigger_id: ID do gatilho
+            
+        Returns:
+            Resultado da verificação
         """
-        # Busca os requisitos do gatilho
-        requirements = db.query(EvidenceRequirement).filter(
-            EvidenceRequirement.trigger_id == trigger_id
-        ).all()
-        
-        if not requirements:
-            return {"met": True, "missing": []}
-        
-        # Verifica cada requisito
-        missing_requirements = []
-        for req in requirements:
-            if req.requirement_type == "object":
-                # Verifica se o jogador tem o objeto necessário
-                has_object = db.query(PlayerInventory).filter(
-                    PlayerInventory.player_id == player_id,
-                    PlayerInventory.object_id == req.required_object_id
-                ).first() is not None
+        try:
+            session = self.get_active_session(db, player_id)
+            if not session:
+                return {"met": False, "missing": ["Sessão não encontrada"]}
                 
-                if not has_object:
+            # Busca os requisitos do gatilho
+            requirements = db.query(EvidenceRequirement).filter(
+                EvidenceRequirement.trigger_id == trigger_id
+            ).all()
+            
+            if not requirements:
+                # Se não há requisitos específicos, assume-se que foi atendido
+                return {"met": True, "missing": []}
+            
+            # Verifica cada requisito
+            missing_requirements = []
+            for req in requirements:
+                if req.requirement_type == "object":
+                    # Verifica se o jogador tem o objeto necessário no inventário
+                    required_object_id = self._get_required_object_id(req)
+                    if required_object_id:
+                        has_object = db.query(PlayerInventory).filter(
+                            PlayerInventory.session_id == session.session_id,
+                            PlayerInventory.object_id == required_object_id
+                        ).first() is not None
+                        
+                        if not has_object:
+                            missing_requirements.append({
+                                "type": "object",
+                                "id": required_object_id,
+                                "hint": req.hint_if_incorrect
+                            })
+                elif req.requirement_type == "knowledge" and req.required_knowledge:
+                    # Verifica conhecimentos específicos (implementação simplificada)
+                    # A implementação real dependeria da estrutura exata do jogo
                     missing_requirements.append({
-                        "type": "object",
-                        "id": req.required_object_id,
+                        "type": "knowledge",
+                        "description": "Conhecimento específico necessário",
                         "hint": req.hint_if_incorrect
                     })
-                    
-            elif req.requirement_type == "knowledge":
-                # Verifica se o jogador descobriu as pistas necessárias
-                required_knowledge = json.loads(req.required_knowledge)
-                for clue_id in required_knowledge.get("required_clues", []):
-                    has_clue = db.query(PlayerDiscoveredClues).filter(
-                        PlayerDiscoveredClues.player_id == player_id,
-                        PlayerDiscoveredClues.clue_id == clue_id
-                    ).first() is not None
-                    
-                    if not has_clue:
-                        missing_requirements.append({
-                            "type": "knowledge",
-                            "clue_id": clue_id,
-                            "hint": req.hint_if_incorrect
-                        })
-        
-        return {
-            "met": len(missing_requirements) == 0,
-            "missing": missing_requirements
-        }
-
-    def get_evolution_history(self, db: Session, player_id: int, character_id: int) -> List[Dict[str, Any]]:
-        """
-        Obtém o histórico de evolução do relacionamento entre jogador e personagem.
-        """
-        history = db.query(DialogueHistory).filter(
-            DialogueHistory.player_id == player_id,
-            DialogueHistory.character_id == character_id,
-            DialogueHistory.evolution_event == True
-        ).order_by(DialogueHistory.timestamp).all()
-        
-        return [{
-            "timestamp": entry.timestamp,
-            "old_level": entry.character_level,
-            "new_level": entry.character_level + 1,
-            "trigger_id": entry.trigger_id,
-            "dialogue_context": {
-                "player_statement": entry.player_statement,
-                "character_response": entry.character_response
+                
+            return {
+                "met": len(missing_requirements) == 0,
+                "missing": missing_requirements
             }
-        } for entry in history]
-
-    def get_dialogue_state(self, db: Session, player_id: int, character_id: int) -> Dict[str, Any]:
+        except Exception as e:
+            self.logger.error(f"Erro ao verificar requisitos de evolução: {str(e)}")
+            return {"met": False, "missing": [f"Erro interno: {str(e)}"]}
+    
+    def _get_required_object_id(self, requirement: EvidenceRequirement) -> Optional[int]:
         """
-        Obtém o estado atual do diálogo, incluindo contexto e flags importantes.
+        Obtém o ID do objeto necessário de um requisito.
+        Trata diferentes formatos possíveis.
+        
+        Args:
+            requirement: Requisito a ser processado
+            
+        Returns:
+            ID do objeto ou None
         """
-        # Busca a última interação
-        last_interaction = db.query(DialogueHistory).filter(
-            DialogueHistory.player_id == player_id,
-            DialogueHistory.character_id == character_id
-        ).order_by(DialogueHistory.timestamp.desc()).first()
-        
-        # Busca o nível atual
-        current_level = db.query(PlayerCharacterLevel).filter(
-            PlayerCharacterLevel.player_id == player_id,
-            PlayerCharacterLevel.character_id == character_id
-        ).first()
-        
-        # Busca gatilhos ativos
-        active_triggers = db.query(ActiveTrigger).filter(
-            ActiveTrigger.player_id == player_id,
-            ActiveTrigger.character_id == character_id,
-            ActiveTrigger.is_resolved == False
-        ).all()
-        
-        return {
-            "current_level": current_level.level if current_level else 0,
-            "last_interaction_time": last_interaction.timestamp if last_interaction else None,
-            "active_triggers": [trigger.trigger_id for trigger in active_triggers],
-            "defensive_state": bool(active_triggers),
-            "total_interactions": db.query(DialogueHistory).filter(
-                DialogueHistory.player_id == player_id,
-                DialogueHistory.character_id == character_id
-            ).count()
-        }
+        if hasattr(requirement, 'required_object_id'):
+            if isinstance(requirement.required_object_id, int):
+                return requirement.required_object_id
+            elif isinstance(requirement.required_object_id, str):
+                try:
+                    # Tenta interpretar como JSON
+                    obj_data = json.loads(requirement.required_object_id)
+                    if isinstance(obj_data, int):
+                        return obj_data
+                    elif isinstance(obj_data, list) and obj_data:
+                        return obj_data[0]  # Retorna o primeiro da lista
+                except json.JSONDecodeError:
+                    # Se não for JSON, tenta converter diretamente para int
+                    try:
+                        return int(requirement.required_object_id)
+                    except ValueError:
+                        return None
+        return None
 
-    def analyze_interaction_patterns(self, db: Session, player_id: int, character_id: int) -> Dict[str, Any]:
-        """Corrigindo referência ao campo id para dialogue_id"""
-        keyword_frequency = db.query(
-            DialogueHistory.detected_keywords,
-            func.count(DialogueHistory.dialogue_id).label('count')  # Corrigido
-        ).filter(
-            DialogueHistory.player_id == player_id,
-            DialogueHistory.character_id == character_id
-        ).group_by(DialogueHistory.detected_keywords).all()
+    def get_dialogue_by_trigger(self, db: Session, trigger_id: int) -> List[DialogueHistory]:
+        """
+        Obtém diálogos relacionados a um gatilho específico.
         
-        # Análise de tópicos recorrentes
-        topic_patterns = db.query(
-            DialogueHistory.topic,
-            func.count(DialogueHistory.id).label('frequency')
-        ).filter(
-            DialogueHistory.player_id == player_id,
-            DialogueHistory.character_id == character_id
-        ).group_by(DialogueHistory.topic).all()
-        
-        # Análise de gatilhos ativados
-        triggered_events = db.query(
-            DialogueHistory
-        ).filter(
-            DialogueHistory.player_id == player_id,
-            DialogueHistory.character_id == character_id,
-            DialogueHistory.trigger_id.isnot(None)
+        Args:
+            db: Sessão do banco de dados
+            trigger_id: ID do gatilho
+            
+        Returns:
+            Lista de diálogos relacionados ao gatilho
+        """
+        return db.query(DialogueHistory).filter(
+            DialogueHistory.trigger_id == trigger_id
         ).order_by(DialogueHistory.timestamp).all()
+    
+    def register_evolution(self, db: Session, player_id: int, character_id: int, 
+                         trigger_id: int, old_level: int, new_level: int) -> bool:
+        """
+        Registra a evolução de um personagem após um gatilho bem-sucedido.
         
-        return {
-            "keyword_patterns": [
-                {"keyword": k, "frequency": c} for k, c in keyword_frequency
-            ],
-            "topic_patterns": [
-                {"topic": t, "frequency": f} for t, f in topic_patterns
-            ],
-            "trigger_history": [
-                {
-                    "trigger_id": event.trigger_id,
-                    "timestamp": event.timestamp,
-                    "success": event.evolution_event
-                } for event in triggered_events
-            ],
-            "interaction_frequency": {
-                "total": len(triggered_events),
-                "successful": sum(1 for e in triggered_events if e.evolution_event)
-            }
-        }
-
+        Args:
+            db: Sessão do banco de dados
+            player_id: ID do jogador
+            character_id: ID do personagem
+            trigger_id: ID do gatilho que causou a evolução
+            old_level: Nível anterior
+            new_level: Novo nível
+            
+        Returns:
+            True se registrado com sucesso
+        """
+        try:
+            session = self.get_active_session(db, player_id)
+            if not session:
+                return False
+                
+            # Atualiza o nível do personagem
+            character_level = db.query(PlayerCharacterLevel).filter(
+                PlayerCharacterLevel.session_id == session.session_id,
+                PlayerCharacterLevel.character_id == character_id
+            ).first()
+            
+            if not character_level:
+                character_level = PlayerCharacterLevel(
+                    session_id=session.session_id,
+                    character_id=character_id,
+                    current_level=new_level,
+                    last_interaction=datetime.utcnow()
+                )
+                db.add(character_level)
+            else:
+                character_level.current_level = new_level
+                character_level.last_interaction = datetime.utcnow()
+            
+            # Cria um registro de evolução no histórico de diálogos
+            evolution_record = DialogueHistory(
+                session_id=session.session_id,
+                character_id=character_id,
+                player_statement="[Evolução de Personagem]",
+                character_response=f"[Personagem evoluiu do nível {old_level} para o nível {new_level}]",
+                character_level=old_level,
+                is_key_interaction=True,
+                evolution_event=True,
+                trigger_id=trigger_id,
+                timestamp=datetime.utcnow()
+            )
+            
+            db.add(evolution_record)
+            db.commit()
+            
+            return True
+        except Exception as e:
+            self.logger.error(f"Erro ao registrar evolução: {str(e)}")
+            db.rollback()
+            return False
