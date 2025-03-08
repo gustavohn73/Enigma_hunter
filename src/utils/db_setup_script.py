@@ -13,6 +13,7 @@ import logging
 from pathlib import Path
 from sqlalchemy import exc
 import uuid
+from sqlalchemy.orm import Session 
 from src.models.db_models import PlayerProgress
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
@@ -184,13 +185,50 @@ RESULTADO:""",
     logger.info("Templates de prompt configurados com sucesso")
 
 
-def load_story_data(story_path):
+def load_story_data(session: Session, story_dir: str) -> None:
+    """
+    Carrega os dados da história no banco de dados.
+    """
+    logger = logging.getLogger('setup_db')
+    logger.info(f"Carregando dados da história do diretório: {story_dir}")
+    
     try:
-      with open(story_path / "historia_base.json", 'r', encoding='utf-8') as f:
-        return json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError) as e:
-        logger.error(f"Error loading story data: {e}")
-        return None
+        # Carregar historia_base.json
+        historia_path = Path(story_dir) / "historia_base.json"
+        if not historia_path.exists():
+            raise FileNotFoundError(f"Arquivo historia_base.json não encontrado em {story_dir}")
+            
+        with open(historia_path, 'r', encoding='utf-8') as f:
+            story_data = json.load(f)
+            
+        # Criar objeto Story
+        story = Story(
+            title=story_data['title'],
+            description=story_data['description'],
+            introduction=story_data['introduction'],
+            conclusion=story_data.get('conclusion'),
+            difficulty_level=story_data.get('difficulty_level', 1),
+            solution_criteria=story_data.get('solution_criteria', {}),
+            specialization_config=story_data.get('specialization_config', {}),
+            is_active=True
+        )
+        
+        session.add(story)
+        session.flush()  # Para obter o ID da história
+        
+        logger.info(f"História base carregada: {story.title}")
+        
+        # Carregar outros dados usando as funções corretas
+        load_environments(session, story, Path(story_dir))
+        load_characters(session, story, Path(story_dir))
+        load_objects_and_clues(session, story, Path(story_dir))
+        load_qrcodes(session, story, Path(story_dir))
+        
+        logger.info("Dados da história carregados com sucesso")
+        
+    except Exception as e:
+        logger.error(f"Erro ao carregar dados da história: {str(e)}")
+        raise
 
 def create_and_add_story(session, story_data, specialization_config):
     try:
@@ -759,43 +797,46 @@ def load_qrcodes(session, story, story_path):
                 logger.info(f"Carregado QR code: {qrcode.uuid} (Tipo: {qrcode.target_type}, ID: {qrcode.target_id})")
 
 
-def main(db_url=None, story_dir=None, reset=False):
-    """Função principal para inicializar o banco de dados."""
-    parser = argparse.ArgumentParser(description='Inicializar banco de dados do Enigma Hunter')
-    parser.add_argument('--db', default=f'sqlite:///{DATABASE_DIR}/enigma_hunter.db', 
-                      help='URL de conexão do banco de dados')
-    parser.add_argument('--story-dir', help='Diretório da história para carregar')
-    parser.add_argument('--reset', action='store_true', help='Resetar banco de dados existente')
-    args = parser.parse_args()
-
-    # Reseta o banco se solicitado
-    db_file = Path(args.db.replace('sqlite:///', ''))
-    if args.reset and db_file.exists():
-        logger.info(f"Removendo banco de dados existente: {db_file}")
-        db_file.unlink()
-    
-    # Inicializar banco de dados
-    session = init_db(args.db)
+def main(db_url: str, story_dir: str, reset: bool = False):
+    """Função principal de setup do banco de dados"""
+    logger = logging.getLogger('setup_db')
     
     try:
-        # Configurar templates de prompt padrão
-        setup_templates(session)
+        logger.info(f"Iniciando setup com URL: {db_url}")
+        logger.info(f"Diretório da história: {story_dir}")
         
-        # Carregar história se diretório fornecido
-        if args.story_dir:
-            story = load_story(session, args.story_dir)
-            if story:
-                logger.info(f"História '{story.title}' carregada com sucesso")
+        # Criar engine
+        engine = create_engine(db_url)
+        logger.info("Engine criada")
         
-        logger.info("Inicialização do banco de dados concluída com sucesso!")
+        if reset:
+            logger.info("Dropping todas as tabelas...")
+            Base.metadata.drop_all(engine)
+        
+        logger.info("Criando todas as tabelas...")
+        Base.metadata.create_all(engine)
+        
+        # Criar sessão
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        
+        try:
+            logger.info("Configurando templates...")
+            setup_templates(session)
+            
+            logger.info("Carregando dados da história...")
+            load_story_data(session, story_dir)
+            
+            session.commit()
+            logger.info("Setup concluído com sucesso!")
+            
+        except Exception as e:
+            session.rollback()
+            logger.error(f"Erro durante o setup: {str(e)}")
+            raise
+        finally:
+            session.close()
+            
     except Exception as e:
-        logger.error(f"Erro durante a inicialização do banco de dados: {e}")
-        session.rollback()
+        logger.error(f"Erro durante a inicialização do banco de dados: {str(e)}")
         raise
-    finally:
-        session.close()
-
-'''''
-if __name__ == "__main__":
-    main()
-'''''

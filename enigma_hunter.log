@@ -1,0 +1,76 @@
+2025-03-08 21:51:40,820 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-08 21:51:40,832 - __main__ - ERROR - Erro fatal: 'EnigmaHunterCLI' object has no attribute 'character_manager'
+2025-03-08 21:52:01,218 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-08 21:52:01,225 - __main__ - ERROR - Erro fatal: 'EnigmaHunterCLI' object has no attribute 'character_manager'
+2025-03-08 21:59:37,649 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-08 21:59:47,488 - __main__ - ERROR - Erro fatal: type object 'Story' has no attribute 'created_date'
+2025-03-08 22:06:37,533 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-08 22:06:42,646 - src.repositories.story_repository - ERROR - Erro ao buscar todas as histórias: (sqlite3.OperationalError) no such table: story
+[SQL: SELECT story.story_id AS story_story_id, story.title AS story_title, story.description AS story_description, story.introduction AS story_introduction, story.conclusion AS story_conclusion, story.difficulty_level AS story_difficulty_level, story.solution_criteria AS story_solution_criteria, story.specialization_config AS story_specialization_config, story.is_active AS story_is_active, story.created_at AS story_created_at, story.updated_at AS story_updated_at 
+FROM story 
+WHERE story.is_active = 1 ORDER BY story.created_at DESC]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-03-08 22:06:42,646 - __main__ - ERROR - Erro fatal: (sqlite3.OperationalError) no such table: story
+[SQL: SELECT story.story_id AS story_story_id, story.title AS story_title, story.description AS story_description, story.introduction AS story_introduction, story.conclusion AS story_conclusion, story.difficulty_level AS story_difficulty_level, story.solution_criteria AS story_solution_criteria, story.specialization_config AS story_specialization_config, story.is_active AS story_is_active, story.created_at AS story_created_at, story.updated_at AS story_updated_at 
+FROM story 
+WHERE story.is_active = 1 ORDER BY story.created_at DESC]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-03-08 22:34:10,704 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-08 22:34:15,389 - src.repositories.story_repository - ERROR - Erro ao buscar todas as histórias: (sqlite3.OperationalError) no such table: story
+[SQL: SELECT story.story_id AS story_story_id, story.title AS story_title, story.description AS story_description, story.introduction AS story_introduction, story.conclusion AS story_conclusion, story.difficulty_level AS story_difficulty_level, story.solution_criteria AS story_solution_criteria, story.specialization_config AS story_specialization_config, story.is_active AS story_is_active, story.created_at AS story_created_at, story.updated_at AS story_updated_at 
+FROM story 
+WHERE story.is_active = 1 ORDER BY story.created_at DESC]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-03-08 22:34:15,389 - __main__ - ERROR - Erro fatal: (sqlite3.OperationalError) no such table: story
+[SQL: SELECT story.story_id AS story_story_id, story.title AS story_title, story.description AS story_description, story.introduction AS story_introduction, story.conclusion AS story_conclusion, story.difficulty_level AS story_difficulty_level, story.solution_criteria AS story_solution_criteria, story.specialization_config AS story_specialization_config, story.is_active AS story_is_active, story.created_at AS story_created_at, story.updated_at AS story_updated_at 
+FROM story 
+WHERE story.is_active = 1 ORDER BY story.created_at DESC]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-03-08 22:37:07,134 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-08 22:37:11,705 - src.repositories.story_repository - ERROR - Erro ao buscar todas as histórias: (sqlite3.OperationalError) no such table: story
+[SQL: SELECT story.story_id AS story_story_id, story.title AS story_title, story.description AS story_description, story.introduction AS story_introduction, story.conclusion AS story_conclusion, story.difficulty_level AS story_difficulty_level, story.solution_criteria AS story_solution_criteria, story.specialization_config AS story_specialization_config, story.is_active AS story_is_active, story.created_at AS story_created_at, story.updated_at AS story_updated_at 
+FROM story 
+WHERE story.is_active = 1 ORDER BY story.created_at DESC]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-03-08 22:37:11,705 - __main__ - ERROR - Erro fatal: (sqlite3.OperationalError) no such table: story
+[SQL: SELECT story.story_id AS story_story_id, story.title AS story_title, story.description AS story_description, story.introduction AS story_introduction, story.conclusion AS story_conclusion, story.difficulty_level AS story_difficulty_level, story.solution_criteria AS story_solution_criteria, story.specialization_config AS story_specialization_config, story.is_active AS story_is_active, story.created_at AS story_created_at, story.updated_at AS story_updated_at 
+FROM story 
+WHERE story.is_active = 1 ORDER BY story.created_at DESC]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-03-08 22:40:42,141 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-08 22:40:46,141 - src.repositories.story_repository - ERROR - Erro ao buscar todas as histórias: (sqlite3.OperationalError) no such table: story
+[SQL: SELECT story.story_id AS story_story_id, story.title AS story_title, story.description AS story_description, story.introduction AS story_introduction, story.conclusion AS story_conclusion, story.difficulty_level AS story_difficulty_level, story.solution_criteria AS story_solution_criteria, story.specialization_config AS story_specialization_config, story.is_active AS story_is_active, story.created_at AS story_created_at, story.updated_at AS story_updated_at 
+FROM story 
+WHERE story.is_active = 1 ORDER BY story.created_at DESC]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-03-08 22:40:46,141 - __main__ - ERROR - Erro fatal: (sqlite3.OperationalError) no such table: story
+[SQL: SELECT story.story_id AS story_story_id, story.title AS story_title, story.description AS story_description, story.introduction AS story_introduction, story.conclusion AS story_conclusion, story.difficulty_level AS story_difficulty_level, story.solution_criteria AS story_solution_criteria, story.specialization_config AS story_specialization_config, story.is_active AS story_is_active, story.created_at AS story_created_at, story.updated_at AS story_updated_at 
+FROM story 
+WHERE story.is_active = 1 ORDER BY story.created_at DESC]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-03-08 23:00:08,878 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-08 23:00:12,950 - src.repositories.story_repository - ERROR - Erro ao buscar todas as histórias: (sqlite3.OperationalError) no such table: story
+[SQL: SELECT story.story_id AS story_story_id, story.title AS story_title, story.description AS story_description, story.introduction AS story_introduction, story.conclusion AS story_conclusion, story.difficulty_level AS story_difficulty_level, story.solution_criteria AS story_solution_criteria, story.specialization_config AS story_specialization_config, story.is_active AS story_is_active, story.created_at AS story_created_at, story.updated_at AS story_updated_at 
+FROM story 
+WHERE story.is_active = 1 ORDER BY story.created_at DESC]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-03-08 23:00:12,950 - __main__ - ERROR - Erro fatal: (sqlite3.OperationalError) no such table: story
+[SQL: SELECT story.story_id AS story_story_id, story.title AS story_title, story.description AS story_description, story.introduction AS story_introduction, story.conclusion AS story_conclusion, story.difficulty_level AS story_difficulty_level, story.solution_criteria AS story_solution_criteria, story.specialization_config AS story_specialization_config, story.is_active AS story_is_active, story.created_at AS story_created_at, story.updated_at AS story_updated_at 
+FROM story 
+WHERE story.is_active = 1 ORDER BY story.created_at DESC]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-03-08 23:01:04,268 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-08 23:01:09,730 - src.repositories.story_repository - ERROR - Erro ao buscar todas as histórias: (sqlite3.OperationalError) no such table: story
+[SQL: SELECT story.story_id AS story_story_id, story.title AS story_title, story.description AS story_description, story.introduction AS story_introduction, story.conclusion AS story_conclusion, story.difficulty_level AS story_difficulty_level, story.solution_criteria AS story_solution_criteria, story.specialization_config AS story_specialization_config, story.is_active AS story_is_active, story.created_at AS story_created_at, story.updated_at AS story_updated_at 
+FROM story 
+WHERE story.is_active = 1 ORDER BY story.created_at DESC]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-03-08 23:01:09,730 - __main__ - ERROR - Erro fatal: (sqlite3.OperationalError) no such table: story
+[SQL: SELECT story.story_id AS story_story_id, story.title AS story_title, story.description AS story_description, story.introduction AS story_introduction, story.conclusion AS story_conclusion, story.difficulty_level AS story_difficulty_level, story.solution_criteria AS story_solution_criteria, story.specialization_config AS story_specialization_config, story.is_active AS story_is_active, story.created_at AS story_created_at, story.updated_at AS story_updated_at 
+FROM story 
+WHERE story.is_active = 1 ORDER BY story.created_at DESC]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-03-08 23:04:30,607 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-08 23:04:45,790 - src.repositories.player_progress_repository - ERROR - Erro ao criar sessão de jogador: 'start_time' is an invalid keyword argument for PlayerProgress
+2025-03-08 23:10:52,912 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-08 23:11:00,706 - src.repositories.player_progress_repository - ERROR - Erro ao criar sessão de jogador: 'current_location_id' is an invalid keyword argument for PlayerProgress

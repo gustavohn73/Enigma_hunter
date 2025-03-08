@@ -39,8 +39,8 @@ def init_database():
     db_dir = Path("database")
     db_dir.mkdir(exist_ok=True)
     
-    # Verifica se o script db-setup-script.py existe
-    setup_script = Path("src/utils/db-setup-script.py")
+    # Verifica se o script db_setup_script.py existe
+    setup_script = Path("src/utils/db_setup_script.py")
     if not setup_script.exists():
         print(f"Erro: Script {setup_script} não encontrado!")
         return

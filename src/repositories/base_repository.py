@@ -1,13 +1,13 @@
 # src/repositories/base_repository.py
 from typing import TypeVar, Generic, Type, Optional, List, Dict, Any, Tuple, Callable
 from sqlalchemy.orm import Session
-from sqlalchemy.ext.declarative import DeclarativeBase
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.inspection import inspect
 from sqlalchemy import func
 import logging
 
-T = TypeVar('T', bound=DeclarativeBase)
+T = TypeVar('T', bound=declarative_base)
 
 class BaseRepository(Generic[T]):
     """

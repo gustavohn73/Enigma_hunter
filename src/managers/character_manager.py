@@ -2,16 +2,12 @@
 
 import json
 import logging
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Optional, Tuple
+import traceback
+import time
 
 import requests
 from sqlalchemy.orm import Session
-
-from src.repositories.character_repository import CharacterRepository
-from src.repositories.dialogue_repository import DialogueRepository
-from src.models.db_models import PlayerCharacterLevel, Character, CharacterLevel, EvolutionTrigger
-
-logger = logging.getLogger(__name__)
 
 class CharacterManager:
     """
@@ -26,10 +22,13 @@ class CharacterManager:
     
     def __init__(
         self,
-        character_repository: CharacterRepository,
-        dialogue_repository: DialogueRepository,
+        character_repository,
+        dialogue_repository,
         ai_model: str = "llama3",
-        api_url: str = "http://localhost:11434/api/generate"
+        api_url: str = "http://localhost:11434/api/generate",
+        max_retries: int = 3,
+        retry_delay: int = 2,
+        timeout: int = 30
     ):
         """
         Inicializa o gerenciador de personagens.
@@ -39,14 +38,23 @@ class CharacterManager:
             dialogue_repository: Repositório para acesso aos diálogos
             ai_model: Modelo de IA a ser utilizado (padrão: llama3)
             api_url: URL da API do modelo de IA
+            max_retries: Número máximo de tentativas para conexão com a IA
+            retry_delay: Tempo de espera entre tentativas em segundos
+            timeout: Tempo limite para respostas da IA em segundos
         """
         self.character_repository = character_repository
         self.dialogue_repository = dialogue_repository
         self.ai_model = ai_model
         self.api_url = api_url
-        self.logger = logger
+        self.max_retries = max_retries
+        self.retry_delay = retry_delay
+        self.timeout = timeout
         
-        # Configuração do logger
+        self.logger = logging.getLogger(__name__)
+        self._configure_logger()
+    
+    def _configure_logger(self) -> None:
+        """Configura o logger com formato padrão se ainda não configurado."""
         if not self.logger.handlers:
             handler = logging.StreamHandler()
             formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -65,7 +73,11 @@ class CharacterManager:
         Returns:
             Dados do personagem ou None se não encontrado
         """
-        return self.character_repository.get_character_with_levels(db, character_id)
+        try:
+            return self.character_repository.get_character_with_levels(db, character_id)
+        except Exception as e:
+            self.logger.error(f"Erro ao obter dados do personagem {character_id}: {str(e)}")
+            return None
     
     def get_character_level(self, db: Session, session_id: str, character_id: int) -> int:
         """
@@ -80,19 +92,9 @@ class CharacterManager:
             Nível atual do personagem para esta sessão
         """
         try:
-            # Busca o progresso do personagem para esta sessão
-            character_level = db.query(PlayerCharacterLevel).filter(
-                PlayerCharacterLevel.session_id == session_id,
-                PlayerCharacterLevel.character_id == character_id
-            ).first()
-            
-            # Se não há registro, o nível é 0 (inicial)
-            if not character_level:
-                return 0
-            
-            return character_level.current_level
+            return self.character_repository.get_player_character_level(db, session_id, character_id)
         except Exception as e:
-            self.logger.error(f"Erro ao obter nível do personagem: {str(e)}")
+            self.logger.error(f"Erro ao obter nível do personagem {character_id}: {str(e)}")
             return 0
     
     def update_character_level(self, db: Session, session_id: str, character_id: int, new_level: int) -> bool:
@@ -109,32 +111,17 @@ class CharacterManager:
             True se atualizado com sucesso, False caso contrário
         """
         try:
-            # Busca o progresso com este personagem
-            character_level = db.query(PlayerCharacterLevel).filter(
-                PlayerCharacterLevel.session_id == session_id,
-                PlayerCharacterLevel.character_id == character_id
-            ).first()
+            # Usar o repositório para atualizar o nível
+            result = self.character_repository.update_player_character_level(
+                db, session_id, character_id, new_level
+            )
             
-            # Se não existe, cria um novo registro
-            if not character_level:
-                character_level = PlayerCharacterLevel(
-                    session_id=session_id,
-                    character_id=character_id,
-                    current_level=new_level
-                )
-                db.add(character_level)
-            else:
-                # Só atualiza se o novo nível for maior que o atual
-                if new_level > character_level.current_level:
-                    character_level.current_level = new_level
+            if result:
+                self.logger.info(f"Nível do personagem {character_id} atualizado para {new_level} (sessão {session_id})")
             
-            db.commit()
-            self.logger.info(f"Nível do personagem {character_id} para a sessão {session_id} atualizado para {new_level}")
-            return True
-            
+            return result
         except Exception as e:
-            db.rollback()
-            self.logger.error(f"Erro ao atualizar nível: {e}")
+            self.logger.error(f"Erro ao atualizar nível de personagem: {str(e)}")
             return False
     
     def start_conversation(self, db: Session, session_id: str, character_id: int) -> Dict[str, Any]:
@@ -187,10 +174,10 @@ class CharacterManager:
                 "character_level": current_level
             }
         except Exception as e:
-            self.logger.error(f"Erro ao iniciar conversa: {str(e)}")
+            self.logger.error(f"Erro ao iniciar conversa: {str(e)}\n{traceback.format_exc()}")
             return {
                 "success": False,
-                "message": f"Erro ao iniciar conversa: {str(e)}"
+                "message": "Erro ao iniciar conversa. Por favor, tente novamente."
             }
     
     def _generate_initial_message(self, character_data: Dict[str, Any], level_data: Dict[str, Any]) -> str:
@@ -206,6 +193,14 @@ class CharacterManager:
         """
         character_name = character_data["name"]
         
+        # Verificar se há instruções específicas para o nível
+        ia_instructions = level_data.get("ia_instruction_set", {})
+        greeting = ia_instructions.get("greeting", "")
+        
+        if greeting:
+            return greeting
+            
+        # Mensagem padrão baseada no comportamento defensivo
         if level_data.get("is_defensive", False):
             return f"Olá. Sou {character_name}. O que você quer?"
         else:
@@ -246,7 +241,9 @@ class CharacterManager:
             dialogue_history = self.dialogue_repository.get_dialogue_history(db, session_id, character_id)
             
             # Verifica se a mensagem ativa algum gatilho
-            trigger_result = self._check_triggers(db, session_id, character_id, message)
+            trigger_result = self.dialogue_repository.check_trigger_activation(
+                db, session_id, character_id, current_level, message
+            )
             
             if trigger_result["triggered"]:
                 # Processa a resposta de desafio
@@ -260,7 +257,8 @@ class CharacterManager:
                     player_statement=message,
                     character_response=defensive_response,
                     detected_keywords=[trigger_result["keyword"]],
-                    character_level=current_level
+                    character_level=current_level,
+                    is_key_interaction=True
                 )
                 
                 # Retorna a resposta com informações sobre o desafio
@@ -276,10 +274,13 @@ class CharacterManager:
             prompt = self._create_prompt(character_data, level_data, dialogue_history, message)
             
             # Envia o prompt para a IA
-            ai_response = self._query_ai(prompt)
+            ai_response = self._query_ai_with_retry(prompt)
             
             # Limpa a resposta
             cleaned_response = self._clean_response(ai_response)
+            
+            # Analisa o sentimento da resposta (opcional para implementação futura)
+            # sentiment = self._analyze_sentiment(cleaned_response)
             
             # Registra a conversa no histórico
             self.dialogue_repository.add_dialogue_entry(
@@ -297,10 +298,10 @@ class CharacterManager:
                 "evolution": False
             }
         except Exception as e:
-            self.logger.error(f"Erro ao processar mensagem: {str(e)}")
+            self.logger.error(f"Erro ao processar mensagem: {str(e)}\n{traceback.format_exc()}")
             return {
                 "success": False,
-                "message": f"Erro ao processar mensagem: {str(e)}"
+                "message": "Desculpe, tive um problema ao processar sua mensagem. Por favor, tente novamente."
             }
     
     def process_challenge_response(self, db: Session, session_id: str, character_id: int, 
@@ -322,28 +323,28 @@ class CharacterManager:
         """
         try:
             # Verifica os requisitos do gatilho
-            requirements_check = self.dialogue_repository.check_evolution_requirements(
+            verification_result = self.dialogue_repository.verify_trigger_requirements(
                 db=db,
-                player_id=session_id,  # Usando session_id aqui
-                trigger_id=trigger_id
+                session_id=session_id,
+                trigger_id=trigger_id,
+                response=response,
+                evidence_ids=evidence_ids or []
             )
             
             current_level = self.get_character_level(db, session_id, character_id)
             
-            if requirements_check["met"]:
+            # Obtém o gatilho para respostas
+            trigger = self.character_repository.get_trigger_by_id(db, trigger_id)
+            
+            if not trigger:
+                return {
+                    "success": False,
+                    "message": "Gatilho não encontrado"
+                }
+            
+            if verification_result["requirements_met"]:
                 # Requisitos atendidos, personagem evolui
                 new_level = current_level + 1
-                
-                # Obtém dados do gatilho para resposta de sucesso
-                trigger = db.query(EvolutionTrigger).filter(
-                    EvolutionTrigger.trigger_id == trigger_id
-                ).first()
-                
-                if not trigger:
-                    return {
-                        "success": False,
-                        "message": "Gatilho não encontrado"
-                    }
                 
                 # Atualiza o nível do personagem
                 self.update_character_level(db, session_id, character_id, new_level)
@@ -351,7 +352,7 @@ class CharacterManager:
                 # Registra a evolução
                 self.dialogue_repository.register_evolution(
                     db=db,
-                    player_id=session_id,  # Usando session_id aqui
+                    session_id=session_id,
                     character_id=character_id,
                     trigger_id=trigger_id,
                     old_level=current_level,
@@ -365,7 +366,8 @@ class CharacterManager:
                     character_id=character_id,
                     player_statement=response,
                     character_response=trigger.success_response,
-                    character_level=current_level
+                    character_level=current_level,
+                    is_key_interaction=True
                 )
                 
                 return {
@@ -375,17 +377,7 @@ class CharacterManager:
                     "new_level": new_level
                 }
             else:
-                # Requisitos não atendidos
-                trigger = db.query(EvolutionTrigger).filter(
-                    EvolutionTrigger.trigger_id == trigger_id
-                ).first()
-                
-                if not trigger:
-                    return {
-                        "success": False,
-                        "message": "Gatilho não encontrado"
-                    }
-                
+                # Requisitos não atendidos                
                 # Registra a resposta ao desafio
                 self.dialogue_repository.add_dialogue_entry(
                     db=db,
@@ -400,59 +392,14 @@ class CharacterManager:
                     "success": False,
                     "message": trigger.fail_response,
                     "evolution": False,
-                    "missing_requirements": requirements_check["missing"]
+                    "missing_requirements": verification_result["missing_requirements"]
                 }
         except Exception as e:
-            self.logger.error(f"Erro ao processar resposta ao desafio: {str(e)}")
+            self.logger.error(f"Erro ao processar resposta ao desafio: {str(e)}\n{traceback.format_exc()}")
             return {
                 "success": False,
-                "message": f"Erro ao processar resposta: {str(e)}",
+                "message": "Houve um problema ao processar sua resposta. Por favor, tente novamente.",
                 "evolution": False
-            }
-    
-    def _check_triggers(self, db: Session, session_id: str, character_id: int, 
-                      message: str) -> Dict[str, Any]:
-        """
-        Verifica se uma mensagem ativa algum gatilho.
-        
-        Args:
-            db: Sessão do banco de dados
-            session_id: ID da sessão
-            character_id: ID do personagem
-            message: Mensagem do jogador
-            
-        Returns:
-            Dicionário com informações sobre o gatilho ativado (se houver)
-        """
-        try:
-            # Verifica os gatilhos através do DialogueRepository
-            triggers = self.dialogue_repository.check_triggers(db, session_id, character_id, message)
-            
-            if not triggers:
-                return {
-                    "triggered": False,
-                    "defensive_response": "",
-                    "keyword": "",
-                    "trigger_id": None
-                }
-            
-            # Obtém o primeiro gatilho ativado
-            trigger = triggers[0]
-            
-            return {
-                "triggered": True,
-                "defensive_response": trigger.get("defensive_response", "Interessante... Por que você pergunta isso?"),
-                "keyword": trigger.get("keyword", ""),
-                "trigger_id": trigger.get("trigger_id"),
-                "challenge_question": trigger.get("challenge_question", "")
-            }
-        except Exception as e:
-            self.logger.error(f"Erro ao verificar gatilhos: {str(e)}")
-            return {
-                "triggered": False,
-                "defensive_response": "",
-                "keyword": "",
-                "trigger_id": None
             }
     
     def _create_prompt(self, character_data: Dict[str, Any], level_data: Dict[str, Any], 
@@ -480,6 +427,10 @@ class CharacterManager:
         is_defensive = level_data.get("is_defensive", False)
         level_number = level_data.get("level_number", 0)
         
+        # Obtém instruções específicas para a IA neste nível
+        ia_instructions = level_data.get("ia_instruction_set", {})
+        instruction_details = ia_instructions.get("instructions", "")
+        
         # Constrói o prompt
         prompt = f"""Você é {character_name}, {character_description}. Responda como ele.
 
@@ -493,26 +444,32 @@ COMO SE COMPORTAR:
 {narrative_stance}
 """
         
+        if instruction_details:
+            prompt += f"\nINSTRUÇÕES ESPECÍFICAS:\n{instruction_details}\n"
+        
         if is_defensive:
             prompt += "Você deve ser defensivo e evasivo quando questionado diretamente.\n"
         else:
             prompt += "Você pode ser mais aberto e comunicativo.\n"
         
         prompt += f"""
-INSTRUÇÕES ESPECIAIS:
+INSTRUÇÕES GERAIS:
 1. Mantenha-se fiel ao personagem e seu estágio atual de conhecimento.
 2. Não revele informações além do que o personagem sabe no estágio atual.
 3. Responda de forma natural e conversacional, mantendo o estilo de fala do personagem.
 4. Suas respostas devem ter no máximo 3 parágrafos.
-5. Não use expressões entre parênteses como (sorrindo) ou (pausa) ou [ação].
-6. Não repita a mesma resposta que você já deu anteriormente.
+5. Não use expressões entre parênteses como (sorrindo) ou (pausa).
+6. Não use marcações de ação como [ação] ou *ação*.
+7. Não repita a mesma resposta que você já deu anteriormente.
+8. Mantenha suas respostas concisas e diretas.
 
 """
         
         prompt += "\nHISTÓRICO DA CONVERSA:\n"
         
-        # Adiciona o histórico ao prompt
-        for msg in dialogue_history:
+        # Adiciona o histórico ao prompt (limitado para evitar tokens excessivos)
+        recent_history = dialogue_history[-10:] if len(dialogue_history) > 10 else dialogue_history
+        for msg in recent_history:
             if msg["role"] == "user":
                 prompt += f"\nJogador: {msg['content']}"
             else:
@@ -523,6 +480,36 @@ INSTRUÇÕES ESPECIAIS:
         
         return prompt
     
+    def _query_ai_with_retry(self, prompt: str) -> str:
+        """
+        Envia o prompt para a API de IA com sistema de retry.
+        
+        Args:
+            prompt: Prompt formatado
+            
+        Returns:
+            Resposta da IA ou mensagem de fallback em caso de falha
+        """
+        retries = 0
+        last_error = None
+        
+        while retries < self.max_retries:
+            try:
+                return self._query_ai(prompt)
+            except requests.RequestException as e:
+                last_error = e
+                retries += 1
+                self.logger.warning(f"Tentativa {retries}/{self.max_retries} falhou: {str(e)}")
+                
+                if retries < self.max_retries:
+                    time.sleep(self.retry_delay)
+            except Exception as e:
+                self.logger.error(f"Erro inesperado ao consultar IA: {str(e)}")
+                return self._get_fallback_response()
+        
+        self.logger.error(f"Todas as {self.max_retries} tentativas falharam. Último erro: {str(last_error)}")
+        return self._get_fallback_response()
+    
     def _query_ai(self, prompt: str) -> str:
         """
         Envia o prompt para a API de IA e obtém a resposta.
@@ -532,34 +519,47 @@ INSTRUÇÕES ESPECIAIS:
             
         Returns:
             Resposta da IA
+        
+        Raises:
+            requests.RequestException: Erro na comunicação com a API
         """
-        try:
-            payload = {
-                "model": self.ai_model,
-                "prompt": prompt,
-                "stream": False,
-                "options": {
-                    "temperature": 0.7,
-                    "top_p": 0.9,
-                    "max_tokens": 500
-                }
+        payload = {
+            "model": self.ai_model,
+            "prompt": prompt,
+            "stream": False,
+            "options": {
+                "temperature": 0.7,
+                "top_p": 0.9,
+                "max_tokens": 500
             }
-            
-            response = requests.post(self.api_url, json=payload, timeout=30)
-            
-            if response.status_code == 200:
-                result = response.json()
-                return result.get("response", "Não consegui processar sua pergunta.")
-            else:
-                self.logger.error(f"Erro na API da IA: {response.status_code} - {response.text}")
-                return "Desculpe, ocorreu um erro na comunicação."
-                
-        except requests.RequestException as e:
-            self.logger.error(f"Erro ao consultar IA: {e}")
-            return "Desculpe, ocorreu um erro de conexão com o sistema de IA."
-        except Exception as e:
-            self.logger.error(f"Erro inesperado ao consultar IA: {e}")
-            return "Ocorreu um erro inesperado no processamento da sua pergunta."
+        }
+        
+        response = requests.post(self.api_url, json=payload, timeout=self.timeout)
+        
+        if response.status_code == 200:
+            result = response.json()
+            return result.get("response", "")
+        else:
+            error_message = f"Erro na API da IA: {response.status_code} - {response.text}"
+            self.logger.error(error_message)
+            raise requests.RequestException(error_message)
+    
+    def _get_fallback_response(self) -> str:
+        """
+        Fornece uma resposta de fallback quando a IA falha.
+        
+        Returns:
+            Mensagem de fallback
+        """
+        fallback_responses = [
+            "Desculpe, preciso de um momento para organizar meus pensamentos...",
+            "Hmm, deixe-me pensar sobre isso por um instante.",
+            "Parece que tenho dificuldade em responder agora.",
+            "Poderia reformular sua pergunta? Não entendi completamente."
+        ]
+        
+        from random import choice
+        return choice(fallback_responses)
     
     def _clean_response(self, response: str) -> str:
         """
@@ -571,25 +571,97 @@ INSTRUÇÕES ESPECIAIS:
         Returns:
             Resposta limpa
         """
+        if not response:
+            return ""
+            
         # Lista de padrões a serem removidos
         patterns_to_remove = [
-            "(Evita a resposta directa e muda o assunto)",
-            "(sorrindo)",
-            "(rindo)",
-            "(pausa)",
-            "(olha fixo em frente)",
-            "[Seu rosto endurece momentaneamente]",
-            "[Seu sorriso falha brevemente]",
-            "[Após um longo silêncio, seu rosto assume uma expressão fria e calculista]",
-            "[Com amargura crescente]",
-            "[Recuperando parte de sua compostura]"
+            r"\(.*?\)",  # Expressões entre parênteses: (sorrindo), (pausa)
+            r"\[.*?\]",  # Expressões entre colchetes: [pensativo], [irritado]
+            r"\*.*?\*",  # Expressões entre asteriscos: *sorri*, *suspira*
         ]
         
         cleaned_response = response
-        for pattern in patterns_to_remove:
-            cleaned_response = cleaned_response.replace(pattern, "")
         
-        # Remove linhas vazias extras e espaços duplicados
-        cleaned_response = " ".join(cleaned_response.split())
+        # Remove padrões usando expressões regulares
+        import re
+        for pattern in patterns_to_remove:
+            cleaned_response = re.sub(pattern, "", cleaned_response)
+        
+        # Remove linhas vazias extras
+        cleaned_response = re.sub(r"\n\s*\n", "\n", cleaned_response)
+        
+        # Remove espaços duplicados
+        cleaned_response = re.sub(r" +", " ", cleaned_response)
+        
+        # Remove espaços no início e fim
+        cleaned_response = cleaned_response.strip()
         
         return cleaned_response
+    
+    def _analyze_content(self, response: str) -> Dict[str, Any]:
+        """
+        Analisa o conteúdo da resposta para detecção de elementos importantes.
+        
+        Args:
+            response: Resposta do personagem
+            
+        Returns:
+            Dicionário com análise do conteúdo
+        """
+        # Esta função poderia implementar análise mais avançada no futuro
+        # como detecção de sentimento, palavras-chave, etc.
+        return {
+            "length": len(response),
+            "words": len(response.split()),
+            "contains_question": "?" in response
+        }
+    
+    def get_character_context(self, db: Session, session_id: str, character_id: int) -> Dict[str, Any]:
+        """
+        Obtém o contexto completo de um personagem para o jogador, incluindo histórico e nível.
+        
+        Args:
+            db: Sessão do banco de dados
+            session_id: ID da sessão
+            character_id: ID do personagem
+            
+        Returns:
+            Dicionário com o contexto completo
+        """
+        try:
+            # Obtém dados do personagem
+            character_data = self.get_character(db, character_id)
+            if not character_data:
+                return {"success": False, "message": "Personagem não encontrado"}
+            
+            # Obtém nível atual
+            current_level = self.get_character_level(db, session_id, character_id)
+            
+            # Obtém histórico de diálogo
+            dialogue_history = self.dialogue_repository.get_dialogue_history(db, session_id, character_id)
+            
+            # Obtém interações importantes
+            key_interactions = self.dialogue_repository.get_key_interactions(db, session_id, character_id)
+            
+            return {
+                "success": True,
+                "character": {
+                    "id": character_id,
+                    "name": character_data["name"],
+                    "description": character_data["base_description"],
+                    "current_level": current_level
+                },
+                "dialogue_history": dialogue_history,
+                "key_interactions": [
+                    {
+                        "timestamp": interaction.timestamp,
+                        "player_statement": interaction.player_statement,
+                        "character_response": interaction.character_response
+                    } for interaction in key_interactions
+                ],
+                "total_interactions": len(dialogue_history)
+            }
+        except Exception as e:
+            self.logger.error(f"Erro ao obter contexto do personagem: {str(e)}")
+            return {"success": False, "message": "Erro ao obter contexto do personagem"}

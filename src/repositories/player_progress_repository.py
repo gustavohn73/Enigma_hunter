@@ -50,54 +50,81 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
             self.logger.error(f"Erro ao buscar progresso para sessão {session_id}: {e}")
             return None
     
-    def create_player_session(self, db: Session, player_name: str, story_id: int) -> Optional[str]:
-        """
-        Cria uma nova sessão de jogador com progresso inicial.
+    def create_player_session(self, db: Session, player_id: str, story_id: int) -> Dict[str, Any]:
+        """Cria uma nova sessão de jogo para um jogador."""
+    try:
+        session_id = str(uuid.uuid4())
+        current_time = datetime.now()
         
-        Args:
-            db: Sessão do banco de dados
-            player_name: Nome do jogador
-            story_id: ID da história
+        # Encontrar local inicial
+        starting_location = db.query(Location).filter(
+            Location.story_id == story_id,
+            Location.is_starting_location == True
+        ).first()
+        
+        if not starting_location:
+            raise ValueError("Nenhum local inicial definido para esta história")
+        
+        # Criar progresso inicial
+        progress = PlayerProgress(
+            player_id=player_id,
+            story_id=story_id,
+            session_id=session_id,
+            start_time=current_time,
+            last_activity=current_time,
             
-        Returns:
-            ID da sessão criada ou None em caso de erro
-        """
-        try:
-            session_id = str(func.uuid_generate_v4()) if hasattr(func, 'uuid_generate_v4') else str(func.uuid())
+            # Localização inicial
+            current_location_id=starting_location.location_id,
+            current_area_id=None,
+            discovered_locations=[starting_location.location_id],
+            discovered_areas={},
+            location_exploration_level={},
+            area_exploration_level={},
             
-            # Criar a entrada de progresso
-            progress = PlayerProgress(
-                player_id=player_name,
-                story_id=story_id,
-                session_id=session_id,
-                start_time=datetime.now(),
-                last_activity=datetime.now(),
-                current_location_id=None,
-                current_area_id=None,
-                discovered_locations=[],
-                discovered_areas={},
-                location_exploration_level={},
-                area_exploration_level={},
-                inventory=[],
-                object_level={},
-                character_level={},
-                dialogue_history={},
-                discovered_clues=[],
-                scanned_qr_codes=[],
-                action_history=[],
-                specialization_points={},
-                specialization_levels={},
-                completed_interactions={"objetos": [], "personagens": [], "areas": [], "pistas": [], "combinacoes": []}
-            )
+            # Inventário e níveis
+            inventory=[],
+            object_level={},
+            character_level={},
             
-            db.add(progress)
-            db.commit()
+            # Histórico e progresso
+            dialogue_history={},
+            discovered_clues=[],
+            scanned_qr_codes=[],
+            action_history=[],
             
-            return session_id
-        except Exception as e:
-            db.rollback()
-            self.logger.error(f"Erro ao criar sessão de jogador: {e}")
-            return None
+            # Sistema de especialização
+            specialization_points={},
+            specialization_levels={},
+            
+            # Interações completadas
+            completed_interactions={
+                "objetos": [],
+                "personagens": [],
+                "areas": [],
+                "pistas": [],
+                "combinacoes": []
+            }
+        )
+        
+        db.add(progress)
+        db.commit()
+        
+        self.logger.info(f"Sessão criada para jogador {player_id} na história {story_id}")
+        
+        return {
+            "success": True,
+            "session_id": session_id,
+            "message": "Sessão criada com sucesso",
+            "starting_location": starting_location.name
+        }
+        
+    except Exception as e:
+        db.rollback()
+        self.logger.error(f"Erro ao criar sessão de jogador: {str(e)}")
+        return {
+            "success": False,
+            "error": str(e)
+        }
     
     # ===== MÉTODOS DE INVENTÁRIO =====
     
