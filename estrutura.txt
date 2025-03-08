@@ -12,6 +12,7 @@ pytest.py
 README.md
 src
 static
+tests
 ui
 
 ./database:
@@ -74,6 +75,7 @@ utils
 
 ./src/managers:
 character_manager.py
+qrcode_manager.py
 
 ./src/models:
 db_models.py
@@ -95,7 +97,7 @@ session_manager.cpython-312.pyc
 base_repository.py
 character_repository.py
 clue_repository.py
-DialogueRepository.py
+dialogue_repository.py
 location_repository.py
 object_repository.py
 player_progress_repository.py
@@ -118,5 +120,9 @@ __init__.cpython-312.pyc
 init_database.cpython-312.pyc
 
 ./static:
+
+./tests:
+Personagem_2.json
+sebastian_dialogue_test.py
 
 ./ui:
