@@ -12,7 +12,6 @@ pytest.py
 README.md
 src
 static
-tests
 ui
 
 ./database:
@@ -63,7 +62,6 @@ pytest.cpython-312.pyc
 ./src:
 data_loader.py
 game_state.py
-gerenciador_personagens.py
 __init__.py
 main.py
 managers
@@ -120,9 +118,5 @@ __init__.cpython-312.pyc
 init_database.cpython-312.pyc
 
 ./static:
-
-./tests:
-Personagem_2.json
-sebastian_dialogue_test.py
 
 ./ui:

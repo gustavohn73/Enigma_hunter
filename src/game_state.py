@@ -4,6 +4,10 @@ import time
 import uuid
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Set, Tuple
+from datetime import datetime
+
+from sqlalchemy.orm import Session
+from sqlalchemy import func
 
 class PlayerProgress:
     """
@@ -43,7 +47,7 @@ class PlayerProgress:
         # QR Codes escaneados
         self.scanned_qr_codes: Set[str] = set()  # uuids
         
-        # Histório de ações
+        # Histórico de ações
         self.action_history: List[Dict] = []
 
         # Atributos para o sistema de especialização
@@ -55,7 +59,7 @@ class PlayerProgress:
             "areas": set(),        # area_id:action (ex: "7:explore")
             "pistas": set(),       # clue_id:action (ex: "5:descoberta")
             "combinacoes": set()   # combinação_id (ex: "diario_paginas")
-    }
+        }
         
     def add_specialization_points(self, category_id: str, points: int, 
                             interaction_type: str, interaction_id: str) -> Tuple[bool, int]:
@@ -71,11 +75,9 @@ class PlayerProgress:
         Returns:
             Tupla (nível evoluiu, novo nível) indicando se houve evolução de nível
         """
-        # Gera uma chave única para esta interação
-        interaction_key = str(interaction_id)
-        
         # Verifica se esta interação já foi completada
-        if interaction_key in self.completed_interactions.get(interaction_type, set()):
+        interactions = self.completed_interactions.get(interaction_type, set())
+        if interaction_id in interactions:
             return False, self.get_specialization_level(category_id)
             
         # Inicializa a categoria se não existir
@@ -91,7 +93,7 @@ class PlayerProgress:
         
         # Registra a interação como completada
         if interaction_type in self.completed_interactions:
-            self.completed_interactions[interaction_type].add(interaction_key)
+            self.completed_interactions[interaction_type].add(interaction_id)
         
         # Recalcula o nível com base nos novos pontos
         new_level = self._calculate_specialization_level(category_id)
@@ -111,36 +113,32 @@ class PlayerProgress:
         # Retorna se houve evolução de nível
         return new_level > previous_level, new_level
     
-    def _calculate_specialization_level(self, category_id: str, data_loader) -> int:
+    def _calculate_specialization_level(self, category_id: str) -> int:
         """
-        🆕 Calcula o nível de especialização baseado nos pontos acumulados e na configuração carregada do jogo.
+        Calcula o nível de especialização baseado nos pontos acumulados.
         
         Args:
             category_id: ID da categoria de especialização
-            data_loader: Instância do DataLoader para obter os limites reais
 
         Returns:
             int: Nível atualizado
         """
         points = self.specialization_points.get(category_id, 0)
         
-        # Obtém os limites reais do DataLoader
-        categoria = data_loader.get_especializacao(category_id)
-        if not categoria:
-            return 0  # Se não há categoria registrada, mantém nível 0
+        # Calcula o nível baseado em limiares predefinidos
+        if points < 20:
+            nivel = 0
+        elif points < 50:
+            nivel = 1
+        elif points < 100:
+            nivel = 2
+        elif points < 200:
+            nivel = 3
+        else:
+            nivel = 4
 
-        niveis = categoria.get("niveis", {})
-
-        # Determina o nível máximo atingido com base nos pontos
-        novo_nivel = 0
-        for nivel, minimo in sorted(niveis.items(), key=lambda x: int(x[0])):
-            if points >= minimo:
-                novo_nivel = int(nivel)
-            else:
-                break
-
-        self.specialization_levels[category_id] = novo_nivel
-        return novo_nivel
+        self.specialization_levels[category_id] = nivel
+        return nivel
 
     def get_specialization_level(self, category_id: str) -> int:
         """
@@ -171,22 +169,21 @@ class PlayerProgress:
         
         return True
 
-    def can_interact(self, interaction_type: str, interaction_id: str, data_loader) -> bool:
+    def can_interact(self, interaction_type: str, interaction_id: str,
+                    requisitos: Dict[str, int] = None) -> bool:
         """
-        🆕 Verifica se o jogador pode interagir com um objeto, NPC ou pista, considerando requisitos de especialização.
+        Verifica se o jogador pode interagir com um objeto, NPC ou pista.
 
         Args:
             interaction_type (str): Tipo de interação ("objetos", "personagens", "areas", "pistas").
             interaction_id (str): ID do elemento a ser interagido.
-            data_loader (DataLoader): Instância do DataLoader para acessar os requisitos.
+            requisitos (Dict): Requisitos de especialização para a interação.
 
         Returns:
             bool: True se o jogador puder interagir, False caso contrário.
         """
-        requisitos = data_loader.data["especializacao"].get("interacoes", {}).get(interaction_type, {}).get(interaction_id, {}).get("requisitos_nivel", {})
-        
         if not requisitos:
-            return True  # Se não há requisitos, a interação é permitida
+            return True
         
         return self.check_specialization_requirement(requisitos)
 
@@ -208,7 +205,7 @@ class PlayerProgress:
         for obj_id in object_ids:
             if obj_id not in self.inventory:
                 return False
-        
+            
         # Adiciona pontos e registra a combinação
         evolved, _ = self.add_specialization_points(
             category_id, points, "combinacoes", combination_id
@@ -294,7 +291,7 @@ class PlayerProgress:
         """
         Atualiza o nível de relacionamento com um personagem.
         """
-        # Só atualiza se for um nível maior que o atual
+        # Só atualiza se o novo nível for maior que o atual
         current_level = self.character_level.get(character_id, 0)
         if new_level > current_level:
             self.character_level[character_id] = new_level
@@ -314,7 +311,7 @@ class PlayerProgress:
         if object_id not in self.inventory:
             raise ValueError(f"Objeto {object_id} não está no inventário do jogador")
             
-        # Só atualiza se for um nível maior que o atual
+        # Só atualiza se o novo nível for maior que o atual
         current_level = self.object_level.get(object_id, 0)
         if new_level > current_level:
             self.object_level[object_id] = new_level
@@ -330,7 +327,7 @@ class PlayerProgress:
         """
         Atualiza o nível de exploração de uma localização.
         """
-        # Só atualiza se for um nível maior que o atual
+        # Só atualiza se o novo nível for maior que o atual
         current_level = self.location_exploration_level.get(location_id, 0)
         if new_level > current_level:
             self.location_exploration_level[location_id] = new_level
@@ -346,7 +343,7 @@ class PlayerProgress:
         """
         Atualiza o nível de exploração de uma área.
         """
-        # Só atualiza se for um nível maior que o atual
+        # Só atualiza se o novo nível for maior que o atual
         current_level = self.area_exploration_level.get(area_id, 0)
         if new_level > current_level:
             self.area_exploration_level[area_id] = new_level
@@ -476,102 +473,718 @@ class GameStateManager:
     progresso dos jogadores e persistência dos dados.
     """
     
-    def __init__(self, db: Session, save_dir: str = "database"): # db added here
-        self.db = db  # Database session
-        self.active_sessions: Dict[str, PlayerProgress] = {}  # Keep this for efficiency
+    def __init__(self, db: Session, save_dir: str = "database"):
+        self.db = db
+        self.save_dir = Path(save_dir)
+        self.save_dir.mkdir(exist_ok=True, parents=True)
+        self.active_sessions = {}
+    
+    def create_session(self, player_id: str, story_id: int) -> Dict[str, Any]:
+        """
+        Cria uma nova sessão de jogo para um jogador.
         
-        self.active_sessions: Dict[str, PlayerProgress] = {}
-    
-    def create_session(self, player_id: str, story_id: str, db: Session) -> PlayerProgress:
-        progress = PlayerProgress(player_id, story_id)
-        self.active_sessions[progress.session_id] = progress
-
-        # Directly add the PlayerProgress data to the database.  You'll need a PlayerProgress model defined in db_models.py
-        # Assuming you have a database table mirroring PlayerProgress attributes
-        new_progress_record = PlayerProgressModel(**progress.to_dict())  # PlayerProgressModel from db_models.py
-        db.add(new_progress_record)
-        db.commit()
-        db.refresh(new_progress_record) # Get the ID if it's auto-generated
-        return progress
-    
-    def load_session(self, session_id: str, db: Session) -> Optional[PlayerProgress]:
-        # Try to load from memory first
-        if session_id in self.active_sessions:
-            return self.active_sessions[session_id]
-
-        # Load from the database
-        progress_record = db.query(PlayerProgressModel).filter_by(session_id=session_id).first() # PlayerProgressModel from db_models.py
-        if progress_record:
-            progress = PlayerProgress.from_dict(progress_record.__dict__) # Convert to PlayerProgress object
+        Args:
+            player_id: ID do jogador
+            story_id: ID da história
+            
+        Returns:
+            Informações sobre a sessão criada
+        """
+        try:
+            # Cria o objeto de progresso do jogador
+            progress = PlayerProgress(player_id, str(story_id))
+            session_id = progress.session_id
+            
+            # Adiciona aos dados em memória
             self.active_sessions[session_id] = progress
+            
+            # Persiste os dados iniciais
+            self._save_progress(progress)
+            
+            # Cria a entrada no banco de dados
+            self._create_db_session(session_id, player_id, story_id)
+            
+            return {
+                "session_id": session_id,
+                "player_id": player_id,
+                "story_id": story_id,
+                "created_at": progress.start_time
+            }
+        except Exception as e:
+            self.db.rollback()
+            return {
+                "error": str(e),
+                "success": False
+            }
+    
+    def load_session(self, session_id: str) -> Optional[PlayerProgress]:
+        """
+        Carrega uma sessão existente.
+        
+        Args:
+            session_id: ID da sessão
+            
+        Returns:
+            Objeto de progresso do jogador ou None se não encontrado
+        """
+        # Verifica se a sessão já está em memória
+        if session_id in self.active_sessions:
+            # Atualiza o timestamp de última atividade
+            self.active_sessions[session_id].last_activity = time.time()
+            return self.active_sessions[session_id]
+        
+        # Tenta carregar do arquivo
+        progress = self._load_progress(session_id)
+        if progress:
+            # Adiciona aos dados em memória
+            self.active_sessions[session_id] = progress
+            
+            # Atualiza o timestamp de última atividade no banco
+            self._update_db_last_activity(session_id)
+            
             return progress
+            
         return None
     
-    def save_session(self, session_id: str, db: Session) -> bool:
+    def save_session(self, session_id: str) -> bool:
+        """
+        Salva o estado de uma sessão.
+        
+        Args:
+            session_id: ID da sessão
+            
+        Returns:
+            True se salvou com sucesso
+        """
         if session_id not in self.active_sessions:
             return False
-
+            
         progress = self.active_sessions[session_id]
-        # Directly update the database record.
-        progress_record = db.query(PlayerProgressModel).filter_by(session_id=session_id).first()
-        if progress_record:
-            for key, value in progress.to_dict().items():
-                setattr(progress_record, key, value) # Set attributes of the database model
-            db.commit()
-            return True
-        return False
-    
-    def close_session(self, session_id: str, db: Session) -> bool:
-        if session_id not in self.active_sessions:
-            return False
-        self.save_session(session_id, db)  # Save before closing
-        del self.active_sessions[session_id]
+        
+        # Persiste os dados
+        self._save_progress(progress)
+        
+        # Atualiza o timestamp de última atividade no banco
+        self._update_db_last_activity(session_id)
+        
         return True
     
-    def list_player_sessions(self, player_id: str, db: Session) -> List[str]:
-        # Query the database directly
-        session_records = db.query(PlayerProgressModel).filter_by(player_id=player_id).all()
-        return [record.session_id for record in session_records]
+    def update_session_state(self, session_id: str, updates: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Atualiza o estado de uma sessão com base nas ações do jogador.
+        
+        Args:
+            session_id: ID da sessão
+            updates: Dicionário com atualizações a serem aplicadas
+            
+        Returns:
+            Resultado da atualização
+        """
+        progress = self.load_session(session_id)
+        if not progress:
+            return {"success": False, "error": "Sessão não encontrada"}
+        
+        # Processa cada tipo de atualização
+        try:
+            for update_type, update_data in updates.items():
+                if update_type == "location":
+                    # Atualiza localização
+                    location_id = update_data.get("location_id")
+                    if location_id:
+                        progress.enter_location(location_id)
+                        
+                elif update_type == "area":
+                    # Atualiza área
+                    area_id = update_data.get("area_id")
+                    if area_id:
+                        progress.enter_area(area_id)
+                        
+                elif update_type == "collect_object":
+                    # Coleta objeto
+                    object_id = update_data.get("object_id")
+                    if object_id:
+                        progress.collect_object(object_id)
+                        
+                elif update_type == "discover_clue":
+                    # Descobre pista
+                    clue_id = update_data.get("clue_id")
+                    if clue_id:
+                        progress.discover_clue(clue_id)
+                        
+                elif update_type == "character_level":
+                    # Atualiza nível de personagem
+                    character_id = update_data.get("character_id")
+                    level = update_data.get("level")
+                    if character_id is not None and level is not None:
+                        progress.update_character_level(character_id, level)
+                        
+                elif update_type == "object_level":
+                    # Atualiza nível de objeto
+                    object_id = update_data.get("object_id")
+                    level = update_data.get("level")
+                    if object_id is not None and level is not None:
+                        progress.update_object_level(object_id, level)
+                        
+                elif update_type == "location_exploration":
+                    # Atualiza nível de exploração de localização
+                    location_id = update_data.get("location_id")
+                    level = update_data.get("level")
+                    if location_id is not None and level is not None:
+                        progress.update_location_exploration(location_id, level)
+                        
+                elif update_type == "area_exploration":
+                    # Atualiza nível de exploração de área
+                    area_id = update_data.get("area_id")
+                    level = update_data.get("level")
+                    if area_id is not None and level is not None:
+                        progress.update_area_exploration(area_id, level)
+                        
+                elif update_type == "add_dialogue":
+                    # Adiciona diálogo
+                    character_id = update_data.get("character_id")
+                    player_input = update_data.get("player_input")
+                    character_response = update_data.get("character_response")
+                    detected_keywords = update_data.get("detected_keywords")
+                    
+                    if character_id is not None and player_input and character_response:
+                        progress.add_dialogue(character_id, player_input, character_response, detected_keywords)
+                        
+                elif update_type == "scan_qr_code":
+                    # Escaneia QR code
+                    uuid = update_data.get("uuid")
+                    if uuid:
+                        progress.scan_qr_code(uuid)
+                        
+                elif update_type == "specialization":
+                    # Atualiza especialização
+                    category_id = update_data.get("category_id")
+                    points = update_data.get("points")
+                    interaction_type = update_data.get("interaction_type")
+                    interaction_id = update_data.get("interaction_id")
+                    
+                    if category_id and points and interaction_type and interaction_id:
+                        progress.add_specialization_points(category_id, points, interaction_type, interaction_id)
+                        
+                elif update_type == "combine_objects":
+                    # Combina objetos
+                    object_ids = update_data.get("object_ids")
+                    combination_id = update_data.get("combination_id")
+                    category_id = update_data.get("category_id")
+                    points = update_data.get("points")
+                    
+                    if object_ids and combination_id and category_id and points:
+                        progress.combine_objects(object_ids, combination_id, category_id, points)
+            
+            # Salva as alterações
+            self.save_session(session_id)
+            
+            return {
+                "success": True,
+                "session_id": session_id,
+                "updates_applied": list(updates.keys())
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "error": str(e)
+            }
     
-    def auto_save_all(self, db:Session) -> int:
-        count = 0
-        for session_id in self.active_sessions:
-            if self.save_session(session_id, db):
-                count += 1
-        return count
+    def close_session(self, session_id: str) -> bool:
+        """
+        Fecha uma sessão de jogo.
+        
+        Args:
+            session_id: ID da sessão
+            
+        Returns:
+            True se fechada com sucesso
+        """
+        if session_id not in self.active_sessions:
+            return False
+            
+        # Salva o estado final
+        self.save_session(session_id)
+        
+        # Atualiza o status no banco
+        self._update_db_status(session_id, 'completed')
+        
+        # Remove da memória
+        del self.active_sessions[session_id]
+        
+        return True
+    
+    def get_session_state(self, session_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Obtém o estado atual de uma sessão.
+        
+        Args:
+            session_id: ID da sessão
+            
+        Returns:
+            Dicionário com o estado atual ou None se a sessão não for encontrada
+        """
+        progress = self.load_session(session_id)
+        if not progress:
+            return None
+            
+        return progress.to_dict()
+    
+    def list_player_sessions(self, player_id: str) -> List[Dict[str, Any]]:
+        """
+        Lista todas as sessões de um jogador.
+        
+        Args:
+            player_id: ID do jogador
+            
+        Returns:
+            Lista de informações sobre as sessões
+        """
+        # Busca as sessões no banco de dados
+        from src.models.db_models import PlayerSession
+        
+        sessions = self.db.query(PlayerSession).filter(
+            PlayerSession.player_id == player_id
+        ).all()
+        
+        result = []
+        for session in sessions:
+            # Tenta carregar mais detalhes da memória ou do arquivo
+            active_session = None
+            if session.session_id in self.active_sessions:
+                active_session = self.active_sessions[session.session_id]
+            
+            session_data = {
+                "session_id": session.session_id,
+                "player_id": player_id,
+                "story_id": session.story_id,
+                "start_time": session.start_time,
+                "last_activity": session.last_activity,
+                "status": session.game_status
+            }
+            
+            if active_session:
+                session_data.update({
+                    "current_location": active_session.current_location_id,
+                    "inventory_size": len(active_session.inventory),
+                    "discovered_clues": len(active_session.discovered_clues)
+                })
+                
+            result.append(session_data)
+            return result
+    
+    def clean_inactive_sessions(self, max_age_hours: int = 24) -> int:
+        """
+        Remove sessões inativas da memória.
+        
+        Args:
+            max_age_hours: Idade máxima em horas para considerar uma sessão inativa
+            
+        Returns:
+            Número de sessões removidas
+        """
+        current_time = time.time()
+        max_age_seconds = max_age_hours * 3600
+        sessions_to_remove = []
+        
+        for session_id, progress in self.active_sessions.items():
+            # Verifica se a sessão está inativa por muito tempo
+            if current_time - progress.last_activity > max_age_seconds:
+                sessions_to_remove.append(session_id)
+        
+        # Remove as sessões inativas
+        for session_id in sessions_to_remove:
+            # Salva o estado antes de remover
+            self.save_session(session_id)
+            del self.active_sessions[session_id]
+        
+        return len(sessions_to_remove)
+    
+    # Métodos auxiliares privados
+    
+    def _save_progress(self, progress: PlayerProgress) -> bool:
+        """
+        Salva o progresso em arquivo.
+        
+        Args:
+            progress: Objeto PlayerProgress
+            
+        Returns:
+            True se salvou com sucesso
+        """
+        try:
+            # Transforma em dicionário
+            data = progress.to_dict()
+            
+            # Define o caminho do arquivo
+            file_path = self.save_dir / f"{progress.session_id}.json"
+            
+            # Salva no arquivo
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+                
+            return True
+        except Exception as e:
+            print(f"Erro ao salvar progresso: {str(e)}")
+            return False
+    
+    def _load_progress(self, session_id: str) -> Optional[PlayerProgress]:
+        """
+        Carrega o progresso de um arquivo.
+        
+        Args:
+            session_id: ID da sessão
+            
+        Returns:
+            Objeto PlayerProgress ou None se não encontrado
+        """
+        try:
+            # Define o caminho do arquivo
+            file_path = self.save_dir / f"{session_id}.json"
+            
+            # Verifica se o arquivo existe
+            if not file_path.exists():
+                return None
+                
+            # Carrega do arquivo
+            with open(file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                
+            # Cria o objeto PlayerProgress
+            return PlayerProgress.from_dict(data)
+        except Exception as e:
+            print(f"Erro ao carregar progresso: {str(e)}")
+            return None
+    
+    def _create_db_session(self, session_id: str, player_id: str, story_id: int) -> None:
+        """
+        Cria uma entrada para a sessão no banco de dados.
+        
+        Args:
+            session_id: ID da sessão
+            player_id: ID do jogador
+            story_id: ID da história
+        """
+        from src.models.db_models import PlayerSession
+        
+        try:
+            # Cria a sessão no banco
+            db_session = PlayerSession(
+                session_id=session_id,
+                player_id=player_id,
+                story_id=story_id,
+                start_time=datetime.now(),
+                last_activity=datetime.now(),
+                game_status='active',
+                solution_submitted=False
+            )
+            
+            self.db.add(db_session)
+            self.db.commit()
+        except Exception as e:
+            self.db.rollback()
+            print(f"Erro ao criar sessão no banco: {str(e)}")
+    
+    def _update_db_last_activity(self, session_id: str) -> None:
+        """
+        Atualiza o timestamp de última atividade no banco.
+        
+        Args:
+            session_id: ID da sessão
+        """
+        from src.models.db_models import PlayerSession
+        
+        try:
+            # Busca a sessão no banco
+            db_session = self.db.query(PlayerSession).filter(
+                PlayerSession.session_id == session_id
+            ).first()
+            
+            if db_session:
+                # Atualiza o timestamp
+                db_session.last_activity = datetime.now()
+                self.db.commit()
+        except Exception as e:
+            self.db.rollback()
+            print(f"Erro ao atualizar última atividade no banco: {str(e)}")
+    
+    def _update_db_status(self, session_id: str, status: str) -> None:
+        """
+        Atualiza o status de uma sessão no banco.
+        
+        Args:
+            session_id: ID da sessão
+            status: Novo status
+        """
+        from src.models.db_models import PlayerSession
+        
+        try:
+            # Busca a sessão no banco
+            db_session = self.db.query(PlayerSession).filter(
+                PlayerSession.session_id == session_id
+            ).first()
+            
+            if db_session:
+                # Atualiza o status
+                db_session.game_status = status
+                self.db.commit()
+        except Exception as e:
+            self.db.rollback()
+            print(f"Erro ao atualizar status no banco: {str(e)}")
 
-# Exemplo de uso
-if __name__ == "__main__":
-    manager = GameStateManager()
+class GameProgressService:
+    """
+    Serviço para gerenciar a lógica de evolução e progresso do jogo.
+    Centraliza os cálculos relacionados à progressão de níveis e regras de negócio.
+    """
     
-    # Cria uma nova sessão
-    progress = manager.create_session("player123", "estalagem_cervo_negro")
-    session_id = progress.session_id
+    def __init__(self, db: Session):
+        self.db = db
     
-    # Simula algumas ações do jogador
-    progress.enter_location(1)  # Saguão Principal
-    progress.enter_area(2)      # Área de Mesas
-    progress.collect_object(10) # Taça de Vinho
-    progress.discover_clue(2)   # Resíduos Estranhos
+    def calculate_specialization_level(self, points: int, thresholds: Dict[str, int] = None) -> int:
+        """
+        Calcula o nível de especialização com base nos pontos acumulados.
+        
+        Args:
+            points: Pontos acumulados
+            thresholds: Dicionário com limiares para cada nível (opcional)
+            
+        Returns:
+            Nível calculado
+        """
+        # Limiares padrão se não fornecidos
+        if not thresholds:
+            thresholds = {
+                "0": 0,
+                "1": 20,
+                "2": 50,
+                "3": 100,
+                "4": 200
+            }
+        
+        # Encontra o nível apropriado
+        level = 0
+        for level_str, min_points in sorted(thresholds.items(), key=lambda x: int(x[0])):
+            if points >= min_points:
+                level = int(level_str)
+            else:
+                break
+                
+        return level
     
-    # Registra um diálogo
-    progress.add_dialogue(3, "Você sabe algo sobre ervas venenosas?", 
-                         "Bem, eu cultivo algumas plantas medicinais no jardim, mas preciso ter cuidado com o Suspiro da Viúva...")
+    def evaluate_character_evolution(self, session_id: str, character_id: int, 
+                                  trigger_id: int, response: str, 
+                                  evidence_ids: List[int] = None) -> Dict[str, Any]:
+        """
+        Avalia se um personagem deve evoluir com base na resposta a um gatilho.
+        
+        Args:
+            session_id: ID da sessão
+            character_id: ID do personagem
+            trigger_id: ID do gatilho
+            response: Resposta do jogador
+            evidence_ids: IDs de evidências apresentadas
+            
+        Returns:
+            Resultado da avaliação
+        """
+        from src.models.db_models import EvolutionTrigger, EvidenceRequirement
+        
+        try:
+            # Busca o gatilho
+            trigger = self.db.query(EvolutionTrigger).filter(
+                EvolutionTrigger.trigger_id == trigger_id
+            ).first()
+            
+            if not trigger:
+                return {
+                    "success": False,
+                    "evolve": False,
+                    "reason": "Gatilho não encontrado"
+                }
+            
+            # Busca os requisitos
+            requirements = self.db.query(EvidenceRequirement).filter(
+                EvidenceRequirement.trigger_id == trigger_id
+            ).all()
+            
+            # Verifica cada requisito
+            missing_requirements = []
+            
+            for req in requirements:
+                if req.requirement_type == "object" and evidence_ids:
+                    required_object_id = self._get_required_object_id(req)
+                    
+                    if required_object_id not in evidence_ids:
+                        missing_requirements.append({
+                            "type": "object",
+                            "id": required_object_id,
+                            "hint": req.hint_if_incorrect
+                        })
+                elif req.requirement_type == "knowledge":
+                    # Implementação simplificada para verificar conhecimento
+                    # Em um sistema real, seria mais sofisticado
+                    required_keywords = self._get_required_knowledge_keywords(req)
+                    
+                    if not any(keyword.lower() in response.lower() for keyword in required_keywords):
+                        missing_requirements.append({
+                            "type": "knowledge",
+                            "hint": req.hint_if_incorrect
+                        })
+            
+            # Determina se deve evoluir
+            should_evolve = len(missing_requirements) == 0
+            
+            if should_evolve:
+                return {
+                    "success": True,
+                    "evolve": True,
+                    "response": trigger.success_response
+                }
+            else:
+                return {
+                    "success": True,
+                    "evolve": False,
+                    "response": trigger.fail_response,
+                    "missing_requirements": missing_requirements
+                }
+        except Exception as e:
+            return {
+                "success": False,
+                "evolve": False,
+                "reason": str(e)
+            }
     
-    # Salva a sessão
-    manager.save_session(session_id)
-    print(f"Sessão criada e salva: {session_id}")
-
-    # Adicionando pontos de especialização
-    evoluiu, novo_nivel = progress.add_specialization_points("cat_1", 20)
-    print(f"Nova especialização em Análise de Evidências: Nível {novo_nivel} (Evoluiu: {evoluiu})")
+    def evaluate_object_evolution(self, session_id: str, object_id: int, 
+                               current_level: int) -> Dict[str, Any]:
+        """
+        Avalia se um objeto pode evoluir para o próximo nível.
+        
+        Args:
+            session_id: ID da sessão
+            object_id: ID do objeto
+            current_level: Nível atual do objeto
+            
+        Returns:
+            Resultado da avaliação
+        """
+        from src.models.db_models import ObjectLevel
+        
+        try:
+            # Busca o próximo nível
+            next_level_data = self.db.query(ObjectLevel).filter(
+                ObjectLevel.object_id == object_id,
+                ObjectLevel.level_number == current_level + 1
+            ).first()
+            
+            if not next_level_data:
+                return {
+                    "success": True,
+                    "can_evolve": False,
+                    "reason": "Objeto já está no nível máximo"
+                }
+                
+            # Verifica se há requisitos para evolução
+            # Em um sistema real, verificaria condições específicas
+            
+            return {
+                "success": True,
+                "can_evolve": True,
+                "next_level": current_level + 1,
+                "requirements": {
+                    "evolution_trigger": next_level_data.evolution_trigger
+                }
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "can_evolve": False,
+                "reason": str(e)
+            }
     
-    # Carrega a sessão
-    loaded_progress = manager.load_session(session_id)
-    print(f"Sessão carregada: {loaded_progress.session_id}")
-    print(f"Local atual: {loaded_progress.current_location_id}, Área: {loaded_progress.current_area_id}")
-    print(f"Inventário: {loaded_progress.inventory}")
-    print(f"Pistas descobertas: {loaded_progress.discovered_clues}")
-
-
+    def evaluate_location_evolution(self, session_id: str, location_id: int, 
+                                 current_level: int) -> Dict[str, Any]:
+        """
+        Avalia se uma localização pode evoluir para o próximo nível.
+        
+        Args:
+            session_id: ID da sessão
+            location_id: ID da localização
+            current_level: Nível atual da localização
+            
+        Returns:
+            Resultado da avaliação
+        """
+        # Em um sistema real, verificaria descobertas na localização, 
+        # interações com objetos e NPCs, etc.
+        
+        # Implementação simplificada
+        return {
+            "success": True,
+            "can_evolve": True,
+            "next_level": current_level + 1
+        }
     
+    # Métodos auxiliares privados
+    
+    def _get_required_object_id(self, requirement: Any) -> Optional[int]:
+        """
+        Extrai o ID do objeto necessário de um requisito.
+        
+        Args:
+            requirement: Objeto EvidenceRequirement
+            
+        Returns:
+            ID do objeto ou None
+        """
+        if hasattr(requirement, 'required_object_id'):
+            if isinstance(requirement.required_object_id, int):
+                return requirement.required_object_id
+            elif isinstance(requirement.required_object_id, str):
+                try:
+                    # Pode estar armazenado como JSON
+                    data = json.loads(requirement.required_object_id)
+                    if isinstance(data, int):
+                        return data
+                    elif isinstance(data, list) and data:
+                        return data[0]  # Retorna o primeiro se for lista
+                except json.JSONDecodeError:
+                    # Tenta converter diretamente
+                    try:
+                        return int(requirement.required_object_id)
+                    except ValueError:
+                        pass
+        
+        return None
+    
+    def _get_required_knowledge_keywords(self, requirement: Any) -> List[str]:
+        """
+        Extrai palavras-chave de conhecimento necessárias.
+        
+        Args:
+            requirement: Objeto EvidenceRequirement
+            
+        Returns:
+            Lista de palavras-chave
+        """
+        keywords = []
+        
+        if hasattr(requirement, 'required_knowledge'):
+            data = requirement.required_knowledge
+            
+            if isinstance(data, str):
+                try:
+                    # Pode estar armazenado como JSON
+                    json_data = json.loads(data)
+                    if isinstance(json_data, dict) and 'keywords' in json_data:
+                        keywords = json_data['keywords']
+                    elif isinstance(json_data, list):
+                        keywords = json_data
+                except json.JSONDecodeError:
+                    # Se não for JSON, adiciona como string
+                    keywords = [data]
+            elif isinstance(data, dict) and 'keywords' in data:
+                keywords = data['keywords']
+            elif isinstance(data, list):
+                keywords = data
+        
+        return keywords
