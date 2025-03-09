@@ -148,7 +148,7 @@ class CommandProcessor:
         
         try:
             target_num = int(args[0])
-            print(f"\nTentando mover para posição {target_num}...")  # Feedback inicial
+            print(f"\nTentando mover para posição {target_num}...")
             
             current_location = self.cli.game_state.get("current_location")
             if not current_location:
@@ -156,9 +156,6 @@ class CommandProcessor:
                 return False
             
             location_id = current_location.get("id")
-            print(f"Local atual: {current_location.get('name')}")  # Feedback do local atual
-            
-            # Obtém áreas do ambiente atual
             areas = self.cli.location_repository.get_areas_by_location(
                 self.cli.db_session, location_id
             )
@@ -166,23 +163,31 @@ class CommandProcessor:
             if not areas:
                 print("Erro: Não há áreas disponíveis neste local!")
                 return False
-                
-            print(f"Áreas disponíveis: {len(areas)}")  # Feedback de áreas disponíveis
             
-            # Se o número se refere a uma área
             if 1 <= target_num <= len(areas):
                 area = areas[target_num - 1]
-                print(f"Tentando mover para: {area['name']}")  # Feedback da área alvo
+                print(f"Tentando mover para: {area['name']}")
                 
-                # Move para a área
-                result = self.cli.player_repository.move_to_area(
-                    self.cli.db_session, 
-                    self.cli.session_id, 
-                    area['id']  # Note: Mudado de area['area_id'] para area['id']
+                # Primeiro, descobrir a área
+                discover_result = self.cli.player_repository.discover_area(
+                    self.cli.db_session,
+                    self.cli.session_id,
+                    area['id']
                 )
                 
-                if result["success"]:
-                    # Atualizar o estado do jogo após o movimento
+                if not discover_result["success"]:
+                    print(f"Erro ao descobrir área: {discover_result.get('message', '')}")
+                    return False
+                
+                # Depois, mover para a área
+                move_result = self.cli.player_repository.move_to_area(
+                    self.cli.db_session,
+                    self.cli.session_id,
+                    area['id']
+                )
+                
+                if move_result["success"]:
+                    # Atualizar o estado do jogo
                     new_state = self.cli.player_repository.get_session_state(
                         self.cli.db_session,
                         self.cli.session_id
@@ -191,13 +196,12 @@ class CommandProcessor:
                     if new_state["success"]:
                         self.cli.game_state = new_state
                         print(f"\nVocê se move para {area['name']}.")
-                        print("Estado do jogo atualizado com sucesso!")  # Feedback de sucesso
                         return True
                     else:
-                        print(f"Erro ao atualizar estado: {new_state.get('message', 'Erro desconhecido')}")
+                        print(f"Erro ao atualizar estado: {new_state.get('error', '')}")
                         return False
                 else:
-                    print(f"Erro ao mover: {result.get('message', 'Não foi possível completar o movimento')}")
+                    print(f"Erro ao mover: {move_result.get('message', '')}")
                     return False
             
             print(f"Número inválido. Use um número entre 1 e {len(areas)}.")
@@ -207,7 +211,7 @@ class CommandProcessor:
             print("Por favor, use um número para se mover.")
             return False
         except Exception as e:
-            print(f"Erro inesperado: {str(e)}")
+            print(f"Erro ao mover: {str(e)}")
             return False
     
     def cmd_talk_to(self, args: List[str]) -> bool:

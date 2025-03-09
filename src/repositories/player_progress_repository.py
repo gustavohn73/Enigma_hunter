@@ -394,89 +394,109 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
     
     def discover_area(self, db: Session, session_id: str, area_id: int) -> Dict[str, Any]:
         """
-        Registra uma área como descoberta pelo jogador.
+        Registra uma área como descoberta pelo jogador e gerencia seu nível de exploração.
         
         Args:
             db: Sessão do banco de dados
             session_id: ID da sessão
             area_id: ID da área
-            
-        Returns:
-            Resultado da operação
         """
         try:
-            with db.begin_nested():  # Criar ponto de transação
-                # Verificar se o jogador existe
-                progress = self.get_by_session_id(db, session_id)
-                if not progress:
-                    return {"success": False, "message": "Sessão não encontrada"}
-                
-                # Verificar se a área existe
-                area = db.query(LocationArea).filter(LocationArea.area_id == area_id).first()
-                if not area:
-                    return {"success": False, "message": "Área não encontrada"}
-                
-                location_id = area.location_id
-                
-                # Atualizar a área atual
-                progress.current_area_id = area_id
-                
-                # Atualizar áreas descobertas
-                discovered_areas = self._ensure_dict(progress.discovered_areas)
-                
-                # Inicializar a lista para esta localização se for a primeira área
-                if str(location_id) not in discovered_areas:
-                    discovered_areas[str(location_id)] = []
-                
-                # Verificar se a área já foi descoberta
-                is_new_discovery = area_id not in discovered_areas[str(location_id)]
-                
-                if is_new_discovery:
-                    # Adicionar à lista de áreas descobertas
-                    discovered_areas[str(location_id)].append(area_id)
-                    progress.discovered_areas = discovered_areas
-                    
-                    # Inicializar nível de exploração para esta área
-                    area_levels = self._ensure_dict(progress.area_exploration_level)
-                    area_levels[str(area_id)] = 1
-                    progress.area_exploration_level = area_levels
-                
-                progress.last_activity = datetime.now()
-                
-                # Registrar no histórico de ações
-                self._add_action_to_history(progress, "discover_area", {
-                    "area_id": area_id,
-                    "location_id": location_id,
-                    "is_new": is_new_discovery
-                })
-                
-                # Atualizar registro de ambiente no sistema tradicional
-                env_progress = db.query(PlayerEnvironmentLevel).filter(
-                    PlayerEnvironmentLevel.session_id == session_id,
-                    PlayerEnvironmentLevel.location_id == location_id
-                ).first()
-                
-                if env_progress:
-                    discovered_areas_list = self._ensure_list(env_progress.discovered_areas)
-                    if area_id not in discovered_areas_list:
-                        discovered_areas_list.append(area_id)
-                        env_progress.discovered_areas = discovered_areas_list
-                        env_progress.last_exploration = datetime.now()
-                
+            progress = self.get_by_session_id(db, session_id)
+            if not progress:
+                return {"success": False, "message": "Sessão não encontrada"}
+            
+            area = db.query(LocationArea).filter(LocationArea.area_id == area_id).first()
+            if not area:
+                return {"success": False, "message": "Área não encontrada"}
+            
+            # Registrar área como descoberta
+            discovered_areas = self._ensure_dict(progress.discovered_areas)
+            location_id = str(area.location_id)
+            is_new_discovery = False
+            
+            if location_id not in discovered_areas:
+                discovered_areas[location_id] = {
+                    "areas": [],
+                    "last_visit": datetime.now().isoformat()
+                }
+                is_new_discovery = True
+            
+            if area_id not in discovered_areas[location_id]["areas"]:
+                discovered_areas[location_id]["areas"].append(area_id)
+                is_new_discovery = True
+            
+            # Atualizar níveis de exploração
+            area_levels = self._ensure_dict(progress.area_exploration_level)
+            current_level = area_levels.get(str(area_id), 0)
+            
+            if is_new_discovery:
+                # Inicializar com nível 1 se for descoberta nova
+                area_levels[str(area_id)] = 1
+            else:
+                # Incrementar nível baseado em visitas repetidas (máximo 5)
+                visits = discovered_areas[location_id].get("visits", 0) + 1
+                new_level = min(5, current_level + (1 if visits % 3 == 0 else 0))
+                area_levels[str(area_id)] = new_level
+            
+            # Atualizar contagem de visitas
+            discovered_areas[location_id]["visits"] = discovered_areas[location_id].get("visits", 0) + 1
+            discovered_areas[location_id]["last_visit"] = datetime.now().isoformat()
+            
+            # Atualizar progresso
+            progress.discovered_areas = discovered_areas
+            progress.area_exploration_level = area_levels
+            progress.current_area_id = area_id
+            progress.last_activity = datetime.now()
+            
+            # Registrar no histórico
+            self._add_action_to_history(progress, "discover_area", {
+                "area_id": area_id,
+                "location_id": location_id,
+                "is_new": is_new_discovery,
+                "current_level": area_levels[str(area_id)],
+                "visits": discovered_areas[location_id]["visits"]
+            })
+            
+            # Atualizar sistema tradicional
+            env_progress = db.query(PlayerEnvironmentLevel).filter(
+                PlayerEnvironmentLevel.session_id == session_id,
+                PlayerEnvironmentLevel.location_id == location_id
+            ).first()
+            
+            if not env_progress:
+                env_progress = PlayerEnvironmentLevel(
+                    session_id=session_id,
+                    location_id=location_id,
+                    exploration_level=1,
+                    discovered_areas=[area_id],
+                    last_exploration=datetime.now()
+                )
+                db.add(env_progress)
+            else:
+                if area_id not in env_progress.discovered_areas:
+                    discovered = self._ensure_list(env_progress.discovered_areas)
+                    discovered.append(area_id)
+                    env_progress.discovered_areas = discovered
+                env_progress.last_exploration = datetime.now()
+            
             db.commit()
             
             return {
                 "success": True,
-                "message": "Área descoberta" if is_new_discovery else "Área já descoberta",
+                "message": "Área descoberta" if is_new_discovery else "Área revisitada",
                 "is_new_discovery": is_new_discovery,
                 "area_name": area.name,
                 "area_id": area_id,
-                "location_id": location_id
+                "location_id": area.location_id,
+                "exploration_level": area_levels[str(area_id)],
+                "visits": discovered_areas[location_id]["visits"]
             }
+            
         except Exception as e:
             db.rollback()
             self.logger.error(f"Erro ao descobrir área: {e}")
-            return {"success": False, "error": str(e)}
+            return {"success": False, "message": str(e)}
     
     # ===== MÉTODOS DE PISTAS =====
     
@@ -1091,9 +1111,9 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
             # Obter a história
             story = db.query(GameObject.story_id).filter(
                 GameObject.object_id.in_(inventory)
-            ).first() if inventory else None
+            ).scalar() if inventory else None
             
-            story_id = story[0] if story else progress.story_id
+            story_id = story if story else progress.story_id
             
             return {
                 "player_id": progress.player_id,
@@ -1194,13 +1214,13 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
             story_id = progress.story_id
             
             # Contar totais disponíveis na história
-            total_locations = db.query(func.count()(Location.location_id)).join(
+            total_locations = db.query(func.count).select_from(Location).join(
                 Location.stories
             ).filter(
                 Location.stories.any(story_id=story_id)
             ).scalar() or 0
             
-            total_clues = db.query(func.count(Clue.clue_id)).filter(Clue.story_id == story_id).scalar() or 0
+            total_clues = db.query(func.count).filter(Clue.story_id == story_id).scalar() or 0
             
             # Contar descobertos pelo jogador
             discovered_locations = len(self._ensure_list(progress.discovered_locations))
@@ -1438,7 +1458,7 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
             "discovered_clues": []
         }
 
-    def get_or_create_player(self, db: Session, username: str) -> Player:
+    def get_or_create_player(self, db: Session, username: str) -> Dict[str, Any]:
         """
         Busca um jogador pelo nome ou cria um novo se não existir.
         
@@ -1447,38 +1467,48 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
             username: Nome do jogador
             
         Returns:
-            Player: Objeto do jogador
+            Dict com informações do jogador
         """
         try:
+
+            current_time = datetime.now()
+            
             # Buscar jogador existente
             player = db.query(Player).filter(Player.username == username).first()
+            
             
             # Se não existe, criar novo
             if not player:
                 player = Player(
                     player_id=str(uuid4()),
                     username=username,
-                    created_at=datetime.now(),
-                    last_login=datetime.now(),
+                    created_at=current_time,
+                    last_login=current_time,
+                    updated_at=current_time,
                     games_played=0,
                     games_completed=0,
                     is_deleted=False
                 )
                 db.add(player)
-                db.commit()
-                self.logger.info(f"Novo jogador criado: {username}")
             else:
                 # Atualizar último login
-                player.last_login = datetime.now()
-                db.commit()
-                self.logger.info(f"Jogador existente encontrado: {username}")
+                player.last_login = current_time
+                player.updated_at = current_time
             
-            return player  # Retorna o objeto Player diretamente
+            db.commit()
             
-        except SQLAlchemyError as e:
+            return {
+                "success": True,
+                "player": player,
+                "player_id": player.player_id,
+                "username": player.username,
+                "is_new": player is None
+            }
+            
+        except Exception as e:
             db.rollback()
             self.logger.error(f"Erro ao buscar/criar jogador: {e}")
-            raise ValueError(f"Erro ao processar jogador: {str(e)}")
+            return {"success": False, "error": str(e)}
 
     def move_to_area(self, db: Session, session_id: str, area_id: int) -> Dict[str, Any]:
         """

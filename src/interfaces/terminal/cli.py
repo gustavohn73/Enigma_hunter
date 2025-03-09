@@ -185,6 +185,11 @@ class EnigmaHunterCLI:
                 username=player_name
             )
             
+            if not player["success"]:
+                print(f"Erro ao criar/buscar jogador: {player.get('error', '')}")
+                pause()
+                return
+
             # Criar sessão
             result = self.player_repository.create_player_session(
                 self.db_session,
@@ -198,6 +203,8 @@ class EnigmaHunterCLI:
                 return
             
             self.session_id = result["session_id"]
+            self.player_id = player["player_id"]
+            self.player_name = result["username"]
             
             # Inicializar estado do jogo
             self.game_state = self.player_repository.get_session_state(

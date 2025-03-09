@@ -68,8 +68,8 @@ class JSONMixin:
 class TimestampMixin:
     """Mixin para adicionar timestamps de criação e atualização."""
     
-    created_at = Column(DateTime, default=func.now(), nullable=False)
-    updated_at = Column(DateTime, default=func.now(), onupdate=func.now(), nullable=False)
+    created_at = Column(DateTime, default=func.now, nullable=False)
+    updated_at = Column(DateTime, default=func.now, onupdate=func.now, nullable=False)
 
 class SoftDeleteMixin:
     """Mixin para suporte a exclusão lógica."""
@@ -507,7 +507,7 @@ class GameSession(Base, TimestampMixin):
     game_session_id = Column(Integer, primary_key=True)
     story_id = Column(Integer, ForeignKey('story.story_id', ondelete='CASCADE'), nullable=False)
     game_master_id = Column(Integer, ForeignKey('game_master.gm_id', ondelete='SET NULL'), nullable=True)
-    start_time = Column(DateTime, default=func.now(), nullable=False)
+    start_time = Column(DateTime, default=func.now, nullable=False)
     end_time = Column(DateTime, nullable=True)
     game_status = Column(String(50), default='active', index=True)
     player_count = Column(Integer, default=0)
@@ -541,7 +541,7 @@ class PlayerSession(Base, TimestampMixin, JSONMixin):
     player_id = Column(Integer, ForeignKey('player.player_id', ondelete='CASCADE'), nullable=False)
     game_session_id = Column(Integer, ForeignKey('game_session.game_session_id', ondelete='CASCADE'), nullable=False)
     story_id = Column(Integer, ForeignKey('story.story_id', ondelete='CASCADE'), nullable=False)
-    last_activity = Column(DateTime, default=func.now(), onupdate=func.now(), nullable=False)
+    last_activity = Column(DateTime, default=func.now, onupdate=func.now, nullable=False)
     game_status = Column(String(50), default='active', index=True)
     solution_submitted = Column(Boolean, default=False)
     attempt_number = Column(Integer, default=1)
@@ -669,7 +669,7 @@ class PlayerLocation(Base, TimestampMixin, JSONMixin):
     session_id = Column(String(36), ForeignKey('player_session.session_id', ondelete='CASCADE'), nullable=False)
     current_location_id = Column(Integer, ForeignKey('location.location_id', ondelete='CASCADE'), nullable=False)
     current_area_id = Column(Integer, ForeignKey('location_area.area_id', ondelete='SET NULL'), nullable=True)
-    entered_time = Column(DateTime, default=func.now(), nullable=False)
+    entered_time = Column(DateTime, default=func.now, nullable=False)
     exploration_history = Column(JSON, default=[])
     
     # Relacionamentos
@@ -698,7 +698,7 @@ class PlayerObjectLevel(Base, TimestampMixin, JSONMixin):
     object_id = Column(Integer, ForeignKey('game_object.object_id', ondelete='CASCADE'), nullable=False)
     current_level = Column(Integer, default=0, nullable=False)
     unlocked_details = Column(JSON, default=[])
-    last_interaction = Column(DateTime, default=func.now(), nullable=False)
+    last_interaction = Column(DateTime, default=func.now, nullable=False)
     
     # Relacionamentos
     session = relationship("PlayerSession", back_populates="object_progress")
@@ -725,7 +725,7 @@ class PlayerCharacterLevel(Base, TimestampMixin, JSONMixin):
     session_id = Column(String(36), ForeignKey('player_session.session_id', ondelete='CASCADE'), nullable=False)
     character_id = Column(Integer, ForeignKey('character.character_id', ondelete='CASCADE'), nullable=False)
     current_level = Column(Integer, default=0, nullable=False)
-    last_interaction = Column(DateTime, default=func.now(), nullable=False)
+    last_interaction = Column(DateTime, default=func.now, nullable=False)
     triggered_keywords = Column(JSON, default=[])
     
     # Relacionamentos
@@ -755,7 +755,7 @@ class PlayerEnvironmentLevel(Base, TimestampMixin, JSONMixin):
     exploration_level = Column(Integer, default=0, nullable=False)
     discovered_areas = Column(JSON, default=[])
     discovered_details = Column(JSON, default=[])
-    last_exploration = Column(DateTime, default=func.now(), nullable=False)
+    last_exploration = Column(DateTime, default=func.now, nullable=False)
     
     # Relacionamentos
     session = relationship("PlayerSession", back_populates="environment_progress")
@@ -1191,6 +1191,6 @@ class PlayerProgress(Base, TimestampMixin, JSONMixin):
 def set_deleted_timestamp(mapper, connection, target):
     """Configura o timestamp de exclusão quando is_deleted é definido como True."""
     if target.is_deleted and not target.deleted_at:
-        target.deleted_at = func.now()
+        target.deleted_at = func.now
     elif not target.is_deleted and target.deleted_at:
         target.deleted_at = None

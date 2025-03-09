@@ -66,66 +66,66 @@ def setup_templates(session):
             "context_level": 0,
             "prompt_structure": """Você é {character_name}, {character_description}.
 
-CONTEXTO DO PERSONAGEM:
-{character_context}
+                CONTEXTO DO PERSONAGEM:
+                {character_context}
 
-PERSONALIDADE:
-{character_personality}
+                PERSONALIDADE:
+                {character_personality}
 
-CONHECIMENTO DISPONÍVEL NESTE ESTÁGIO ({character_level}):
-{available_knowledge}
+                CONHECIMENTO DISPONÍVEL NESTE ESTÁGIO ({character_level}):
+                {available_knowledge}
 
-RESTRIÇÕES:
-{knowledge_restrictions}
+                RESTRIÇÕES:
+                {knowledge_restrictions}
 
-INSTRUÇÕES ESPECIAIS:
-1. Mantenha-se fiel ao personagem e seu estágio atual de conhecimento.
-2. Não revele informações além do que o personagem sabe no estágio atual.
-3. Responda de forma natural e conversacional, mantendo o estilo de fala do personagem.
-4. Suas respostas devem ter no máximo 3 parágrafos.
+                INSTRUÇÕES ESPECIAIS:
+                1. Mantenha-se fiel ao personagem e seu estágio atual de conhecimento.
+                2. Não revele informações além do que o personagem sabe no estágio atual.
+                3. Responda de forma natural e conversacional, mantendo o estilo de fala do personagem.
+                4. Suas respostas devem ter no máximo 3 parágrafos.
 
-HISTÓRICO DA CONVERSA:
-{conversation_history}
+                HISTÓRICO DA CONVERSA:
+                {conversation_history}
 
-Jogador: {player_input}
+                Jogador: {player_input}
 
-{character_name}:""",
-            "variables": [
-                "character_name", "character_description", "character_context", 
-                "character_personality", "character_level", "available_knowledge", 
-                "knowledge_restrictions", "conversation_history", "player_input"
-            ],
-            "purpose": "Diálogo básico com personagem",
-            "usage_instructions": "Use este template para conversas iniciais com personagens"
-        },
-        {
-            "template_name": "location_description",
-            "template_type": "location",
-            "context_level": 0,
-            "prompt_structure": """Descreva a seguinte localização para o jogador:
+                {character_name}:""",
+                            "variables": [
+                                "character_name", "character_description", "character_context", 
+                                "character_personality", "character_level", "available_knowledge", 
+                                "knowledge_restrictions", "conversation_history", "player_input"
+                            ],
+                            "purpose": "Diálogo básico com personagem",
+                            "usage_instructions": "Use este template para conversas iniciais com personagens"
+                        },
+                        {
+                            "template_name": "location_description",
+                            "template_type": "location",
+                            "context_level": 0,
+                            "prompt_structure": """Descreva a seguinte localização para o jogador:
 
-LOCALIZAÇÃO: {location_name}
+                LOCALIZAÇÃO: {location_name}
 
-DESCRIÇÃO BASE:
-{location_description}
+                DESCRIÇÃO BASE:
+                {location_description}
 
-DETALHES VISÍVEIS NO NÍVEL {exploration_level}:
-{visible_details}
+                DETALHES VISÍVEIS NO NÍVEL {exploration_level}:
+                {visible_details}
 
-ATMOSFERA:
-{atmosphere}
+                ATMOSFERA:
+                {atmosphere}
 
-ELEMENTOS NOTÁVEIS:
-{notable_elements}
+                ELEMENTOS NOTÁVEIS:
+                {notable_elements}
 
-INSTRUÇÕES:
-1. Descreva a localização de forma imersiva e atmosférica.
-2. Destaque apenas elementos visíveis no nível atual de exploração.
-3. Não mencione áreas ou objetos que requerem nível de exploração maior.
-4. Use linguagem envolvente que estimule os sentidos.
-5. Mantenha a descrição em até 4 parágrafos.
+                INSTRUÇÕES:
+                1. Descreva a localização de forma imersiva e atmosférica.
+                2. Destaque apenas elementos visíveis no nível atual de exploração.
+                3. Não mencione áreas ou objetos que requerem nível de exploração maior.
+                4. Use linguagem envolvente que estimule os sentidos.
+                5. Mantenha a descrição em até 4 parágrafos.
 
-RESULTADO:""",
+                RESULTADO:""",
             "variables": [
                 "location_name", "location_description", "exploration_level", 
                 "visible_details", "atmosphere", "notable_elements"
@@ -139,28 +139,28 @@ RESULTADO:""",
             "context_level": 0,
             "prompt_structure": """Descreva o seguinte objeto para o jogador:
 
-OBJETO: {object_name}
+                OBJETO: {object_name}
 
-DESCRIÇÃO BASE:
-{object_description}
+                DESCRIÇÃO BASE:
+                {object_description}
 
-CONHECIMENTO NO NÍVEL {object_level}:
-{level_knowledge}
+                CONHECIMENTO NO NÍVEL {object_level}:
+                {level_knowledge}
 
-DETALHES OBSERVÁVEIS:
-{observable_details}
+                DETALHES OBSERVÁVEIS:
+                {observable_details}
 
-HISTÓRIA/CONTEXTO CONHECIDO:
-{known_context}
+                HISTÓRIA/CONTEXTO CONHECIDO:
+                {known_context}
 
-INSTRUÇÕES:
-1. Descreva o objeto de forma detalhada e tangível.
-2. Revele apenas informações apropriadas ao nível atual de conhecimento.
-3. Não mencione propriedades ou usos que requerem nível maior.
-4. Use linguagem precisa e descritiva.
-5. Mantenha a descrição em até 3 parágrafos.
+                INSTRUÇÕES:
+                1. Descreva o objeto de forma detalhada e tangível.
+                2. Revele apenas informações apropriadas ao nível atual de conhecimento.
+                3. Não mencione propriedades ou usos que requerem nível maior.
+                4. Use linguagem precisa e descritiva.
+                5. Mantenha a descrição em até 3 parágrafos.
 
-RESULTADO:""",
+                RESULTADO:""",
             "variables": [
                 "object_name", "object_description", "object_level", 
                 "level_knowledge", "observable_details", "known_context"
@@ -303,6 +303,7 @@ def load_specialization_config(story_path):
         return {} # Return empty dict.
 
 def load_story_components(session, story, story_path):
+    """Carrega os componentes da história (ambientes, personagens, objetos, pistas e QR codes)."""
     load_environments(session, story, story_path)
     load_characters(session, story, story_path)
     load_objects_and_clues(session, story, story_path)
