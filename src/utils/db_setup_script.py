@@ -59,6 +59,10 @@ def setup_templates(session):
     """Configura templates de prompt padrão para a IA"""
     logger.info("Configurando templates de prompt para IA...")
     
+    # Importar datetime aqui
+    from datetime import datetime
+    current_time = datetime.now()
+    
     default_prompts = [
         {
             "template_name": "character_dialogue_base",
@@ -174,6 +178,10 @@ def setup_templates(session):
         variables = prompt_data.pop("variables")
         prompt_data["variables"] = json.dumps(variables)
         
+        # Adicionar timestamp explicitamente
+        prompt_data["created_at"] = current_time
+        prompt_data["updated_at"] = current_time
+
         prompt = PromptTemplate(**prompt_data)
         existing = session.query(PromptTemplate).filter_by(template_name=prompt.template_name).first()
         if not existing:
@@ -193,6 +201,10 @@ def load_story_data(session: Session, story_dir: str) -> None:
     logger.info(f"Carregando dados da história do diretório: {story_dir}")
     
     try:
+        # Importar datetime
+        from datetime import datetime
+        current_time = datetime.now()
+
         # Carregar historia_base.json
         historia_path = Path(story_dir) / "historia_base.json"
         if not historia_path.exists():
@@ -210,7 +222,9 @@ def load_story_data(session: Session, story_dir: str) -> None:
             difficulty_level=story_data.get('difficulty_level', 1),
             solution_criteria=story_data.get('solution_criteria', {}),
             specialization_config=story_data.get('specialization_config', {}),
-            is_active=True
+            is_active=True,
+            created_at=current_time,
+            updated_at=current_time
         )
         
         session.add(story)
