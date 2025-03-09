@@ -7,11 +7,7 @@
     "appearance": "Mulher de estatura média com físico resistente desenvolvido por anos de caminhadas e trabalho manual. Cabelos castanho-avermelhados com mechas grisalhas, geralmente trançados ou presos em um coque funcional. Veste-se de maneira prática em roupas de viagem duráveis em tons terrosos, sempre com múltiplos bolsos e bolsas para armazenar amostras e ferramentas. Suas mãos são livremente manchadas por pigmentos vegetais, e ela frequentemente carrega um sutil aroma de ervas secas e óleos essenciais. Olhos verdes penetrantes que parecem avaliar tudo e todos como possíveis espécimes de estudo.",
     "is_culprit": false,
     "motive": "",
-    "location_schedule": {
-      "morning": 6,
-      "afternoon": 7,
-      "evening": 1
-    },
+    "area_id": 23,
     "levels": [
       {
         "level_number": 0,

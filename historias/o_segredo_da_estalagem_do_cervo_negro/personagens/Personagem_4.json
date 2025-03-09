@@ -7,11 +7,7 @@
     "appearance": "Homem robusto de aproximadamente 65 anos, com postura militar impecável apesar da idade. Cabelos brancos cortados rentes e um bigode espesso bem cuidado. Cicatrizes discretas no rosto e mãos contam histórias silenciosas de seu serviço ativo. Embora aposentado, ainda mantém um guarda-roupa semiformado - camisas engomadas, coletes abotoados e botas sempre polidas. Carrega consigo uma bengala de carvalho com cabo de prata, mais como símbolo de autoridade do que por necessidade física, e frequentemente a usa para apontar coisas que chamam sua atenção.",
     "is_culprit": false,
     "motive": "",
-    "location_schedule": {
-      "morning": 1,
-      "afternoon": 1,
-      "evening": 2
-    },
+    "area_id": 22,
     "levels": [
       {
         "level_number": 0,

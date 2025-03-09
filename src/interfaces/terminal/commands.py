@@ -1,5 +1,7 @@
 # src/interfaces/terminal/commands.py
 from typing import List, Dict, Any, Optional
+from datetime import datetime
+from sqlalchemy.orm import Session
 import shlex
 
 from src.interfaces.terminal.cli_helpers import pause, get_input, clear_screen
@@ -32,7 +34,8 @@ class CommandProcessor:
             "progresso": self.cmd_progress,
             "combinar": self.cmd_combine,
             "ajuda": self.cmd_help,
-            "debug": self.cmd_debug
+            "debug": self.cmd_debug,
+            "explorar": self.cmd_explore
         }
         
         # Sinônimos de comandos
@@ -71,7 +74,13 @@ class CommandProcessor:
                 
             # Executa o comando
             if cmd in self.commands:
-                return self.commands[cmd](args)
+                result = self.commands[cmd](args)
+                
+                # Se o comando foi bem-sucedido, recarrega o estado do jogo
+                if result:
+                    self.cli.load_game_state()
+                    
+                return result
             else:
                 print("Comando não reconhecido. Digite 'ajuda' para ver os comandos disponíveis.")
                 return False
@@ -134,78 +143,72 @@ class CommandProcessor:
     def cmd_go_to(self, args: List[str]) -> bool:
         """Move o jogador para um local ou área."""
         if not args:
-            print("Para onde você quer ir? (Use 'ir <local/área>')")
+            print("Para onde você quer ir? (Use 'ir <número>')")
             return False
         
-        # Remove 'para' se presente
-        if args[0].lower() == "para":
-            args.pop(0)
+        try:
+            target_num = int(args[0])
+            print(f"\nTentando mover para posição {target_num}...")  # Feedback inicial
             
-        target = " ".join(args).lower()
-        
-        # Obtém locais e áreas disponíveis
-        current_location_id = self.cli.game_state.get("current_location_id")
-        
-        if not current_location_id:
-            print("Você não está em nenhum local. Algo deu errado!")
-            return False
-        
-        # Verifica se é uma localização
-        locations = self.cli.location_repository.get_connected_locations(
-            self.cli.db_session, current_location_id
-        )
-        
-        for location in locations:
-            if location['name'].lower() == target:
-                # Verifica se o local está bloqueado
-                if location['is_locked']:
-                    print(f"{location['name']} está bloqueado. {location.get('unlock_condition', '')}")
-                    return False
+            current_location = self.cli.game_state.get("current_location")
+            if not current_location:
+                print("Erro: Você não está em nenhum local!")
+                return False
+            
+            location_id = current_location.get("id")
+            print(f"Local atual: {current_location.get('name')}")  # Feedback do local atual
+            
+            # Obtém áreas do ambiente atual
+            areas = self.cli.location_repository.get_areas_by_location(
+                self.cli.db_session, location_id
+            )
+            
+            if not areas:
+                print("Erro: Não há áreas disponíveis neste local!")
+                return False
                 
-                # Move para a localização
-                result = self.cli.player_repository.discover_location(
-                    self.cli.db_session, self.cli.session_id, location['location_id']
-                )
-                
-                if result["success"]:
-                    print(f"Você se move para {location['name']}.")
-                    return True
-                else:
-                    print(f"Não foi possível ir para {location['name']}. {result.get('message', '')}")
-                    return False
-        
-        # Verifica se é uma área na localização atual
-        areas = self.cli.location_repository.get_areas_by_location(
-            self.cli.db_session, current_location_id
-        )
-        
-        for area in areas:
-            if area['name'].lower() == target:
-                # Verifica requisitos de descoberta
-                if area['discovery_level_required'] > 0:
-                    # Verifica o nível de exploração
-                    env_level = self.cli.player_repository.get_location_exploration_level(
-                        self.cli.db_session, self.cli.session_id, current_location_id
-                    )
-                    
-                    if env_level < area['discovery_level_required']:
-                        print(f"Você não percebe nada relevante nessa direção.")
-                        return False
+            print(f"Áreas disponíveis: {len(areas)}")  # Feedback de áreas disponíveis
+            
+            # Se o número se refere a uma área
+            if 1 <= target_num <= len(areas):
+                area = areas[target_num - 1]
+                print(f"Tentando mover para: {area['name']}")  # Feedback da área alvo
                 
                 # Move para a área
-                result = self.cli.player_repository.discover_area(
-                    self.cli.db_session, self.cli.session_id, area['area_id']
+                result = self.cli.player_repository.move_to_area(
+                    self.cli.db_session, 
+                    self.cli.session_id, 
+                    area['id']  # Note: Mudado de area['area_id'] para area['id']
                 )
                 
                 if result["success"]:
-                    print(f"Você explora {area['name']}.")
-                    return True
+                    # Atualizar o estado do jogo após o movimento
+                    new_state = self.cli.player_repository.get_session_state(
+                        self.cli.db_session,
+                        self.cli.session_id
+                    )
+                    
+                    if new_state["success"]:
+                        self.cli.game_state = new_state
+                        print(f"\nVocê se move para {area['name']}.")
+                        print("Estado do jogo atualizado com sucesso!")  # Feedback de sucesso
+                        return True
+                    else:
+                        print(f"Erro ao atualizar estado: {new_state.get('message', 'Erro desconhecido')}")
+                        return False
                 else:
-                    print(f"Não foi possível explorar {area['name']}. {result.get('message', '')}")
+                    print(f"Erro ao mover: {result.get('message', 'Não foi possível completar o movimento')}")
                     return False
-        
-        print(f"Não foi possível encontrar '{target}' por perto.")
-        return False
+            
+            print(f"Número inválido. Use um número entre 1 e {len(areas)}.")
+            return False
+            
+        except ValueError:
+            print("Por favor, use um número para se mover.")
+            return False
+        except Exception as e:
+            print(f"Erro inesperado: {str(e)}")
+            return False
     
     def cmd_talk_to(self, args: List[str]) -> bool:
         """Inicia diálogo com um personagem."""
@@ -476,6 +479,43 @@ class CommandProcessor:
             print(f"Subcomando de depuração desconhecido: {subcmd}")
             
         return True
+    
+    def cmd_explore(self, args: List[str]) -> bool:
+        """Explora uma área ou localização."""
+        try:
+            current_location = self.cli.game_state.get("current_location")
+            if not current_location:
+                print("Você não está em nenhum local!")
+                return False
+                
+            areas = self.cli.location_repository.get_available_areas(
+                self.cli.db_session, 
+                current_location["id"]
+            )
+            
+            if not areas:
+                print("\nNão há áreas disponíveis para explorar aqui.")
+                return False
+                
+            print("\nÁreas disponíveis para explorar:")
+            for i, area in enumerate(areas, 1):
+                print(f"{i}. {area['name']}")
+            
+            choice = get_input("\nEscolha uma área para explorar (0 para voltar): ")
+            if choice == "0":
+                return True
+                
+            try:
+                idx = int(choice)
+                if 1 <= idx <= len(areas):
+                    return self.cmd_go_to([str(idx)])
+            except ValueError:
+                print("Escolha inválida!")
+            
+            return False
+        except Exception as e:
+            print(f"Erro ao explorar: {e}")
+            return False
     
     def _check_location_requirements(self, location_id: int) -> bool:
         """Verifica se os requisitos para acessar um local foram cumpridos"""

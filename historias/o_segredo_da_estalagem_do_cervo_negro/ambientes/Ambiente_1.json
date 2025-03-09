@@ -153,37 +153,6 @@
             "has_clue": false
           }
         ]
-      },
-      {
-        "area_id": 31,
-        "name": "Cozinha da Estalagem",
-        "description": "Uma cozinha rústica e bem organizada, onde os alimentos da estalagem são preparados. O ambiente tem um aroma de ervas e especiarias, e as superfícies de madeira mostram sinais de uso diário. Utensílios de cobre e ferro pendem das prateleiras, enquanto uma grande mesa ocupa o centro do cômodo.",
-        "initially_visible": true,
-        "connected_areas": [],
-        "discovery_level_required": 0,
-        "details": [
-          {
-            "detail_id": 95,
-            "name": "Área de Lavagem",
-            "description": "Uma pia de pedra desgastada pelo uso, onde os utensílios e copos são lavados. Entre as louças empilhadas, um copo de vinho de Thaddeus foi separado por Elenora como evidência. Há resíduos suspeitos no fundo do copo.",
-            "discovery_level_required": 0,
-            "has_clue": true
-          },
-          {
-            "detail_id": 96,
-            "name": "Despensa da Cozinha",
-            "description": "Um armário de madeira repleto de suprimentos secos e garrafas de vinho. Algumas prateleiras parecem ter sido mexidas recentemente, e uma garrafa está faltando.",
-            "discovery_level_required": 1,
-            "has_clue": true
-          },
-          {
-            "detail_id": 97,
-            "name": "Mesa de Preparação",
-            "description": "Uma grande mesa onde os ingredientes são preparados. Há marcas de cortes recentes na tábua de madeira, possivelmente usadas para misturar especiarias ou outros elementos.",
-            "discovery_level_required": 1,
-            "has_clue": false
-          }
-        ]
       }      
     ]
   }

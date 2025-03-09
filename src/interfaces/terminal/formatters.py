@@ -23,20 +23,26 @@ def color_text(text: str, color: str) -> str:
         
     return f"{COLORS[color]}{text}\033[0m"
 
-def style_text(text: str, bold: bool = False) -> str:
+def style_text(text: str, bold: bool = False, underline: bool = False) -> str:
     """
-    Aplica estilo ao texto.
+    Aplica estilos ao texto.
     
     Args:
         text: Texto a ser estilizado
         bold: Se True, aplica negrito
-    
+        underline: Se True, aplica sublinhado
+        
     Returns:
-        str: Texto estilizado
+        Texto estilizado
     """
+    result = text
     if bold:
-        return f"\033[1m{text}\033[0m"
-    return text
+        result = f"\033[1m{result}"
+    if underline:
+        result = f"\033[4m{result}"
+    if bold or underline:
+        result = f"{result}\033[0m"
+    return result
 
 class TextFormatter:
     """Formata texto para exibição no terminal usando cores ANSI."""

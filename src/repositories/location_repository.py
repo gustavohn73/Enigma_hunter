@@ -818,229 +818,296 @@ class LocationRepository(BaseRepository[Location]):
             self.logger.error(f"Erro ao conectar áreas {area_id} e {connected_area_id}: {str(e)}")
             raise
     
-def disconnect_areas(self, db: Session, area_id: int, connected_area_id: int) -> bool:
+    def get_location(self, db: Session, location_id: int) -> Dict[str, Any]:
+        """Obtém informações detalhadas de uma localização."""
+        try:
+            location = db.query(Location).filter(Location.location_id == location_id).first()
+            
+            if not location:
+                return None
+                
+            return {
+                "id": location.location_id,
+                "name": location.name,
+                "description": location.description,
+                "is_locked": location.is_locked,
+                "areas": [
+                    {
+                        "id": area.area_id,
+                        "name": area.name,
+                        "description": area.description,
+                        "initially_visible": area.initially_visible
+                    }
+                    for area in location.areas
+                    if area.initially_visible or not area.discovery_level_required
+                ]
+            }
+            
+        except SQLAlchemyError as e:
+            self.logger.error(f"Erro ao buscar localização {location_id}: {e}")
+            return None
+
+    def disconnect_areas(self, db: Session, area_id: int, connected_area_id: int) -> bool:
+            """
+            Remove a conexão bidirecional entre duas áreas.
+            
+            Args:
+                db: Sessão do banco de dados
+                area_id: ID da primeira área
+                connected_area_id: ID da segunda área
+                
+            Returns:
+                True se a desconexão foi realizada com sucesso
+            
+            Raises:
+                SQLAlchemyError: Erro ao acessar o banco de dados
+            """
+            try:
+                # Busca as duas áreas
+                area1 = self.get_area_by_id(db, area_id)
+                area2 = self.get_area_by_id(db, connected_area_id)
+                
+                if not area1 or not area2:
+                    return False
+                
+                # Remove a conexão da primeira área
+                connected_areas1 = self._parse_json_field(area1.connected_areas) or []
+                if connected_area_id in connected_areas1:
+                    connected_areas1.remove(connected_area_id)
+                    area1.connected_areas = json.dumps(connected_areas1)
+                
+                # Remove a conexão da segunda área
+                connected_areas2 = self._parse_json_field(area2.connected_areas) or []
+                if area_id in connected_areas2:
+                    connected_areas2.remove(area_id)
+                    area2.connected_areas = json.dumps(connected_areas2)
+                
+                db.commit()
+                self.logger.info(f"Conexão entre áreas {area_id} e {connected_area_id} removida com sucesso")
+                return True
+            except SQLAlchemyError as e:
+                db.rollback()
+                self.logger.error(f"Erro ao desconectar áreas {area_id} e {connected_area_id}: {str(e)}")
+                raise
+        
+    def get_location_stats(self, db: Session, location_id: int) -> Dict[str, Any]:
         """
-        Remove a conexão bidirecional entre duas áreas.
+        Obtém estatísticas sobre uma localização, incluindo número de áreas, detalhes e pistas.
         
         Args:
             db: Sessão do banco de dados
-            area_id: ID da primeira área
-            connected_area_id: ID da segunda área
+            location_id: ID da localização
             
         Returns:
-            True se a desconexão foi realizada com sucesso
+            Dicionário com estatísticas da localização
         
         Raises:
             SQLAlchemyError: Erro ao acessar o banco de dados
         """
         try:
-            # Busca as duas áreas
-            area1 = self.get_area_by_id(db, area_id)
-            area2 = self.get_area_by_id(db, connected_area_id)
+            # Contagem de áreas
+            area_count = db.query(func.count(LocationArea.area_id)).filter(
+                LocationArea.location_id == location_id
+            ).scalar() or 0
             
-            if not area1 or not area2:
-                return False
+            # Contagem de áreas visíveis inicialmente
+            visible_area_count = db.query(func.count(LocationArea.area_id)).filter(
+                LocationArea.location_id == location_id,
+                LocationArea.initially_visible == True
+            ).scalar() or 0
             
-            # Remove a conexão da primeira área
-            connected_areas1 = self._parse_json_field(area1.connected_areas) or []
-            if connected_area_id in connected_areas1:
-                connected_areas1.remove(connected_area_id)
-                area1.connected_areas = json.dumps(connected_areas1)
+            # Busca todas as áreas para processar detalhes
+            areas = self.get_areas_by_location(db, location_id)
             
-            # Remove a conexão da segunda área
-            connected_areas2 = self._parse_json_field(area2.connected_areas) or []
-            if area_id in connected_areas2:
-                connected_areas2.remove(area_id)
-                area2.connected_areas = json.dumps(connected_areas2)
+            area_ids = [area.area_id for area in areas]
             
-            db.commit()
-            self.logger.info(f"Conexão entre áreas {area_id} e {connected_area_id} removida com sucesso")
-            return True
+            # Contagem de detalhes
+            detail_count = 0
+            clue_count = 0
+            
+            if area_ids:
+                detail_count = db.query(func.count(AreaDetail.detail_id)).filter(
+                    AreaDetail.area_id.in_(area_ids)
+                ).scalar() or 0
+                
+                clue_count = db.query(func.count(AreaDetail.detail_id)).filter(
+                    AreaDetail.area_id.in_(area_ids),
+                    AreaDetail.has_clue == True
+                ).scalar() or 0
+            
+            # Obtém a localização para informações básicas
+            location = self.get_by_id(db, location_id)
+            
+            return {
+                "location_id": location_id,
+                "name": location.name if location else "Localização desconhecida",
+                "is_locked": location.is_locked if location else True,
+                "area_count": area_count,
+                "visible_area_count": visible_area_count,
+                "detail_count": detail_count,
+                "clue_count": clue_count
+            }
         except SQLAlchemyError as e:
-            db.rollback()
-            self.logger.error(f"Erro ao desconectar áreas {area_id} e {connected_area_id}: {str(e)}")
+            self.logger.error(f"Erro ao obter estatísticas da localização {location_id}: {str(e)}")
             raise
-    
-def get_location_stats(self, db: Session, location_id: int) -> Dict[str, Any]:
-    """
-    Obtém estatísticas sobre uma localização, incluindo número de áreas, detalhes e pistas.
-    
-    Args:
-        db: Sessão do banco de dados
-        location_id: ID da localização
+
+    def get_areas_by_discovery_level(self, db: Session, location_id: int) -> Dict[int, List[LocationArea]]:
+        """
+        Agrupa as áreas de uma localização por nível de descoberta necessário.
         
-    Returns:
-        Dicionário com estatísticas da localização
-    
-    Raises:
-        SQLAlchemyError: Erro ao acessar o banco de dados
-    """
-    try:
-        # Contagem de áreas
-        area_count = db.query(func.count(LocationArea.area_id)).filter(
-            LocationArea.location_id == location_id
-        ).scalar() or 0
-        
-        # Contagem de áreas visíveis inicialmente
-        visible_area_count = db.query(func.count(LocationArea.area_id)).filter(
-            LocationArea.location_id == location_id,
-            LocationArea.initially_visible == True
-        ).scalar() or 0
-        
-        # Busca todas as áreas para processar detalhes
-        areas = self.get_areas_by_location(db, location_id)
-        
-        area_ids = [area.area_id for area in areas]
-        
-        # Contagem de detalhes
-        detail_count = 0
-        clue_count = 0
-        
-        if area_ids:
-            detail_count = db.query(func.count(AreaDetail.detail_id)).filter(
-                AreaDetail.area_id.in_(area_ids)
-            ).scalar() or 0
+        Args:
+            db: Sessão do banco de dados
+            location_id: ID da localização
             
-            clue_count = db.query(func.count(AreaDetail.detail_id)).filter(
-                AreaDetail.area_id.in_(area_ids),
-                AreaDetail.has_clue == True
-            ).scalar() or 0
+        Returns:
+            Dicionário com áreas agrupadas por nível de descoberta
         
-        # Obtém a localização para informações básicas
-        location = self.get_by_id(db, location_id)
-        
-        return {
-            "location_id": location_id,
-            "name": location.name if location else "Localização desconhecida",
-            "is_locked": location.is_locked if location else True,
-            "area_count": area_count,
-            "visible_area_count": visible_area_count,
-            "detail_count": detail_count,
-            "clue_count": clue_count
-        }
-    except SQLAlchemyError as e:
-        self.logger.error(f"Erro ao obter estatísticas da localização {location_id}: {str(e)}")
-        raise
-
-def get_areas_by_discovery_level(self, db: Session, location_id: int) -> Dict[int, List[LocationArea]]:
-    """
-    Agrupa as áreas de uma localização por nível de descoberta necessário.
-    
-    Args:
-        db: Sessão do banco de dados
-        location_id: ID da localização
-        
-    Returns:
-        Dicionário com áreas agrupadas por nível de descoberta
-    
-    Raises:
-        SQLAlchemyError: Erro ao acessar o banco de dados
-    """
-    try:
-        areas = self.get_areas_by_location(db, location_id)
-        
-        # Agrupa áreas por nível de descoberta
-        result = {}
-        for area in areas:
-            level = area.discovery_level_required
-            if level not in result:
-                result[level] = []
-            result[level].append(area)
-        
-        return result
-    except SQLAlchemyError as e:
-        self.logger.error(f"Erro ao agrupar áreas por nível de descoberta para localização {location_id}: {str(e)}")
-        raise
-
-def get_location_progress(self, db: Session, location_id: int, 
-                        player_discovery_level: int) -> Dict[str, Any]:
-    """
-    Calcula o progresso de exploração de uma localização para o nível atual do jogador.
-    
-    Args:
-        db: Sessão do banco de dados
-        location_id: ID da localização
-        player_discovery_level: Nível de descoberta do jogador
-        
-    Returns:
-        Dicionário com informações de progresso
-    
-    Raises:
-        SQLAlchemyError: Erro ao acessar o banco de dados
-    """
-    try:
-        # Obtém todas as áreas da localização
-        all_areas = self.get_areas_by_location(db, location_id)
-        total_areas = len(all_areas)
-        
-        # Obtém áreas acessíveis com o nível atual
-        accessible_areas = [area for area in all_areas 
-                            if area.discovery_level_required <= player_discovery_level]
-        accessible_area_count = len(accessible_areas)
-        
-        # Calcula o percentual de completude
-        completion_percentage = 0
-        if total_areas > 0:
-            completion_percentage = (accessible_area_count / total_areas) * 100
-        
-        # Obtém próximas áreas a serem desbloqueadas
-        next_level_areas = [area for area in all_areas 
-                            if area.discovery_level_required == player_discovery_level + 1]
-        
-        return {
-            "location_id": location_id,
-            "player_level": player_discovery_level,
-            "total_areas": total_areas,
-            "accessible_areas": accessible_area_count,
-            "completion_percentage": completion_percentage,
-            "next_level_areas_count": len(next_level_areas),
-            "max_discovery_level": max([area.discovery_level_required for area in all_areas]) if all_areas else 0
-        }
-    except SQLAlchemyError as e:
-        self.logger.error(f"Erro ao calcular progresso da localização {location_id}: {str(e)}")
-        raise
-
-# Métodos auxiliares privados
-
-def _parse_json_field(self, field_value: Any) -> Any:
-    """
-    Analisa um campo que pode estar armazenado como JSON.
-    
-    Args:
-        field_value: Valor do campo que pode ser string JSON ou outra coisa
-        
-    Returns:
-        Valor decodificado ou o valor original
-    """
-    if not field_value:
-        return None
-        
-    if isinstance(field_value, str):
+        Raises:
+            SQLAlchemyError: Erro ao acessar o banco de dados
+        """
         try:
-            return json.loads(field_value)
-        except json.JSONDecodeError:
-            return field_value
-    
-    return field_value
+            areas = self.get_areas_by_location(db, location_id)
+            
+            # Agrupa áreas por nível de descoberta
+            result = {}
+            for area in areas:
+                level = area.discovery_level_required
+                if level not in result:
+                    result[level] = []
+                result[level].append(area)
+            
+            return result
+        except SQLAlchemyError as e:
+            self.logger.error(f"Erro ao agrupar áreas por nível de descoberta para localização {location_id}: {str(e)}")
+            raise
 
-def _get_connected_location_ids(self, location: Location) -> List[int]:
-    """
-    Extrai os IDs de localizações conectadas do campo navigation_map.
-    
-    Args:
-        location: Objeto Location
+    def get_location_progress(self, db: Session, location_id: int, 
+                            player_discovery_level: int) -> Dict[str, Any]:
+        """
+        Calcula o progresso de exploração de uma localização para o nível atual do jogador.
         
-    Returns:
-        Lista de IDs de localizações conectadas
-    """
-    nav_map = self._parse_json_field(location.navigation_map)
-    
-    if not nav_map:
+        Args:
+            db: Sessão do banco de dados
+            location_id: ID da localização
+            player_discovery_level: Nível de descoberta do jogador
+            
+        Returns:
+            Dicionário com informações de progresso
+        
+        Raises:
+            SQLAlchemyError: Erro ao acessar o banco de dados
+        """
+        try:
+            # Obtém todas as áreas da localização
+            all_areas = self.get_areas_by_location(db, location_id)
+            total_areas = len(all_areas)
+            
+            # Obtém áreas acessíveis com o nível atual
+            accessible_areas = [area for area in all_areas 
+                                if area.discovery_level_required <= player_discovery_level]
+            accessible_area_count = len(accessible_areas)
+            
+            # Calcula o percentual de completude
+            completion_percentage = 0
+            if total_areas > 0:
+                completion_percentage = (accessible_area_count / total_areas) * 100
+            
+            # Obtém próximas áreas a serem desbloqueadas
+            next_level_areas = [area for area in all_areas 
+                                if area.discovery_level_required == player_discovery_level + 1]
+            
+            return {
+                "location_id": location_id,
+                "player_level": player_discovery_level,
+                "total_areas": total_areas,
+                "accessible_areas": accessible_area_count,
+                "completion_percentage": completion_percentage,
+                "next_level_areas_count": len(next_level_areas),
+                "max_discovery_level": max([area.discovery_level_required for area in all_areas]) if all_areas else 0
+            }
+        except SQLAlchemyError as e:
+            self.logger.error(f"Erro ao calcular progresso da localização {location_id}: {str(e)}")
+            raise
+
+    def get_available_areas(self, db: Session, location_id: int) -> List[Dict[str, Any]]:
+        """
+        Obtém as áreas disponíveis em uma localização.
+        
+        Args:
+            db: Sessão do banco de dados
+            location_id: ID da localização
+            
+        Returns:
+            Lista de áreas disponíveis
+        """
+        try:
+            # Buscar todas as áreas da localização
+            areas = db.query(LocationArea).filter(
+                LocationArea.location_id == location_id,
+                LocationArea.initially_visible == True
+            ).all()
+            
+            # Converter para dicionários
+            result = []
+            for area in areas:
+                result.append({
+                    "id": area.area_id,
+                    "name": area.name,
+                    "description": area.description,
+                    "location_id": area.location_id,
+                    "initially_visible": area.initially_visible,
+                    "connected_areas": area.connected_areas,
+                    "discovery_level_required": area.discovery_level_required
+                })
+            
+            self.logger.debug(f"Encontradas {len(result)} áreas para localização {location_id}")
+            return result
+            
+        except Exception as e:
+            self.logger.error(f"Erro ao buscar áreas da localização {location_id}: {e}")
+            return []
+
+    # Métodos auxiliares privados
+
+    def _parse_json_field(self, field_value: Any) -> Any:
+        """
+        Analisa um campo que pode estar armazenado como JSON.
+        
+        Args:
+            field_value: Valor do campo que pode ser string JSON ou outra coisa
+            
+        Returns:
+            Valor decodificado ou o valor original
+        """
+        if not field_value:
+            return None
+            
+        if isinstance(field_value, str):
+            try:
+                return json.loads(field_value)
+            except json.JSONDecodeError:
+                return field_value
+        
+        return field_value
+
+    def _get_connected_location_ids(self, location: Location) -> List[int]:
+        """
+        Extrai os IDs de localizações conectadas do campo navigation_map.
+        
+        Args:
+            location: Objeto Location
+            
+        Returns:
+            Lista de IDs de localizações conectadas
+        """
+        nav_map = self._parse_json_field(location.navigation_map)
+        
+        if not nav_map:
+            return []
+            
+        connected_locations = nav_map.get('connected_locations', [])
+        
+        if isinstance(connected_locations, list):
+            return connected_locations
+        
         return []
-        
-    connected_locations = nav_map.get('connected_locations', [])
-    
-    if isinstance(connected_locations, list):
-        return connected_locations
-    
-    return []

@@ -7,11 +7,7 @@
     "appearance": "Uma mulher robusta de aproximadamente 70 anos, com cabelos grisalhos sempre presos em um coque prático. Seu rosto enrugado pelo tempo e pelo calor constante da cozinha ainda mantém uma vivacidade notável, especialmente em seus olhos castanhos perspicazes que parecem notar tudo. Veste-se sempre com roupas práticas – vestidos simples cobertos por aventais engomados que, apesar do trabalho constante na cozinha, mantém impressionantemente limpos. Suas mãos, ásperas e marcadas por décadas de trabalho, são surpreendentemente ágeis quando manipulam ervas ou preparam alimentos.",
     "is_culprit": false,
     "motive": "",
-    "location_schedule": {
-      "morning": 4,
-      "afternoon": 4,
-      "evening": 4
-    },
+    "area_id": 14,
     "levels": [
       {
         "level_number": 0,

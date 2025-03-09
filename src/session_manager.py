@@ -151,7 +151,7 @@ class SessionManager:
                     "story_id": session.story_id,
                     "created_at": session.start_time,
                     "last_activity": session.last_activity,
-                    "status": session.game_status
+                    "game_status": session.game_status
                 }
             }
         except Exception as e:
@@ -313,7 +313,7 @@ class SessionManager:
                     "story_id": session.story_id,
                     "created_at": session.start_time,
                     "last_activity": session.last_activity,
-                    "status": session.game_status,
+                    "game_status": session.game_status,
                     "solution_submitted": session.solution_submitted
                 }
                 

@@ -209,3 +209,123 @@ WHERE player_progress.session_id = ?
 2025-03-09 01:19:24,061 - src.repositories.player_progress_repository - INFO - Novo jogador criado: Gustavo
 2025-03-09 01:19:24,090 - src.repositories.player_progress_repository - INFO - Sessão criada com sucesso: e1e3bd86-151b-40be-b7a0-09292be99352 para história 1
 2025-03-09 01:19:55,627 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 01:26:39,641 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 01:26:48,590 - src.repositories.player_progress_repository - INFO - Novo jogador criado: Gustavo
+2025-03-09 01:26:48,613 - src.repositories.player_progress_repository - INFO - Sessão criada com sucesso: cc44d7ab-5d2b-4a87-b99a-bedb5a3d3a46 para história 1
+2025-03-09 01:26:54,183 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 01:28:08,055 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 01:28:14,305 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 01:28:35,449 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 01:28:47,725 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 01:28:52,983 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 01:29:01,035 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 01:29:04,907 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 01:29:45,055 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 01:30:22,896 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 01:35:09,717 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 01:35:16,488 - __main__ - ERROR - Erro fatal: 'PlayerProgressRepository' object has no attribute 'list_player_sessions'
+2025-03-09 01:35:24,366 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 01:35:30,531 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gustavo
+2025-03-09 01:35:30,540 - src.repositories.player_progress_repository - INFO - Sessão criada com sucesso: 5e1f1c88-247a-41b4-b05d-f1fd7bb734e2 para história 1
+2025-03-09 01:35:34,746 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 01:37:57,814 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 01:38:13,319 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gustavo
+2025-03-09 01:38:14,176 - src.repositories.player_progress_repository - INFO - Sessão criada com sucesso: 4d88fd39-8abd-4748-888a-ed5ddd2bf723 para história 1
+2025-03-09 01:38:19,331 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 01:40:53,037 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 01:41:01,508 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gustavo
+2025-03-09 01:41:01,521 - src.repositories.player_progress_repository - INFO - Sessão criada com sucesso: ebad3548-17f0-471b-810c-e98315549fe9 para história 1
+2025-03-09 01:41:05,364 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:19:24,598 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 02:19:31,807 - src.repositories.player_progress_repository - INFO - Novo jogador criado: Gustavo
+2025-03-09 02:19:31,816 - src.repositories.player_progress_repository - INFO - Sessão criada com sucesso: f0eda8f7-c0a1-4cce-94e3-19e19d03a5b0 para história 1
+2025-03-09 02:19:40,898 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:19:53,265 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:19:53,961 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:19:55,489 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:19:55,738 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:19:56,138 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:20:14,180 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:26:57,405 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 02:27:03,889 - __main__ - ERROR - Erro fatal: 'PlayerProgressRepository' object has no attribute 'list_player_sessions'
+2025-03-09 02:27:08,334 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 02:27:14,755 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gustavo
+2025-03-09 02:27:14,775 - src.repositories.player_progress_repository - INFO - Sessão criada com sucesso: 5386ebc1-5d52-40fd-83d7-30eae3e6761b para história 1
+2025-03-09 02:27:16,938 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:27:17,586 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:29:03,954 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 02:29:08,614 - src.repositories.player_progress_repository - INFO - Novo jogador criado: Gus
+2025-03-09 02:29:08,638 - src.repositories.player_progress_repository - INFO - Sessão criada com sucesso: 92b898a8-a4e6-41d2-a76d-b20c7676e738 para história 1
+2025-03-09 02:29:11,490 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:37:15,036 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 02:37:20,672 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gus
+2025-03-09 02:37:20,701 - src.repositories.player_progress_repository - INFO - Sessão criada com sucesso: 0f3461ef-9d13-4e52-8c96-155cad20eb3b para história 1
+2025-03-09 02:37:23,156 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:38:19,683 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:38:20,412 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:38:24,070 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:38:24,476 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:38:24,679 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:38:24,840 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:38:24,979 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:38:25,100 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:38:25,253 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:38:26,165 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:39:59,815 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 02:40:04,960 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gus
+2025-03-09 02:40:04,986 - src.repositories.player_progress_repository - INFO - Sessão criada com sucesso: 8ed2708b-0bb2-4496-bcec-5dcbfa7235a1 para história 1
+2025-03-09 02:40:06,951 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:41:00,100 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 02:41:02,285 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 09:16:09,822 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 09:16:15,695 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gus
+2025-03-09 09:16:15,705 - src.repositories.player_progress_repository - INFO - Sessão criada com sucesso: b5504a9b-7559-49ac-ae55-fd5766a3997f para história 1
+2025-03-09 09:16:18,426 - src.repositories.story_repository - WARNING - História não encontrada: ID None
+2025-03-09 09:19:29,025 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 09:19:36,166 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gus
+2025-03-09 09:19:36,169 - src.repositories.player_progress_repository - ERROR - Erro ao criar sessão: 'game_status' is an invalid keyword argument for PlayerProgress
+2025-03-09 09:19:47,524 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gus
+2025-03-09 09:19:47,525 - src.repositories.player_progress_repository - ERROR - Erro ao criar sessão: 'game_status' is an invalid keyword argument for PlayerProgress
+2025-03-09 09:25:23,157 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 09:25:42,787 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gus
+2025-03-09 09:25:42,790 - src.repositories.player_progress_repository - ERROR - Erro ao criar sessão: 'game_status' is an invalid keyword argument for PlayerProgress
+2025-03-09 09:25:50,382 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gus
+2025-03-09 09:25:50,383 - src.repositories.player_progress_repository - ERROR - Erro ao criar sessão: 'game_status' is an invalid keyword argument for PlayerProgress
+2025-03-09 09:26:15,320 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 09:26:20,817 - src.repositories.player_progress_repository - INFO - Novo jogador criado: Gus
+2025-03-09 09:26:20,820 - src.repositories.player_progress_repository - ERROR - Erro ao criar sessão: 'game_status' is an invalid keyword argument for PlayerProgress
+2025-03-09 09:28:19,988 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 09:28:25,000 - src.repositories.player_progress_repository - INFO - Novo jogador criado: Gus
+2025-03-09 09:28:25,004 - src.repositories.player_progress_repository - ERROR - Erro ao criar sessão: 'game_status' is an invalid keyword argument for PlayerProgress
+2025-03-09 09:32:10,663 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 09:32:16,620 - src.repositories.player_progress_repository - INFO - Novo jogador criado: Gus
+2025-03-09 09:32:16,633 - src.repositories.player_progress_repository - ERROR - Erro ao criar sessão: 'game_status' is an invalid keyword argument for PlayerProgress
+2025-03-09 09:39:05,443 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 09:39:11,444 - src.repositories.player_progress_repository - INFO - Novo jogador criado: Gus
+2025-03-09 09:39:11,448 - src.repositories.player_progress_repository - ERROR - Erro ao criar sessão: 'game_status' is an invalid keyword argument for PlayerProgress
+2025-03-09 09:58:39,912 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 09:58:44,573 - src.repositories.player_progress_repository - INFO - Novo jogador criado: Gus
+2025-03-09 09:58:44,578 - src.repositories.player_progress_repository - ERROR - Erro ao criar sessão: (sqlite3.IntegrityError) NOT NULL constraint failed: player_progress.start_time
+[SQL: INSERT INTO player_progress (player_id, story_id, session_id, game_status, current_location_id, current_area_id, discovered_locations, discovered_areas, location_exploration_level, area_exploration_level, inventory, object_level, character_level, dialogue_history, discovered_clues, scanned_qr_codes, action_history, specialization_points, specialization_levels, completed_interactions, start_time, last_activity, locations_visited, objects_collected, clues_discovered, completion_percentage, total_time_played, current_score, achievements, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP) RETURNING progress_id, updated_at]
+[parameters: ('ad1acb31-0a86-4ac4-a8d2-0325ef9a07b9', 1, 'f20f4a6a-1066-4591-be40-3f7be331bd29', 'active', 1, None, '[]', '{}', '{}', '{}', '[]', '{}', '{}', '{}', '[]', '[]', '[]', '{}', '{}', '{"objetos": [], "personagens": [], "areas": [], "pistas": [], "combinacoes": []}', None, None, '[]', '[]', '[]', 0.0, 0, 0, '[]', '2025-03-09 09:58:44.576504')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-03-09 10:00:57,806 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 10:01:13,390 - src.repositories.player_progress_repository - INFO - Novo jogador criado: gus
+2025-03-09 10:02:12,305 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 10:02:16,869 - src.repositories.player_progress_repository - INFO - Novo jogador criado: Gus
+2025-03-09 10:20:31,894 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 10:20:37,740 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gus
+2025-03-09 10:26:41,257 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 10:26:55,550 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gus
+2025-03-09 10:30:44,365 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 10:30:49,502 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gus
+2025-03-09 10:32:37,529 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 10:32:43,838 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gus
+2025-03-09 10:34:49,918 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 10:34:55,344 - src.repositories.player_progress_repository - INFO - Jogador existente encontrado: Gus
+2025-03-09 10:35:43,891 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 10:35:49,248 - src.repositories.player_progress_repository - INFO - Novo jogador criado: Gus
+2025-03-09 12:04:12,797 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 12:04:18,320 - src.repositories.player_progress_repository - INFO - Novo jogador criado: Gus
+2025-03-09 12:08:00,625 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 12:08:06,337 - src.repositories.player_progress_repository - INFO - Novo jogador criado: Gus

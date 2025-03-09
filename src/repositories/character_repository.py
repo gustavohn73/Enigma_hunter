@@ -557,6 +557,81 @@ class CharacterRepository(BaseRepository[Character]):
             self.logger.error(f"Erro ao buscar culpado da história {story_id}: {str(e)}")
             return None
     
+    def get_characters_in_location(self, db: Session, location_id: int) -> List[Dict[str, Any]]:
+        """
+        Obtém os personagens presentes em uma localização.
+        
+        Args:
+            db: Sessão do banco de dados
+            location_id: ID da localização
+            
+        Returns:
+            Lista de personagens na localização
+        """
+        try:
+            # Buscar personagens na localização
+            characters = db.query(Character).filter(
+                Character.location_id == location_id,
+                Character.is_active == True
+            ).all()
+            
+            # Converter para dicionários
+            result = []
+            for char in characters:
+                result.append({
+                    "id": char.character_id,
+                    "name": char.name,
+                    "description": char.description,
+                    "type": char.character_type,
+                    "location_id": char.location_id,
+                    "dialogue_state": char.dialogue_state,
+                    "is_active": char.is_active,
+                    "importance_level": char.importance_level
+                })
+            
+            self.logger.debug(f"Encontrados {len(result)} personagens na localização {location_id}")
+            return result
+            
+        except SQLAlchemyError as e:
+            self.logger.error(f"Erro ao buscar personagens na localização {location_id}: {e}")
+            return []
+    
+    def get_characters_in_area(self, db: Session, area_id: int) -> List[Dict[str, Any]]:
+        """
+        Obtém os personagens presentes em uma área específica.
+        
+        Args:
+            db: Sessão do banco de dados
+            area_id: ID da área
+            
+        Returns:
+            Lista de personagens na área
+        """
+        try:
+            characters = db.query(Character).filter(
+                Character.area_id == area_id,
+                Character.is_active == True
+            ).all()
+            
+            result = []
+            for char in characters:
+                result.append({
+                    "id": char.character_id,
+                    "name": char.name,
+                    "description": char.description,
+                    "type": char.character_type,
+                    "area_id": char.area_id,
+                    "dialogue_state": char.dialogue_state,
+                    "importance_level": char.importance_level
+                })
+            
+            self.logger.debug(f"Encontrados {len(result)} personagens na área {area_id}")
+            return result
+            
+        except SQLAlchemyError as e:
+            self.logger.error(f"Erro ao buscar personagens na área {area_id}: {e}")
+            return []
+    
     def _get_level_data_with_triggers(self, db: Session, level: CharacterLevel) -> Dict[str, Any]:
         """
         Constrói um dicionário com dados de um nível e seus gatilhos.

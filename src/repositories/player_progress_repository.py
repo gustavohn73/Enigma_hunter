@@ -1,4 +1,6 @@
 # src/repositories/player_progress_repository.py
+from sqlalchemy import func, text
+from datetime import datetime
 from typing import List, Optional, Dict, Any, Set
 from sqlalchemy.orm import Session
 from sqlalchemy import func
@@ -50,82 +52,78 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
             return None
 
     def create_player_session(self, db: Session, player_id: str, story_id: int) -> Dict[str, Any]:
-        """Cria uma nova sessão de jogo para um jogador."""
+        """
+        Cria uma nova sessão para o jogador.
+        
+        Args:
+            db: Sessão do banco de dados
+            player_id: ID do jogador
+            story_id: ID da história
+            
+        Returns:
+            Dict com resultado da operação
+        """
         try:
-            # Verificar se story_id é válido
-            if not story_id:
-                raise ValueError("ID da história não pode ser nulo")
-
-            # Verificar se a história existe
-            story = db.query(Story).filter(Story.story_id == story_id).first()
-            if not story:
-                raise ValueError("História não encontrada: ID %d" % story_id)
-
-            # Buscar localização inicial
-            starting_location = db.query(Location).filter(
+            # Buscar localização inicial da história
+            initial_location = db.query(Location).filter(
                 Location.story_id == story_id,
                 Location.is_starting_location == True
             ).first()
-
-            if not starting_location:
-                # Log detalhado para debug
-                self.logger.error("Nenhum local inicial encontrado para história %d", story_id)
-                locations = db.query(Location).filter(Location.story_id == story_id).all()
-                self.logger.debug("Locais disponíveis: %s", [loc.name for loc in locations])
-                raise ValueError("Nenhum local inicial definido para a história %d" % story_id)
-
-            session_id = str(uuid4())
+            
+            if not initial_location:
+                return {"success": False, "error": "Localização inicial não encontrada"}
+            
+            # Criar nova sessão
             current_time = datetime.now()
-
-            # Criar progresso inicial com verificação extra
+            session_id = str(uuid4())
             progress = PlayerProgress(
+                session_id=session_id,
                 player_id=player_id,
                 story_id=story_id,
-                session_id=session_id,
-                start_time=current_time,
-                last_activity=current_time,
-                current_location_id=starting_location.location_id,
-                current_area_id=None,
-                discovered_locations=[starting_location.location_id],
+                current_location_id=initial_location.location_id,
+                game_status='active',
+                start_time=current_time,  # Adicionado
+                last_activity=current_time,  # Adicionado
+                created_at=current_time,
                 discovered_areas={},
+                discovered_clues=[],
+                inventory=[],
                 location_exploration_level={},
                 area_exploration_level={},
-                inventory=[],
                 object_level={},
                 character_level={},
                 dialogue_history={},
-                discovered_clues=[],
-                scanned_qr_codes=[],
-                action_history=[],
                 specialization_points={},
                 specialization_levels={},
                 completed_interactions={
-                    "objetos": [],
-                    "personagens": [],
-                    "areas": [],
-                    "pistas": [],
+                    "objetos": [], 
+                    "personagens": [], 
+                    "areas": [], 
+                    "pistas": [], 
                     "combinacoes": []
-                }
+                },
+                locations_visited=[],
+                objects_collected=[],
+                clues_discovered=[],
+                completion_percentage=0.0,
+                total_time_played=0,
+                current_score=0,
+                achievements=[]
             )
-
+            
             db.add(progress)
             db.commit()
-
-            self.logger.info("Sessão criada com sucesso: %s para história %d", session_id, story_id)
+            
             return {
                 "success": True,
                 "session_id": session_id,
-                "message": "Sessão criada com sucesso",
-                "starting_location": starting_location.name
+                "location_id": initial_location.location_id
             }
-
-        except SQLAlchemyError as e:
+            
+        except Exception as e:
             db.rollback()
-            self.logger.error("Erro ao criar sessão de jogador: %s", e)
-            return {
-                "success": False,
-                "error": str(e)
-            }
+            self.logger.error(f"Erro ao criar sessão: {e}")
+            return {"success": False, "error": str(e)}
     
     # ===== MÉTODOS DE INVENTÁRIO =====
     
@@ -1196,15 +1194,13 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
             story_id = progress.story_id
             
             # Contar totais disponíveis na história
-            total_locations = db.query(func.count(Location.location_id)).join(
+            total_locations = db.query(func.count()(Location.location_id)).join(
                 Location.stories
             ).filter(
                 Location.stories.any(story_id=story_id)
             ).scalar() or 0
             
-            total_clues = db.query(func.count(Clue.clue_id)).filter(
-                Clue.story_id == story_id
-            ).scalar() or 0
+            total_clues = db.query(func.count(Clue.clue_id)).filter(Clue.story_id == story_id).scalar() or 0
             
             # Contar descobertos pelo jogador
             discovered_locations = len(self._ensure_list(progress.discovered_locations))
@@ -1365,61 +1361,69 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
             return 5
 
     def get_session_state(self, db: Session, session_id: str) -> Dict[str, Any]:
-        """Obtém o estado atual da sessão do jogador."""
+        """
+        Obtém o estado atual da sessão do jogador.
+        
+        Args:
+            db: Sessão do banco de dados
+            session_id: ID da sessão
+            
+        Returns:
+            Dict com o estado atual do jogo
+        """
         try:
-            # Validar session_id
-            if not isinstance(session_id, str):
-                self.logger.error(f"session_id inválido (tipo: {type(session_id)}): {session_id}")
-                return self._get_default_state("session_id inválido")
-
-            # Obter o progresso
+            # Buscar progresso do jogador
             progress = self.get_by_session_id(db, session_id)
             if not progress:
-                return self._get_default_state("Sessão não encontrada")
-
-            try:
-                # Obter localização atual
-                current_location = db.query(Location).filter(
+                return {"success": False, "error": "Sessão não encontrada"}
+                
+            # Buscar localização atual
+            current_location = None
+            if progress.current_location_id:
+                location = db.query(Location).filter(
                     Location.location_id == progress.current_location_id
-                ).first() if progress.current_location_id else None
-
-                # Obter área atual
-                current_area = db.query(LocationArea).filter(
+                ).first()
+                if location:
+                    current_location = {
+                        "id": location.location_id,
+                        "name": location.name,
+                        "description": location.description,
+                    }
+            
+            # Buscar área atual
+            current_area = None
+            if progress.current_area_id:
+                area = db.query(LocationArea).filter(
                     LocationArea.area_id == progress.current_area_id
-                ).first() if progress.current_area_id else None
-
-                return {
-                    "success": True,
-                    "session_id": session_id,
+                ).first()
+                if area:
+                    current_area = {
+                        "id": area.area_id,
+                        "name": area.name,
+                        "description": area.description,
+                    }
+            
+            # Montar estado do jogo
+            return {
+                "success": True,
+                "session_id": session_id,
+                "current_location": current_location,
+                "current_area": current_area,
+                "session": {
                     "player_id": progress.player_id,
                     "story_id": progress.story_id,
+                    "game_status": progress.game_status,
                     "current_location_id": progress.current_location_id,
                     "current_area_id": progress.current_area_id,
-                    "current_location": {
-                        "id": progress.current_location_id,
-                        "name": current_location.name if current_location else None,
-                        "description": current_location.description if current_location else None
-                    },
-                    "current_area": {
-                        "id": progress.current_area_id,
-                        "name": current_area.name if current_area else None,
-                        "description": current_area.description if current_area else None
-                    },
-                    "inventory": self._ensure_list(progress.inventory),
-                    "discovered_locations": self._ensure_list(progress.discovered_locations),
-                    "discovered_areas": self._ensure_dict(progress.discovered_areas),
-                    "discovered_clues": self._ensure_list(progress.discovered_clues),
-                    "specializations": self.get_specializations(db, session_id),
-                    "last_activity": progress.last_activity.isoformat() if progress.last_activity else None
+                    "discovered_areas": progress.discovered_areas or {},
+                    "discovered_clues": progress.discovered_clues or [],
+                    "inventory": progress.inventory or []
                 }
-
-            except Exception as e:
-                self.logger.error(f"Erro ao processar estado da sessão: {e}")
-                return self._get_default_state(f"Erro ao processar estado: {str(e)}")
-
+            }
+                
         except Exception as e:
-            self.logger.error(f"Erro ao obter estado da sessão: {e}")
-            return self._get_default_state(str(e))
+            self.logger.error(f"Erro ao buscar estado da sessão {session_id}: {e}")
+            return {"success": False, "error": str(e)}
 
     def _get_default_state(self, error_message: str) -> Dict[str, Any]:
         """Retorna um estado padrão com mensagem de erro."""
@@ -1475,3 +1479,108 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
             db.rollback()
             self.logger.error(f"Erro ao buscar/criar jogador: {e}")
             raise ValueError(f"Erro ao processar jogador: {str(e)}")
+
+    def move_to_area(self, db: Session, session_id: str, area_id: int) -> Dict[str, Any]:
+        """
+        Move o jogador para uma área específica.
+        
+        Args:
+            db: Sessão do banco de dados
+            session_id: ID da sessão do jogador
+            area_id: ID da área de destino
+            
+        Returns:
+            Dict indicando sucesso/falha da operação
+        """
+        try:
+            # Buscar sessão do jogador
+            progress = self.get_by_session_id(db, session_id)
+            if not progress:
+                return {"success": False, "message": "Sessão não encontrada"}
+                
+            # Atualizar área atual
+            progress.current_area_id = area_id
+            
+            # Registrar área como descoberta
+            discovered_areas = progress.discovered_areas or {}
+            if str(area_id) not in discovered_areas:
+                discovered_areas[str(area_id)] = {
+                    "discovered_at": datetime.now().isoformat(),
+                    "visits": 0
+                }
+            discovered_areas[str(area_id)]["visits"] += 1
+            progress.discovered_areas = discovered_areas
+            
+            db.commit()
+            return {"success": True}
+            
+        except Exception as e:
+            db.rollback()
+            self.logger.error(f"Erro ao mover para área {area_id}: {e}")
+            return {"success": False, "message": str(e)}
+
+    def list_player_sessions(self, db: Session, player_name: str) -> List[Dict[str, Any]]:
+        """
+Lista todas as sessões de um jogador.
+        
+        Args:
+            db: Sessão do banco de dados
+            player_name: Nome do jogador
+            
+        Returns:
+            Lista de sessões do jogador
+"""
+        try:
+            # Buscar o jogador
+            player = db.query(Player).filter(Player.username == player_name).first()
+            if not player:
+                return []
+            
+            # Buscar todas as sessões do jogador com join na história
+            sessions = db.query(
+                PlayerProgress, Story
+            ).join(
+                Story, Story.story_id == PlayerProgress.story_id
+            ).filter(
+                PlayerProgress.player_id == player.player_id
+            ).all()
+            
+            # Converter para dicionários
+            session_list = []
+            for progress, story in sessions:
+                session_list.append({
+                    'session_id': progress.session_id,
+                    'story_id': progress.story_id,
+                    'story_title': story.title if story else "História Desconhecida",
+                    'created_at': progress.created_at,
+                    'game_status': progress.game_status
+                })
+                
+            return session_list
+            
+        except Exception as e:
+            self.logger.error(f"Erro ao listar sessões do jogador {player_name}: {e}")
+            return []
+
+    def update_player_location(self, db: Session, session_id: str, 
+                             current_location_id: Optional[int] = None,
+                             current_area_id: Optional[int] = None) -> Dict[str, Any]:
+        """Atualiza a localização atual do jogador."""
+        try:
+            progress = self.get_by_session_id(db, session_id)
+            if not progress:
+                return {"success": False, "error": "Sessão não encontrada"}
+            
+            if current_location_id is not None:
+                progress.current_location_id = current_location_id
+            if current_area_id is not None:
+                progress.current_area_id = current_area_id
+                
+            progress.last_activity = datetime.now()
+            db.commit()
+            
+            return {"success": True}
+        except Exception as e:
+            db.rollback()
+            self.logger.error(f"Erro ao atualizar localização: {e}")
+            return {"success": False, "error": str(e)}

@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 import json
 import logging
 
-from src.models.db_models import GameObject, ObjectLevel, Clue, PlayerInventory, PlayerObjectLevel
+from src.models.db_models import GameObject, ObjectLevel, Clue, PlayerInventory, PlayerObjectLevel, AreaDetail
 from src.repositories.base_repository import BaseRepository
 
 class ObjectRepository(BaseRepository[GameObject]):
@@ -958,3 +958,39 @@ class ObjectRepository(BaseRepository[GameObject]):
             db.rollback()
             self.logger.error(f"Erro ao combinar objetos {object_ids}: {str(e)}")
             raise
+
+    def get_objects_in_area(self, db: Session, area_id: int) -> List[Dict[str, Any]]:
+        """
+        Obtém os objetos visíveis em uma área específica.
+        
+        Args:
+            db: Sessão do banco de dados
+            area_id: ID da área
+            
+        Returns:
+            Lista de objetos na área
+        """
+        try:
+            area_details = db.query(AreaDetail).filter(
+                AreaDetail.area_id == area_id,
+                AreaDetail.discovery_level_required == 0  # Apenas objetos inicialmente visíveis
+            ).all()
+            
+            result = []
+            for detail in area_details:
+                if detail.has_clue:  # Se o detalhe contém uma pista ou objeto interativo
+                    result.append({
+                        "id": detail.detail_id,
+                        "name": detail.name,
+                        "description": detail.description,
+                        "area_id": detail.area_id,
+                        "discovery_level": detail.discovery_level_required,
+                        "has_clue": detail.has_clue
+                    })
+            
+            self.logger.debug(f"Encontrados {len(result)} objetos na área {area_id}")
+            return result
+            
+        except SQLAlchemyError as e:
+            self.logger.error(f"Erro ao buscar objetos na área {area_id}: {e}")
+            return []

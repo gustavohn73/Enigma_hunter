@@ -7,11 +7,7 @@
     "appearance": "Uma mulher de aproximadamente 50 anos, com cabelos castanhos grisalhos sempre impecavelmente arrumados em um coque elegante. Veste-se de maneira conservadora mas refinada, favorecendo vestidos de qualidade em cores sóbrias, frequentemente complementados por um broche de prata em forma de cervo – símbolo da estalagem e presente de seu falecido marido. Seu rosto, marcado por linhas sutis de experiência, exibe uma expressão naturalmente digna, embora observadores atentos possam notar a preocupação em seus olhos claros nos últimos dias.",
     "is_culprit": false,
     "motive": "",
-    "location_schedule": {
-      "morning": 5,
-      "afternoon": 1,
-      "evening": 1
-    },
+    "area_id": 1,
     "levels": [
       {
         "level_number": 0,

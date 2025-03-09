@@ -759,7 +759,7 @@ class GameStateManager:
                 "story_id": session.story_id,
                 "start_time": session.start_time,
                 "last_activity": session.last_activity,
-                "status": session.game_status
+                "game_status": session.game_status
             }
             
             if active_session:

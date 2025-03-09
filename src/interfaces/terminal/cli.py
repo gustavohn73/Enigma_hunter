@@ -1,10 +1,12 @@
 # src/interfaces/terminal/cli.py
 import os
 import sys
+from datetime import datetime
 from typing import List, Dict, Any, Optional
 from sqlalchemy.orm import Session
+from uuid import uuid4
 
-# Importações dos componentes existentes
+# Importações dos repositórios
 from src.repositories.story_repository import StoryRepository
 from src.repositories.character_repository import CharacterRepository
 from src.repositories.dialogue_repository import DialogueRepository
@@ -13,16 +15,20 @@ from src.repositories.object_repository import ObjectRepository
 from src.repositories.player_progress_repository import PlayerProgressRepository
 from src.repositories.qrcode_repository import QRCodeRepository
 
+# Importações dos managers
 from src.managers.character_manager import CharacterManager
 from src.managers.qrcode_manager import QRCodeManager
 
+# Importações da interface
 from src.interfaces.terminal.commands import CommandProcessor
-from src.interfaces.terminal.cli_helpers import display_header, clear_screen, pause, get_input
-from src.interfaces.terminal.formatters import color_text, style_text
-
-from typing import Optional, Dict, Any
-from .cli_helpers import CLIHelper
-from .formatters import TextFormatter
+from src.interfaces.terminal.cli_helpers import (
+    display_header, 
+    clear_screen, 
+    pause, 
+    get_input,
+    CLIHelper
+)
+from src.interfaces.terminal.formatters import TextFormatter, color_text, style_text
 
 class EnigmaHunterCLI:
     def __init__(self, db_session: Session):
@@ -154,8 +160,8 @@ class EnigmaHunterCLI:
             
         print("\nSessões Disponíveis:")
         for i, session in enumerate(sessions, 1):
-            story_title = self.story_repository.get_by_id(self.db_session, session['story_id'])['title']
-            print(f"{i}. {story_title} - {session['created_at']} ({session['game_status']})")
+            # A história já vem com o título no dicionário da sessão
+            print(f"{i}. {session['story_title']} - {session['created_at']} ({session['game_status']})")
         
         # Selecionar sessão
         session_choice = get_input("\nEscolha uma sessão (número): ")
@@ -182,12 +188,13 @@ class EnigmaHunterCLI:
             # Criar sessão
             result = self.player_repository.create_player_session(
                 self.db_session,
-                player_id=player.player_id,  # Agora usa o player_id do objeto
+                player_id=player.player_id,
                 story_id=story_id
             )
             
             if not result["success"]:
                 print(f"Erro ao criar sessão: {result.get('error', '')}")
+                pause()
                 return
             
             self.session_id = result["session_id"]
@@ -200,16 +207,36 @@ class EnigmaHunterCLI:
             
             if not self.game_state["success"]:
                 print(f"Erro ao carregar estado do jogo: {self.game_state['error']}")
+                pause()
                 return
                 
             # Exibir introdução da história
             self.display_introduction()
             
+            # Resetar estado de saída
+            self.should_exit = False
+            
             # Iniciar loop do jogo
             self.game_loop()
             
+            # Ao sair do loop, retornar ao menu principal
+            self.return_to_main_menu()
+            
         except Exception as e:
             print(f"Erro ao iniciar nova sessão: {e}")
+            pause()
+
+    def return_to_main_menu(self) -> None:
+        """Reseta o estado do jogo e retorna ao menu principal."""
+        self.game_state = {
+            "current_location_id": None,
+            "visited_locations": set()
+        }
+        self.player_id = None
+        self.player_name = None
+        self.story_id = None
+        self.session_id = None
+        self.should_exit = False
     
     def load_session(self, session_id: str) -> None:
         """Carrega uma sessão existente."""
@@ -233,22 +260,21 @@ class EnigmaHunterCLI:
         """Carrega o estado atual do jogo."""
         try:
             # Obter state do jogador
-            self.game_state = self.player_repository.get_session_state(
+            state = self.player_repository.get_session_state(
                 self.db_session, self.session_id
             )
             
-            if not self.game_state:
+            if not state or not state.get("success", False):
+                print("Erro ao carregar estado da sessão.")
                 return False
+            
+            # Atualizar o estado interno
+            self.game_state = state
             
             # Extrair informações importantes
-            session_data = self.game_state.get("session", {})
+            session_data = state.get("session", {})
             self.player_id = session_data.get("player_id")
             self.story_id = session_data.get("story_id")
-            
-            # Carregar story
-            story = self.story_repository.get_by_id(self.db_session, self.story_id)
-            if not story:
-                return False
             
             return True
         except Exception as e:
@@ -258,66 +284,138 @@ class EnigmaHunterCLI:
     def display_introduction(self) -> None:
         """Exibe a introdução da história."""
         clear_screen()
-        
         story = self.story_repository.get_by_id(self.db_session, self.story_id)
-        if not story:
-            print("Erro: História não encontrada!")
+        if story:
+            print(f"\n{style_text('='*41, bold=True)}")
+            print(f"{style_text(story['title'], bold=True)}")
+            print(f"{style_text('='*41, bold=True)}\n")
+            print(f"{story['introduction']}\n")
             pause()
-            return
-        
-        display_header(story['title'])
-        
-        print("\n" + style_text(story['description'], bold=True))
-        pause()
-        
-        print("\n" + story['introduction'])
-        pause()
-        
-        # Exibir informação do local inicial
-        if self.game_state and self.game_state.get("current_location"):
-            print(f"\nVocê está no {self.game_state['current_location']['name']}")
-            print(self.game_state['current_location']['description'])
-            pause()
+            
+            if story.get('initial_scene'):
+                print(f"\n{story['initial_scene']}\n")
+                pause()
     
     def game_loop(self) -> None:
         """Loop principal do jogo."""
-        while not self.should_exit and self.session_id:
+        while not self.should_exit:
             try:
-                # Atualiza o estado do jogo
-                self.load_game_state()
-                
-                # Exibe o estado atual
                 self.display_current_state()
+                command = get_input("\n> ")
                 
-                # Solicita comando
-                command = get_input("\n> ").strip()
-                
-                # Processa o comando
-                if command.lower() == "sair":
-                    if get_input("Tem certeza que deseja sair? (s/n): ").lower() == "s":
+                if command.lower() == 'sair':
+                    if get_input("Tem certeza que deseja sair? (s/n): ").lower() == 's':
+                        self.save_game()
                         self.should_exit = True
-                        continue
+                        print("\nRetornando ao menu principal...")
+                        pause()
+                        break  # Sai do loop para retornar ao menu
                 else:
                     self.process_command(command)
+                    
             except Exception as e:
-                print(f"Erro no loop do jogo: {str(e)}")
+                print(f"Erro no loop do jogo: {e}")
                 pause()
     
     def display_current_state(self) -> None:
-        """Exibe o estado atual do jogo"""
-        if not self.game_state["current_location_id"]:
+        """Exibe o estado atual do jogo."""
+        clear_screen()
+        
+        if not self.game_state.get("current_location"):
+            print("Erro: Localização atual não encontrada!")
             return
             
-        location_data = self.location_repository.get_location(
-            self.db_session,
-            self.game_state["current_location_id"]
-        )
+        # Exibir localização atual
+        location = self.game_state["current_location"]
+        print(f"\n= {style_text(location['name'], bold=True)} =")
+        print(f"{location['description']}\n")
         
-        self.helper.display_location_info(location_data)
+        # Se estiver em uma área específica
+        if self.game_state.get("current_area"):
+            area = self.game_state["current_area"]
+            print(f"\n[{style_text(area['name'], bold=True)}]")
+            print(f"{area['description']}\n")
+            
+            # Mostrar personagens na área
+            characters = self.character_repository.get_characters_in_area(
+                self.db_session,
+                area['id']
+            )
+            if characters:
+                print(style_text("\nPersonagens Presentes (use 'falar'):", bold=True))
+                for i, char in enumerate(characters, 1):
+                    print(f"{i}. {char['name']}")
+            
+            # Mostrar objetos na área
+            objects = self.object_repository.get_objects_in_area(
+                self.db_session,
+                area['id']
+            )
+            if objects:
+                print(style_text("\nObjetos Visíveis (use 'examinar'):", bold=True))
+                for i, obj in enumerate(objects, 1):
+                    print(f"{i}. {obj['name']}")
+        else:
+            # Mostrar áreas do ambiente atual
+            areas = self.location_repository.get_available_areas(
+                self.db_session, 
+                location["id"]
+            )
+            if areas:
+                print(style_text("\nÁreas Disponíveis (use 'ir'):", bold=True))
+                for i, area in enumerate(areas, 1):
+                    print(f"{i}. {area['name']}")
+            
+            # Mostrar ambientes conectados
+            connected_locations = self.location_repository.get_connected_locations(
+                self.db_session,
+                location["id"]
+            )
+            if connected_locations:
+                print(style_text("\nAmbientes Conectados (use 'ir'):", bold=True))
+                base_index = len(areas) + 1
+                for i, loc in enumerate(connected_locations, base_index):
+                    print(f"{i}. {loc['name']}")
+        
+        print(f"\n{style_text('Digite ajuda para ver os comandos disponíveis', bold=True)}")
     
     def process_command(self, command: str) -> None:
         """Processa um comando do usuário."""
-        if not command:
-            return
+        try:
+            if not command:
+                return
+                
+            # Usar diretamente o CommandProcessor
+            result = self.command_processor.process(command)
             
-        self.command_processor.process(command)
+            # Se o processador de comandos não conseguiu lidar com o comando
+            if not result:
+                print("Comando não reconhecido. Digite 'ajuda' para ver os comandos disponíveis.")
+            
+            # Recarregar o estado do jogo após o comando bem-sucedido
+            if result:
+                self.load_game_state()
+            
+        except Exception as e:
+            print(f"Erro ao processar comando: {e}")
+
+    def return_to_location(self) -> None:
+        """Retorna ao ambiente principal da área atual."""
+        self.game_state["current_area"] = None
+        self.game_state = self.player_repository.get_session_state(
+            self.db_session,
+            self.session_id
+        )
+
+    def save_game(self) -> None:
+        try:
+            progress = self.player_repository.get_by_session_id(
+                self.db_session, 
+                self.session_id
+            )
+            if progress:
+                progress.game_status = 'saved'  # Usando status ao invés de game_status
+                self.db_session.commit()
+                print("Jogo salvo com sucesso!")
+        except Exception as e:
+            print(f"Erro ao salvar jogo: {e}")

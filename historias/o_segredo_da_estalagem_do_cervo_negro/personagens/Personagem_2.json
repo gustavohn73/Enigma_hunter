@@ -7,11 +7,7 @@
     "appearance": "Homem de aproximadamente 35 anos, com feições atraentes e bem cuidadas. Cabelos castanho-escuros sempre perfeitamente penteados, com um discreto toque de grisalho nas têmporas que lhe confere uma aparência de maturidade. Veste-se impecavelmente em trajes formais de qualidade superior, normalmente em tons escuros combinados com detalhes em verde profundo. Usa óculos de armação fina quando lê ou examina documentos, o que acentua sua aparência intelectual. Seu sorriso cativante e postura confiante naturalmente atraem atenção e inspiram confiança.",
     "is_culprit": true,
     "motive": "Sebastian é descendente direto da família Reed, que perdeu terras valiosas para os antepassados de Thaddeus Ironwood três gerações atrás através do que considera manipulações legais fraudulentas. Ele acredita que o baú misterioso contém a escritura original que provaria a propriedade legítima de sua família sobre as terras. Quando descobriu que Thaddeus encontrou o mecanismo para abrir o baú e estava prestes a reivindicar definitivamente a propriedade, Sebastian o eliminou para recuperar o documento e restaurar o que vê como justiça histórica para sua linhagem.",
-    "location_schedule": {
-      "morning": 7,
-      "afternoon": 1,
-      "evening": 1
-    },
+    "area_id": 2,
     "levels": [
       {
         "level_number": 0,

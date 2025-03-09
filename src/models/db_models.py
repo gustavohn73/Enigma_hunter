@@ -164,6 +164,7 @@ class LocationArea(Base, JSONMixin):
     # Relacionamentos
     location = relationship("Location", back_populates="areas")
     details = relationship("AreaDetail", back_populates="area", cascade="all, delete-orphan")
+    characters = relationship("Character", back_populates="area")
     
     # Índices
     __table_args__ = (
@@ -211,15 +212,21 @@ class Character(Base, JSONMixin):
     __tablename__ = 'character'
     
     character_id = Column(Integer, primary_key=True)
-    name = Column(String(255), nullable=False, index=True)
+    name = Column(String(100), nullable=False)
+    description = Column(Text)
+    character_type = Column(String(50))
+    area_id = Column(Integer, ForeignKey('location_area.area_id'))  # Mudado de location_id
+    is_active = Column(Boolean, default=True)
+    dialogue_state = Column(String(50), default='neutral')
+    importance_level = Column(Integer, default=1)
     base_description = Column(Text)
     personality = Column(Text)
     appearance = Column(Text)
-    is_culprit = Column(Boolean, default=False, index=True)
+    is_culprit = Column(Boolean, default=False)
     motive = Column(Text)
-    location_schedule = Column(JSON, default={})
     
     # Relacionamentos
+    area = relationship("LocationArea", back_populates="characters") 
     stories = relationship("Story", secondary=story_character_association, back_populates="characters")
     levels = relationship("CharacterLevel", back_populates="character", cascade="all, delete-orphan")
     dialogue_history = relationship("DialogueHistory", back_populates="character")
@@ -502,7 +509,7 @@ class GameSession(Base, TimestampMixin):
     game_master_id = Column(Integer, ForeignKey('game_master.gm_id', ondelete='SET NULL'), nullable=True)
     start_time = Column(DateTime, default=func.now(), nullable=False)
     end_time = Column(DateTime, nullable=True)
-    status = Column(String(50), default='active', index=True)
+    game_status = Column(String(50), default='active', index=True)
     player_count = Column(Integer, default=0)
     is_public = Column(Boolean, default=False)
     session_code = Column(String(10), unique=True)
@@ -516,12 +523,12 @@ class GameSession(Base, TimestampMixin):
     # Índices
     __table_args__ = (
         Index('idx_session_story', 'story_id'),
-        Index('idx_session_status', 'status'),
+        Index('idx_session_status', 'game_status'),
         Index('idx_session_code', 'session_code'),
     )
     
     def __repr__(self):
-        return f"<GameSession(id={self.game_session_id}, story_id={self.story_id}, status='{self.status}')>"
+        return f"<GameSession(id={self.game_session_id}, story_id={self.story_id}, status='{self.game_status}')>"
 
 class PlayerSession(Base, TimestampMixin, JSONMixin):
     """
@@ -1113,6 +1120,7 @@ class PlayerProgress(Base, TimestampMixin, JSONMixin):
     player_id = Column(Integer, ForeignKey('player.player_id'), nullable=False)
     story_id = Column(Integer, ForeignKey('story.story_id'), nullable=False)
     session_id = Column(String(36), nullable=False, unique=True)
+    game_status = Column(String(20), default='active') 
     
     # Campos de localização
     current_location_id = Column(Integer, ForeignKey('location.location_id'))

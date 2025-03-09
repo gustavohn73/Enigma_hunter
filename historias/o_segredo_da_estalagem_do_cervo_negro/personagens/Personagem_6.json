@@ -7,11 +7,7 @@
     "appearance": "Homem magro em seus trinta anos, com feições angulares e olhos escuros profundamente encovados que dartem constantemente pelo ambiente. Cabelo preto e liso frequentemente escondido sob um chapéu de mensageiro com o emblema discreto da Guilda dos Mercadores. Veste-se em cores escuras e sóbrias, com um casaco longo de muitos bolsos internos onde guarda documentos e pequenos pacotes. Movimenta-se com uma pressa constante e uma agilidade surpreendente para alguém de aparência tão frágil. Uma cicatriz fina atravessa seu pulso esquerdo, visível apenas quando sua manga se ergue durante movimentos mais amplos.",
     "is_culprit": false,
     "motive": "",
-    "location_schedule": {
-      "morning": 2,
-      "afternoon": 1,
-      "evening": 3
-    },
+    "area_id": 5,
     "levels": [
       {
         "level_number": 0,
