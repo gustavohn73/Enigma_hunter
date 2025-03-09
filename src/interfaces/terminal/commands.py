@@ -155,9 +155,10 @@ class CommandProcessor:
                 print("Erro: Você não está em nenhum local!")
                 return False
             
-            location_id = current_location.get("id")
-            areas = self.cli.location_repository.get_areas_by_location(
-                self.cli.db_session, location_id
+            # Buscar áreas disponíveis
+            areas = self.cli.location_repository.get_available_areas(
+                self.cli.db_session,
+                current_location["id"]
             )
             
             if not areas:
@@ -168,40 +169,19 @@ class CommandProcessor:
                 area = areas[target_num - 1]
                 print(f"Tentando mover para: {area['name']}")
                 
-                # Primeiro, descobrir a área
-                discover_result = self.cli.player_repository.discover_area(
+                result = self.cli.player_repository.move_to_area(
                     self.cli.db_session,
                     self.cli.session_id,
                     area['id']
                 )
                 
-                if not discover_result["success"]:
-                    print(f"Erro ao descobrir área: {discover_result.get('message', '')}")
-                    return False
-                
-                # Depois, mover para a área
-                move_result = self.cli.player_repository.move_to_area(
-                    self.cli.db_session,
-                    self.cli.session_id,
-                    area['id']
-                )
-                
-                if move_result["success"]:
-                    # Atualizar o estado do jogo
-                    new_state = self.cli.player_repository.get_session_state(
-                        self.cli.db_session,
-                        self.cli.session_id
-                    )
-                    
-                    if new_state["success"]:
-                        self.cli.game_state = new_state
-                        print(f"\nVocê se move para {area['name']}.")
-                        return True
-                    else:
-                        print(f"Erro ao atualizar estado: {new_state.get('error', '')}")
-                        return False
+                if result["success"]:
+                    print(f"\nVocê se move para {result['area_name']}.")
+                    if result.get('area_description'):
+                        print(f"\n{result['area_description']}")
+                    return True
                 else:
-                    print(f"Erro ao mover: {move_result.get('message', '')}")
+                    print(f"Erro ao mover: {result.get('message', 'Erro desconhecido')}")
                     return False
             
             print(f"Número inválido. Use um número entre 1 e {len(areas)}.")

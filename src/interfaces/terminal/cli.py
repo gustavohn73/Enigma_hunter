@@ -79,7 +79,7 @@ class EnigmaHunterCLI:
     def main_menu(self) -> None:
         """Exibe o menu principal do jogo."""
         while not self.should_exit:
-            clear_screen()
+            #clear_screen()
             display_header("ENIGMA HUNTER")
             
             print("\n" + style_text("MENU PRINCIPAL", bold=True))
@@ -102,7 +102,7 @@ class EnigmaHunterCLI:
     
     def new_session_menu(self) -> None:
         """Menu para criar uma nova sessão de jogo."""
-        clear_screen()
+        #clear_screen()
         display_header("NOVA SESSÃO")
         
         # Obter nome do jogador
@@ -140,7 +140,7 @@ class EnigmaHunterCLI:
     
     def load_session_menu(self) -> None:
         """Menu para carregar uma sessão existente."""
-        clear_screen()
+        #clear_screen()
         display_header("CARREGAR SESSÃO")
         
         # Solicitar nome do jogador
@@ -193,7 +193,7 @@ class EnigmaHunterCLI:
             # Criar sessão
             result = self.player_repository.create_player_session(
                 self.db_session,
-                player_id=player.player_id,
+                player_id= player["player_id"],
                 story_id=story_id
             )
             
@@ -204,7 +204,7 @@ class EnigmaHunterCLI:
             
             self.session_id = result["session_id"]
             self.player_id = player["player_id"]
-            self.player_name = result["username"]
+            self.player_name = player_name
             
             # Inicializar estado do jogo
             self.game_state = self.player_repository.get_session_state(
@@ -290,7 +290,7 @@ class EnigmaHunterCLI:
     
     def display_introduction(self) -> None:
         """Exibe a introdução da história."""
-        clear_screen()
+        #clear_screen()
         story = self.story_repository.get_by_id(self.db_session, self.story_id)
         if story:
             print(f"\n{style_text('='*41, bold=True)}")
@@ -326,7 +326,7 @@ class EnigmaHunterCLI:
     
     def display_current_state(self) -> None:
         """Exibe o estado atual do jogo."""
-        clear_screen()
+        #clear_screen()
         
         if not self.game_state.get("current_location"):
             print("Erro: Localização atual não encontrada!")

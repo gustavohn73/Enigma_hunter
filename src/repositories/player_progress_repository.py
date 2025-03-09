@@ -76,39 +76,40 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
             # Criar nova sessão
             current_time = datetime.now()
             session_id = str(uuid4())
+            
+            # Criar objeto PlayerProgress com valores diretamente
             progress = PlayerProgress(
                 session_id=session_id,
                 player_id=player_id,
                 story_id=story_id,
                 current_location_id=initial_location.location_id,
                 game_status='active',
-                start_time=current_time,  # Adicionado
-                last_activity=current_time,  # Adicionado
+                start_time=current_time,
+                last_activity=current_time,
                 created_at=current_time,
-                discovered_areas={},
-                discovered_clues=[],
-                inventory=[],
-                location_exploration_level={},
-                area_exploration_level={},
-                object_level={},
-                character_level={},
-                dialogue_history={},
-                specialization_points={},
-                specialization_levels={},
-                completed_interactions={
-                    "objetos": [], 
-                    "personagens": [], 
-                    "areas": [], 
-                    "pistas": [], 
-                    "combinacoes": []
-                },
-                locations_visited=[],
-                objects_collected=[],
-                clues_discovered=[],
+                updated_at=current_time,
+                # Campos JSON como strings vazias ou valores padrão
+                discovered_areas='{}',
+                discovered_clues='[]',
+                inventory='[]',
+                location_exploration_level='{}',
+                area_exploration_level='{}',
+                object_level='{}',
+                character_level='{}',
+                dialogue_history='{}',
+                specialization_points='{}',
+                specialization_levels='{}',
+                completed_interactions='{"objetos":[],"personagens":[],"areas":[],"pistas":[],"combinacoes":[]}',
+                locations_visited='[]',
+                objects_collected='[]',
+                clues_discovered='[]',
+                action_history='[]',
+                scanned_qr_codes='[]',
+                achievements='[]',
+                # Campos numéricos
                 completion_percentage=0.0,
                 total_time_played=0,
-                current_score=0,
-                achievements=[]
+                current_score=0
             )
             
             db.add(progress)
@@ -1472,7 +1473,7 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
         try:
 
             current_time = datetime.now()
-            
+
             # Buscar jogador existente
             player = db.query(Player).filter(Player.username == username).first()
             
@@ -1513,7 +1514,7 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
     def move_to_area(self, db: Session, session_id: str, area_id: int) -> Dict[str, Any]:
         """
         Move o jogador para uma área específica.
-        
+
         Args:
             db: Sessão do banco de dados
             session_id: ID da sessão do jogador
@@ -1528,22 +1529,72 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
             if not progress:
                 return {"success": False, "message": "Sessão não encontrada"}
                 
-            # Atualizar área atual
-            progress.current_area_id = area_id
+            # Buscar a área
+            area = db.query(LocationArea).filter(
+                LocationArea.area_id == area_id
+            ).first()
             
-            # Registrar área como descoberta
-            discovered_areas = progress.discovered_areas or {}
-            if str(area_id) not in discovered_areas:
-                discovered_areas[str(area_id)] = {
-                    "discovered_at": datetime.now().isoformat(),
-                    "visits": 0
+            if not area:
+                return {"success": False, "message": "Área não encontrada"}
+                
+            current_time = datetime.now()
+                
+            # Atualizar área atual e timestamps
+            progress.current_area_id = area_id
+            progress.last_activity = current_time
+            progress.updated_at = current_time
+            
+            # Registrar área como descoberta se necessário
+            discovered_areas = json.loads(progress.discovered_areas) if progress.discovered_areas else {}
+            location_id = str(area.location_id)
+            
+            if location_id not in discovered_areas:
+                discovered_areas[location_id] = {
+                    "areas": [],
+                    "visits": 0,
+                    "last_visit": current_time.isoformat()
                 }
-            discovered_areas[str(area_id)]["visits"] += 1
-            progress.discovered_areas = discovered_areas
+                
+            if area_id not in discovered_areas[location_id]["areas"]:
+                discovered_areas[location_id]["areas"].append(area_id)
+            
+            # Atualizar contagem de visitas
+            discovered_areas[location_id]["visits"] = discovered_areas[location_id].get("visits", 0) + 1
+            discovered_areas[location_id]["last_visit"] = current_time.isoformat()
+            
+            # Salvar alterações
+            progress.discovered_areas = json.dumps(discovered_areas)
+            
+            # Registrar no histórico
+            action_history = json.loads(progress.action_history) if progress.action_history else []
+            action_history.append({
+                "action": "move_to_area",
+                "area_id": area_id,
+                "timestamp": current_time.isoformat()
+            })
+            
+            progress.action_history = json.dumps(action_history)
+            
+            # Realizar update diretamente com os valores corretos
+            db.query(PlayerProgress).filter(
+                PlayerProgress.session_id == session_id
+            ).update({
+                "current_area_id": area_id,
+                "discovered_areas": json.dumps(discovered_areas),
+                "action_history": json.dumps(action_history),
+                "last_activity": current_time,
+                "updated_at": current_time
+            })
             
             db.commit()
-            return {"success": True}
             
+            return {
+                "success": True,
+                "message": f"Movido para {area.name}",
+                "area_name": area.name,
+                "area_description": area.description
+            }
+                
         except Exception as e:
             db.rollback()
             self.logger.error(f"Erro ao mover para área {area_id}: {e}")
