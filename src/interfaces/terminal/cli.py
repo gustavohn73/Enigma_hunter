@@ -172,28 +172,44 @@ class EnigmaHunterCLI:
     
     def start_new_session(self, player_name: str, story_id: int) -> None:
         """Inicia uma nova sessão de jogo."""
-        # Criar sessão
-        result = self.player_repository.create_player_session(
-            self.db_session, player_name, story_id
-        )
-        
-        if not result:
-            print("Erro ao criar sessão!")
-            pause()
-            return
-        
-        self.session_id = result
-        self.player_name = player_name
-        self.story_id = story_id
-        
-        # Carregar estado inicial
-        self.load_game_state()
-        
-        # Exibir introdução
-        self.display_introduction()
-        
-        # Iniciar loop do jogo
-        self.game_loop()
+        try:
+            # Criar jogador se não existir
+            player = self.player_repository.get_or_create_player(
+                self.db_session, 
+                username=player_name
+            )
+            
+            # Criar sessão
+            result = self.player_repository.create_player_session(
+                self.db_session,
+                player_id=player.player_id,  # Agora usa o player_id do objeto
+                story_id=story_id
+            )
+            
+            if not result["success"]:
+                print(f"Erro ao criar sessão: {result.get('error', '')}")
+                return
+            
+            self.session_id = result["session_id"]
+            
+            # Inicializar estado do jogo
+            self.game_state = self.player_repository.get_session_state(
+                self.db_session,
+                self.session_id
+            )
+            
+            if not self.game_state["success"]:
+                print(f"Erro ao carregar estado do jogo: {self.game_state['error']}")
+                return
+                
+            # Exibir introdução da história
+            self.display_introduction()
+            
+            # Iniciar loop do jogo
+            self.game_loop()
+            
+        except Exception as e:
+            print(f"Erro ao iniciar nova sessão: {e}")
     
     def load_session(self, session_id: str) -> None:
         """Carrega uma sessão existente."""
@@ -245,15 +261,23 @@ class EnigmaHunterCLI:
         
         story = self.story_repository.get_by_id(self.db_session, self.story_id)
         if not story:
+            print("Erro: História não encontrada!")
+            pause()
             return
         
         display_header(story['title'])
         
-        print("\n" + story['description'])
+        print("\n" + style_text(story['description'], bold=True))
         pause()
         
         print("\n" + story['introduction'])
         pause()
+        
+        # Exibir informação do local inicial
+        if self.game_state and self.game_state.get("current_location"):
+            print(f"\nVocê está no {self.game_state['current_location']['name']}")
+            print(self.game_state['current_location']['description'])
+            pause()
     
     def game_loop(self) -> None:
         """Loop principal do jogo."""

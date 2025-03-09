@@ -5,10 +5,13 @@ from sqlalchemy import func
 import json
 import logging
 from datetime import datetime
+from uuid import uuid4
+from sqlalchemy.exc import SQLAlchemyError  # Adicionar esta importação no topo do arquivo
 
 from src.models.db_models import (
     PlayerProgress,
-    PlayerSession,
+    Story,
+    Player,
     PlayerSpecialization,
     PlayerInventory,
     PlayerObjectLevel,
@@ -17,7 +20,8 @@ from src.models.db_models import (
     GameObject,
     Location,
     LocationArea,
-    Clue
+    Clue,
+    ObjectLevel
 )
 from src.repositories.base_repository import BaseRepository
 
@@ -32,99 +36,96 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
         self.logger = logging.getLogger(__name__)
     
     def get_by_session_id(self, db: Session, session_id: str) -> Optional[PlayerProgress]:
-        """
-        Obtém o progresso de um jogador pelo ID da sessão.
+        """Busca o progresso do jogador pelo ID da sessão."""
+        if isinstance(session_id, dict):
+            self.logger.error("session_id inválido (dicionário recebido): %s", session_id)
+            return None
         
-        Args:
-            db: Sessão do banco de dados
-            session_id: ID da sessão
-            
-        Returns:
-            Objeto PlayerProgress ou None se não encontrado
-        """
         try:
             return db.query(PlayerProgress).filter(
                 PlayerProgress.session_id == session_id
             ).first()
-        except Exception as e:
-            self.logger.error(f"Erro ao buscar progresso para sessão {session_id}: {e}")
+        except SQLAlchemyError as e:
+            self.logger.error("Erro ao buscar progresso para sessão %s: %s", session_id, e)
             return None
-    
+
     def create_player_session(self, db: Session, player_id: str, story_id: int) -> Dict[str, Any]:
         """Cria uma nova sessão de jogo para um jogador."""
-    try:
-        session_id = str(uuid.uuid4())
-        current_time = datetime.now()
-        
-        # Encontrar local inicial
-        starting_location = db.query(Location).filter(
-            Location.story_id == story_id,
-            Location.is_starting_location == True
-        ).first()
-        
-        if not starting_location:
-            raise ValueError("Nenhum local inicial definido para esta história")
-        
-        # Criar progresso inicial
-        progress = PlayerProgress(
-            player_id=player_id,
-            story_id=story_id,
-            session_id=session_id,
-            start_time=current_time,
-            last_activity=current_time,
-            
-            # Localização inicial
-            current_location_id=starting_location.location_id,
-            current_area_id=None,
-            discovered_locations=[starting_location.location_id],
-            discovered_areas={},
-            location_exploration_level={},
-            area_exploration_level={},
-            
-            # Inventário e níveis
-            inventory=[],
-            object_level={},
-            character_level={},
-            
-            # Histórico e progresso
-            dialogue_history={},
-            discovered_clues=[],
-            scanned_qr_codes=[],
-            action_history=[],
-            
-            # Sistema de especialização
-            specialization_points={},
-            specialization_levels={},
-            
-            # Interações completadas
-            completed_interactions={
-                "objetos": [],
-                "personagens": [],
-                "areas": [],
-                "pistas": [],
-                "combinacoes": []
+        try:
+            # Verificar se story_id é válido
+            if not story_id:
+                raise ValueError("ID da história não pode ser nulo")
+
+            # Verificar se a história existe
+            story = db.query(Story).filter(Story.story_id == story_id).first()
+            if not story:
+                raise ValueError("História não encontrada: ID %d" % story_id)
+
+            # Buscar localização inicial
+            starting_location = db.query(Location).filter(
+                Location.story_id == story_id,
+                Location.is_starting_location == True
+            ).first()
+
+            if not starting_location:
+                # Log detalhado para debug
+                self.logger.error("Nenhum local inicial encontrado para história %d", story_id)
+                locations = db.query(Location).filter(Location.story_id == story_id).all()
+                self.logger.debug("Locais disponíveis: %s", [loc.name for loc in locations])
+                raise ValueError("Nenhum local inicial definido para a história %d" % story_id)
+
+            session_id = str(uuid4())
+            current_time = datetime.now()
+
+            # Criar progresso inicial com verificação extra
+            progress = PlayerProgress(
+                player_id=player_id,
+                story_id=story_id,
+                session_id=session_id,
+                start_time=current_time,
+                last_activity=current_time,
+                current_location_id=starting_location.location_id,
+                current_area_id=None,
+                discovered_locations=[starting_location.location_id],
+                discovered_areas={},
+                location_exploration_level={},
+                area_exploration_level={},
+                inventory=[],
+                object_level={},
+                character_level={},
+                dialogue_history={},
+                discovered_clues=[],
+                scanned_qr_codes=[],
+                action_history=[],
+                specialization_points={},
+                specialization_levels={},
+                completed_interactions={
+                    "objetos": [],
+                    "personagens": [],
+                    "areas": [],
+                    "pistas": [],
+                    "combinacoes": []
+                }
+            )
+
+            db.add(progress)
+            db.commit()
+
+            self.logger.info("Sessão criada com sucesso: %s para história %d", session_id, story_id)
+            return {
+                "success": True,
+                "session_id": session_id,
+                "message": "Sessão criada com sucesso",
+                "starting_location": starting_location.name
             }
-        )
-        
-        db.add(progress)
-        db.commit()
-        
-        self.logger.info(f"Sessão criada para jogador {player_id} na história {story_id}")
-        
-        return {
-            "success": True,
-            "session_id": session_id,
-            "message": "Sessão criada com sucesso",
-            "starting_location": starting_location.name
-        }
-        
-    except Exception as e:
-        db.rollback()
-        self.logger.error(f"Erro ao criar sessão de jogador: {str(e)}")
-        return {
-            "success": False,
-            "error": str(e)
-        }
+
+        except SQLAlchemyError as e:
+            db.rollback()
+            self.logger.error("Erro ao criar sessão de jogador: %s", e)
+            return {
+                "success": False,
+                "error": str(e)
+            }
     
     # ===== MÉTODOS DE INVENTÁRIO =====
     
@@ -1219,7 +1220,7 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
             self.logger.error(f"Erro ao calcular percentual de progresso: {e}")
             return 0
     
-    # ===== MÉTODOS AUXILIARES =====
+    #===== MÉTODOS AUXILIARES =====
     
     def _ensure_list(self, value) -> list:
         """
@@ -1362,3 +1363,115 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
             return 4
         else:
             return 5
+
+    def get_session_state(self, db: Session, session_id: str) -> Dict[str, Any]:
+        """Obtém o estado atual da sessão do jogador."""
+        try:
+            # Validar session_id
+            if not isinstance(session_id, str):
+                self.logger.error(f"session_id inválido (tipo: {type(session_id)}): {session_id}")
+                return self._get_default_state("session_id inválido")
+
+            # Obter o progresso
+            progress = self.get_by_session_id(db, session_id)
+            if not progress:
+                return self._get_default_state("Sessão não encontrada")
+
+            try:
+                # Obter localização atual
+                current_location = db.query(Location).filter(
+                    Location.location_id == progress.current_location_id
+                ).first() if progress.current_location_id else None
+
+                # Obter área atual
+                current_area = db.query(LocationArea).filter(
+                    LocationArea.area_id == progress.current_area_id
+                ).first() if progress.current_area_id else None
+
+                return {
+                    "success": True,
+                    "session_id": session_id,
+                    "player_id": progress.player_id,
+                    "story_id": progress.story_id,
+                    "current_location_id": progress.current_location_id,
+                    "current_area_id": progress.current_area_id,
+                    "current_location": {
+                        "id": progress.current_location_id,
+                        "name": current_location.name if current_location else None,
+                        "description": current_location.description if current_location else None
+                    },
+                    "current_area": {
+                        "id": progress.current_area_id,
+                        "name": current_area.name if current_area else None,
+                        "description": current_area.description if current_area else None
+                    },
+                    "inventory": self._ensure_list(progress.inventory),
+                    "discovered_locations": self._ensure_list(progress.discovered_locations),
+                    "discovered_areas": self._ensure_dict(progress.discovered_areas),
+                    "discovered_clues": self._ensure_list(progress.discovered_clues),
+                    "specializations": self.get_specializations(db, session_id),
+                    "last_activity": progress.last_activity.isoformat() if progress.last_activity else None
+                }
+
+            except Exception as e:
+                self.logger.error(f"Erro ao processar estado da sessão: {e}")
+                return self._get_default_state(f"Erro ao processar estado: {str(e)}")
+
+        except Exception as e:
+            self.logger.error(f"Erro ao obter estado da sessão: {e}")
+            return self._get_default_state(str(e))
+
+    def _get_default_state(self, error_message: str) -> Dict[str, Any]:
+        """Retorna um estado padrão com mensagem de erro."""
+        return {
+            "success": False,
+            "error": error_message,
+            "current_location_id": None,
+            "current_area_id": None,
+            "inventory": [],
+            "discovered_locations": [],
+            "discovered_areas": {},
+            "discovered_clues": []
+        }
+
+    def get_or_create_player(self, db: Session, username: str) -> Player:
+        """
+        Busca um jogador pelo nome ou cria um novo se não existir.
+        
+        Args:
+            db: Sessão do banco de dados
+            username: Nome do jogador
+            
+        Returns:
+            Player: Objeto do jogador
+        """
+        try:
+            # Buscar jogador existente
+            player = db.query(Player).filter(Player.username == username).first()
+            
+            # Se não existe, criar novo
+            if not player:
+                player = Player(
+                    player_id=str(uuid4()),
+                    username=username,
+                    created_at=datetime.now(),
+                    last_login=datetime.now(),
+                    games_played=0,
+                    games_completed=0,
+                    is_deleted=False
+                )
+                db.add(player)
+                db.commit()
+                self.logger.info(f"Novo jogador criado: {username}")
+            else:
+                # Atualizar último login
+                player.last_login = datetime.now()
+                db.commit()
+                self.logger.info(f"Jogador existente encontrado: {username}")
+            
+            return player  # Retorna o objeto Player diretamente
+            
+        except SQLAlchemyError as e:
+            db.rollback()
+            self.logger.error(f"Erro ao buscar/criar jogador: {e}")
+            raise ValueError(f"Erro ao processar jogador: {str(e)}")

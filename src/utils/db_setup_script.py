@@ -322,6 +322,7 @@ def create_and_add_location(session, story, location_data):
     try:
         location = Location(
             location_id=location_data.get("location_id"),
+            story_id=story.story_id,  # Definir explicitamente o story_id
             name=location_data.get("name", "Ambiente sem nome"),
             description=location_data.get("description", ""),
             is_locked=location_data.get("is_locked", False),
@@ -329,20 +330,13 @@ def create_and_add_location(session, story, location_data):
             navigation_map=json.dumps(location_data.get("navigation_map", {})),
             is_starting_location=location_data.get("is_starting_location", False)
         )
-        location.stories.append(story)
         session.add(location)
-        session.flush() #Para obter o Id
+        session.flush()  # Para obter o ID
+        logger.info(f"Criado ambiente: {location.name} (ID: {location.location_id}, "
+                   f"Story ID: {location.story_id}, Starting: {location.is_starting_location})")
         return location
-    except KeyError as e:
-        logger.error(f"Chave faltando nos dados do ambiente: {e}")
-        session.rollback()
-        return None
-    except exc.IntegrityError as e:
-        logger.error(f"Erro de integridade ao inserir ambiente: {e}")
-        session.rollback()
-        return None
     except Exception as e:
-        logger.error(f"Erro inesperado ao inserir ambiente: {e}")
+        logger.error(f"Erro ao criar ambiente: {e}")
         session.rollback()
         return None
 
@@ -408,27 +402,47 @@ def load_environments(session, story, story_path):
         logger.warning(f"Diretório de ambientes não encontrado: {ambientes_dir}")
         return
 
-    logger.info("Carregando ambientes...")
+    logger.info(f"Carregando ambientes para história {story.story_id}...")
+    
     for arquivo in ambientes_dir.glob("Ambiente_*.json"):
+        logger.info(f"Processando arquivo: {arquivo}")
         ambiente_data_list = load_environment_data(arquivo)
-
+        
         if ambiente_data_list is None:
-            continue #if error continue.
+            continue
 
-        for ambiente_data in ambiente_data_list if isinstance(ambiente_data_list, list) else [ambiente_data_list]:
+        # Garante que ambiente_data_list seja uma lista
+        if not isinstance(ambiente_data_list, list):
+            ambiente_data_list = [ambiente_data_list]
+
+        for ambiente_data in ambiente_data_list:
+            # Garantir que story_id está definido
+            ambiente_data['story_id'] = story.story_id
+            
             location = create_and_add_location(session, story, ambiente_data)
             if location is None:
+                logger.error(f"Falha ao criar ambiente do arquivo {arquivo}")
                 continue
             
+            # Log detalhado
+            logger.info(f"Ambiente criado: {location.name}")
+            logger.info(f"- ID: {location.location_id}")
+            logger.info(f"- Story ID: {location.story_id}")
+            logger.info(f"- Is Starting: {location.is_starting_location}")
+            
+            # Processar áreas
             for area_data in ambiente_data.get("areas", []):
                 area = create_and_add_area(session, location, area_data)
-                if area is None:
-                  continue
+                if area:
+                    logger.info(f"- Área adicionada: {area.name}")
 
-                for detail_data in area_data.get("details", []):
-                    create_and_add_detail(session, area, detail_data)
-        logger.info(f"Carregado ambiente: {location.name} (ID: {location.location_id})")
-
+    # Commit ao final para garantir que tudo foi salvo
+    try:
+        session.commit()
+        logger.info("Todos os ambientes foram carregados com sucesso")
+    except Exception as e:
+        logger.error(f"Erro ao salvar ambientes: {e}")
+        session.rollback()
 
 def load_character_data(arquivo):    
     """Carrega os dados de um único arquivo JSON de personagem."""

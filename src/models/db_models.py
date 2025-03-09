@@ -28,10 +28,10 @@ story_character_association = Table(
 )
 
 story_location_association = Table(
-    'story_location', Base.metadata,
-    Column('story_id', Integer, ForeignKey('story.story_id', ondelete='CASCADE'), primary_key=True),
-    Column('location_id', Integer, ForeignKey('location.location_id', ondelete='CASCADE'), primary_key=True),
-    Index('idx_story_location', 'story_id', 'location_id')
+    'story_location_association',
+    Base.metadata,
+    Column('story_id', Integer, ForeignKey('story.story_id')),
+    Column('location_id', Integer, ForeignKey('location.location_id'))
 )
 
 player_game_association = Table(
@@ -95,12 +95,15 @@ class Story(Base, TimestampMixin, JSONMixin):
     is_active = Column(Boolean, default=True, index=True)
     
     # Relacionamentos
-    locations = relationship("Location", secondary=story_location_association, back_populates="stories")
+    player_progress = relationship("PlayerProgress", back_populates="story")
     characters = relationship("Character", secondary=story_character_association, back_populates="stories")
     objects = relationship("GameObject", back_populates="story", cascade="all, delete-orphan")
     clues = relationship("Clue", back_populates="story", cascade="all, delete-orphan")
     game_sessions = relationship("GameSession", back_populates="story")
     prompt_templates = relationship("PromptTemplate", back_populates="story", cascade="all, delete-orphan")
+    locations = relationship("Location", 
+                           secondary=story_location_association,
+                           back_populates="stories")
 
     @validates('title')
     def validate_title(self, key, title):
@@ -120,6 +123,7 @@ class Location(Base, JSONMixin):
     __tablename__ = 'location'
     
     location_id = Column(Integer, primary_key=True)
+    story_id = Column(Integer, ForeignKey('story.story_id'))
     name = Column(String(255), nullable=False)
     description = Column(Text)
     is_locked = Column(Boolean, default=False)
@@ -128,8 +132,11 @@ class Location(Base, JSONMixin):
     is_starting_location = Column(Boolean, default=False, index=True)
     
     # Relacionamentos
-    stories = relationship("Story", secondary=story_location_association, back_populates="locations")
-    areas = relationship("LocationArea", back_populates="location", cascade="all, delete-orphan")
+    stories = relationship("Story", 
+                         secondary=story_location_association,
+                         back_populates="locations")
+    areas = relationship("LocationArea", back_populates="location", 
+                        cascade="all, delete-orphan")
     
     # Índices
     __table_args__ = (
@@ -444,10 +451,10 @@ class Player(Base, TimestampMixin, SoftDeleteMixin):
     """
     __tablename__ = 'player'
     
-    player_id = Column(Integer, primary_key=True)
+    player_id = Column(String(36), primary_key=True) 
     username = Column(String(50), unique=True, nullable=False, index=True)
-    email = Column(String(100), unique=True, index=True)
-    password_hash = Column(String(255))
+    email = Column(String(100), unique=True, nullable=True, index=True)
+    password_hash = Column(String(255), nullable=True) 
     last_login = Column(DateTime)
     games_played = Column(Integer, default=0)
     games_completed = Column(Integer, default=0)
@@ -456,6 +463,7 @@ class Player(Base, TimestampMixin, SoftDeleteMixin):
     sessions = relationship("PlayerSession", back_populates="player", cascade="all, delete-orphan")
     game_sessions = relationship("GameSession", secondary="player_game", back_populates="players")
     feedback = relationship("PlayerFeedback", back_populates="player", cascade="all, delete-orphan")
+    progress = relationship("PlayerProgress", back_populates="player", cascade="all, delete-orphan")
     
     # Índices
     __table_args__ = (
@@ -1102,7 +1110,7 @@ class PlayerProgress(Base, TimestampMixin, JSONMixin):
     __tablename__ = 'player_progress'
 
     progress_id = Column(Integer, primary_key=True)
-    player_id = Column(String(50), nullable=False)
+    player_id = Column(Integer, ForeignKey('player.player_id'), nullable=False)
     story_id = Column(Integer, ForeignKey('story.story_id'), nullable=False)
     session_id = Column(String(36), nullable=False, unique=True)
     
@@ -1152,9 +1160,11 @@ class PlayerProgress(Base, TimestampMixin, JSONMixin):
     achievements = Column(JSON, default=[])
     
     # Relacionamentos
-    player = relationship("Player")
-    story = relationship("Story")
-    session = relationship("PlayerSession")
+    player = relationship("Player", back_populates="progress")
+    story = relationship("Story", back_populates="player_progress")
+    current_location = relationship("Location", foreign_keys=[current_location_id])
+    current_area = relationship("LocationArea", foreign_keys=[current_area_id])
+    
     
     # Índices
     __table_args__ = (
