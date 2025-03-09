@@ -326,65 +326,43 @@ class EnigmaHunterCLI:
     
     def display_current_state(self) -> None:
         """Exibe o estado atual do jogo."""
-        #clear_screen()
-        
-        if not self.game_state.get("current_location"):
-            print("Erro: Localização atual não encontrada!")
+        if not self.game_state or not self.game_state.get("success"):
+            print("Erro: Estado do jogo não disponível!")
             return
             
-        # Exibir localização atual
-        location = self.game_state["current_location"]
-        print(f"\n= {style_text(location['name'], bold=True)} =")
-        print(f"{location['description']}\n")
+        location = self.game_state.get("current_location")
+        current_area = self.game_state.get("current_area")
+        available_areas = self.game_state.get("available_areas", [])
+        available_objects = self.game_state.get("available_objects", [])
+        available_npcs = self.game_state.get("available_npcs", [])
         
-        # Se estiver em uma área específica
-        if self.game_state.get("current_area"):
-            area = self.game_state["current_area"]
-            print(f"\n[{style_text(area['name'], bold=True)}]")
-            print(f"{area['description']}\n")
-            
-            # Mostrar personagens na área
-            characters = self.character_repository.get_characters_in_area(
-                self.db_session,
-                area['id']
-            )
-            if characters:
-                print(style_text("\nPersonagens Presentes (use 'falar'):", bold=True))
-                for i, char in enumerate(characters, 1):
-                    print(f"{i}. {char['name']}")
-            
-            # Mostrar objetos na área
-            objects = self.object_repository.get_objects_in_area(
-                self.db_session,
-                area['id']
-            )
-            if objects:
-                print(style_text("\nObjetos Visíveis (use 'examinar'):", bold=True))
-                for i, obj in enumerate(objects, 1):
-                    print(f"{i}. {obj['name']}")
-        else:
-            # Mostrar áreas do ambiente atual
-            areas = self.location_repository.get_available_areas(
-                self.db_session, 
-                location["id"]
-            )
-            if areas:
-                print(style_text("\nÁreas Disponíveis (use 'ir'):", bold=True))
-                for i, area in enumerate(areas, 1):
-                    print(f"{i}. {area['name']}")
-            
-            # Mostrar ambientes conectados
-            connected_locations = self.location_repository.get_connected_locations(
-                self.db_session,
-                location["id"]
-            )
-            if connected_locations:
-                print(style_text("\nAmbientes Conectados (use 'ir'):", bold=True))
-                base_index = len(areas) + 1
-                for i, loc in enumerate(connected_locations, base_index):
-                    print(f"{i}. {loc['name']}")
+        if location:
+            print(f"\n= {location['name']} =")
+            print(f"{location['description']}\n")
         
-        print(f"\n{style_text('Digite ajuda para ver os comandos disponíveis', bold=True)}")
+        if current_area:
+            print(f"\n[{current_area['name']}]")
+            print(f"{current_area['description']}\n")
+        
+        # Mostrar áreas disponíveis
+        if available_areas:
+            print("\nÁreas Disponíveis (use 'ir'):")
+            for i, area in enumerate(available_areas, 1):
+                print(f"{i}. {area['name']}")
+        
+        # Mostrar objetos na área
+        if available_objects:
+            print("\nObjetos na Área (use 'examinar'):")
+            for i, obj in enumerate(available_objects, 1):
+                print(f"{i}. {obj['name']}")
+        
+        # Mostrar NPCs na área
+        if available_npcs:
+            print("\nPersonagens na Área (use 'falar'):")
+            for i, npc in enumerate(available_npcs, 1):
+                print(f"{i}. {npc['name']}")
+        
+        print("\nDigite ajuda para ver os comandos disponíveis")
     
     def process_command(self, command: str) -> None:
         """Processa um comando do usuário."""

@@ -23,6 +23,7 @@ from src.models.db_models import (
     Location,
     LocationArea,
     Clue,
+    Character,
     ObjectLevel
 )
 from src.repositories.base_repository import BaseRepository
@@ -1382,24 +1383,19 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
             return 5
 
     def get_session_state(self, db: Session, session_id: str) -> Dict[str, Any]:
-        """
-        Obtém o estado atual da sessão do jogador.
-        
-        Args:
-            db: Sessão do banco de dados
-            session_id: ID da sessão
-            
-        Returns:
-            Dict com o estado atual do jogo
-        """
+        """Obtém o estado atual da sessão do jogador."""
         try:
-            # Buscar progresso do jogador
             progress = self.get_by_session_id(db, session_id)
             if not progress:
                 return {"success": False, "error": "Sessão não encontrada"}
                 
-            # Buscar localização atual
             current_location = None
+            current_area = None
+            available_areas = []
+            available_objects = []
+            available_npcs = []
+            
+            # Buscar localização atual
             if progress.current_location_id:
                 location = db.query(Location).filter(
                     Location.location_id == progress.current_location_id
@@ -1410,9 +1406,18 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
                         "name": location.name,
                         "description": location.description,
                     }
+                    
+                    # Buscar áreas disponíveis
+                    areas = db.query(LocationArea).filter(
+                        LocationArea.location_id == location.location_id
+                    ).all()
+                    available_areas = [{
+                        "id": area.area_id,
+                        "name": area.name,
+                        "description": area.description
+                    } for area in areas]
             
-            # Buscar área atual
-            current_area = None
+            # Buscar área atual e seus objetos/NPCs
             if progress.current_area_id:
                 area = db.query(LocationArea).filter(
                     LocationArea.area_id == progress.current_area_id
@@ -1423,22 +1428,44 @@ class PlayerProgressRepository(BaseRepository[PlayerProgress]):
                         "name": area.name,
                         "description": area.description,
                     }
+                    
+                    # Buscar objetos na área usando initial_area_id
+                    self.logger.info(f"Buscando objetos para área {area.area_id}")
+                    objects = db.query(GameObject).filter(
+                        GameObject.initial_area_id == area.area_id,
+                        GameObject.story_id == progress.story_id
+                    ).all()
+                    
+                    self.logger.info(f"Encontrados {len(objects)} objetos")
+                    available_objects = [{
+                        "id": obj.object_id,
+                        "name": obj.name,
+                        "description": obj.base_description,
+                        "is_collectible": obj.is_collectible
+                    } for obj in objects]
+                    
+                    # Buscar NPCs na área
+                    npcs = db.query(Character).filter(
+                        Character.area_id == area.area_id
+                    ).all()
+                    available_npcs = [{
+                        "id": npc.character_id,
+                        "name": npc.name,
+                        "description": npc.base_description
+                    } for npc in npcs]
             
-            # Montar estado do jogo
             return {
                 "success": True,
                 "session_id": session_id,
                 "current_location": current_location,
                 "current_area": current_area,
+                "available_areas": available_areas,
+                "available_objects": available_objects,
+                "available_npcs": available_npcs,
                 "session": {
                     "player_id": progress.player_id,
                     "story_id": progress.story_id,
-                    "game_status": progress.game_status,
-                    "current_location_id": progress.current_location_id,
-                    "current_area_id": progress.current_area_id,
-                    "discovered_areas": progress.discovered_areas or {},
-                    "discovered_clues": progress.discovered_clues or [],
-                    "inventory": progress.inventory or []
+                    "game_status": progress.game_status
                 }
             }
                 
@@ -1664,4 +1691,30 @@ Lista todas as sessões de um jogador.
         except Exception as e:
             db.rollback()
             self.logger.error(f"Erro ao atualizar localização: {e}")
+            return {"success": False, "error": str(e)}
+
+    def save_game_state(self, db: Session, session_id: str) -> Dict[str, Any]:
+        """Salva o estado atual do jogo."""
+        try:
+            current_time = datetime.now()
+            
+            # Fazer update direto com valores primitivos
+            db.query(PlayerProgress).filter(
+                PlayerProgress.session_id == session_id
+            ).update({
+                PlayerProgress.game_status: "saved",
+                PlayerProgress.updated_at: current_time,
+                PlayerProgress.last_activity: current_time
+            }, synchronize_session=False)
+            
+            db.commit()
+            
+            return {
+                "success": True,
+                "message": "Jogo salvo com sucesso"
+            }
+            
+        except Exception as e:
+            db.rollback()
+            self.logger.error(f"Erro ao salvar jogo: {e}")
             return {"success": False, "error": str(e)}

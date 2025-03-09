@@ -367,3 +367,39 @@ WHERE player_progress.session_id = ?
 2025-03-09 15:40:41,589 - src.repositories.player_progress_repository - ERROR - Erro ao listar sessões do jogador gus: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (builtins.TypeError) SQLite DateTime type only accepts Python datetime and date objects as input.
 [SQL: UPDATE player_progress SET game_status=?, updated_at=? WHERE player_progress.progress_id = ?]
 [parameters: [{'game_status': 'saved', 'player_progress_progress_id': 5}]] (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-03-09 15:47:23,915 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 15:47:35,387 - src.repositories.player_progress_repository - ERROR - Erro ao buscar estado da sessão 4253d7d7-2c3b-4524-ab1c-4bf93b4ae5aa: type object 'GameObject' has no attribute 'area_id'
+2025-03-09 15:47:35,391 - src.repositories.player_progress_repository - ERROR - Erro ao buscar estado da sessão 4253d7d7-2c3b-4524-ab1c-4bf93b4ae5aa: type object 'GameObject' has no attribute 'area_id'
+2025-03-09 16:02:33,546 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 16:02:42,234 - src.repositories.player_progress_repository - ERROR - Erro ao buscar estado da sessão a5cf87e9-9f7c-4316-b42d-81de5ab39f76: type object 'GameObject' has no attribute 'area_id'
+2025-03-09 16:02:42,237 - src.repositories.player_progress_repository - ERROR - Erro ao buscar estado da sessão a5cf87e9-9f7c-4316-b42d-81de5ab39f76: type object 'GameObject' has no attribute 'area_id'
+2025-03-09 16:03:43,067 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 16:03:51,747 - src.repositories.player_progress_repository - ERROR - Erro ao buscar estado da sessão f9254ad6-7f40-47a9-a3d4-91147583c349: name 'Character' is not defined
+2025-03-09 16:03:51,749 - src.repositories.player_progress_repository - ERROR - Erro ao buscar estado da sessão f9254ad6-7f40-47a9-a3d4-91147583c349: name 'Character' is not defined
+2025-03-09 16:06:48,287 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 16:13:29,492 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 16:13:42,912 - src.repositories.player_progress_repository - INFO - Buscando objetos para área 1
+2025-03-09 16:13:42,916 - src.repositories.player_progress_repository - INFO - Encontrados 0 objetos
+2025-03-09 16:13:42,922 - src.repositories.player_progress_repository - INFO - Buscando objetos para área 1
+2025-03-09 16:13:42,922 - src.repositories.player_progress_repository - INFO - Encontrados 0 objetos
+2025-03-09 16:14:17,797 - src.repositories.player_progress_repository - INFO - Buscando objetos para área 2
+2025-03-09 16:14:17,799 - src.repositories.player_progress_repository - INFO - Encontrados 0 objetos
+2025-03-09 16:14:17,804 - src.repositories.player_progress_repository - INFO - Buscando objetos para área 2
+2025-03-09 16:14:17,805 - src.repositories.player_progress_repository - INFO - Encontrados 0 objetos
+2025-03-09 16:20:53,660 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 17:05:21,428 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 17:05:35,859 - src.repositories.player_progress_repository - INFO - Buscando objetos para área 1
+2025-03-09 17:05:35,863 - src.repositories.player_progress_repository - INFO - Encontrados 0 objetos
+2025-03-09 17:05:35,869 - src.repositories.player_progress_repository - INFO - Buscando objetos para área 1
+2025-03-09 17:05:35,870 - src.repositories.player_progress_repository - INFO - Encontrados 0 objetos
+2025-03-09 17:29:02,300 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 17:29:13,910 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 17:29:44,961 - src.repositories.player_progress_repository - INFO - Buscando objetos para área 1
+2025-03-09 17:29:44,962 - src.repositories.player_progress_repository - INFO - Encontrados 0 objetos
+2025-03-09 17:29:44,967 - src.repositories.player_progress_repository - INFO - Buscando objetos para área 1
+2025-03-09 17:29:44,968 - src.repositories.player_progress_repository - INFO - Encontrados 0 objetos
+2025-03-09 17:31:21,487 - __main__ - INFO - Iniciando Enigma Hunter CLI...
+2025-03-09 17:31:31,026 - src.repositories.player_progress_repository - INFO - Buscando objetos para área 1
+2025-03-09 17:31:31,029 - src.repositories.player_progress_repository - INFO - Encontrados 0 objetos
+2025-03-09 17:31:31,035 - src.repositories.player_progress_repository - INFO - Buscando objetos para área 1
+2025-03-09 17:31:31,036 - src.repositories.player_progress_repository - INFO - Encontrados 0 objetos

@@ -96,14 +96,12 @@ class Story(Base, TimestampMixin, JSONMixin):
     
     # Relacionamentos
     player_progress = relationship("PlayerProgress", back_populates="story")
-    characters = relationship("Character", secondary=story_character_association, back_populates="stories")
+    characters = relationship("Character", back_populates="story")
     objects = relationship("GameObject", back_populates="story", cascade="all, delete-orphan")
     clues = relationship("Clue", back_populates="story", cascade="all, delete-orphan")
     game_sessions = relationship("GameSession", back_populates="story")
     prompt_templates = relationship("PromptTemplate", back_populates="story", cascade="all, delete-orphan")
-    locations = relationship("Location", 
-                           secondary=story_location_association,
-                           back_populates="stories")
+    locations = relationship("Location", back_populates="story")
 
     @validates('title')
     def validate_title(self, key, title):
@@ -132,9 +130,7 @@ class Location(Base, JSONMixin):
     is_starting_location = Column(Boolean, default=False, index=True)
     
     # Relacionamentos
-    stories = relationship("Story", 
-                         secondary=story_location_association,
-                         back_populates="locations")
+    story = relationship("Story", back_populates="locations")
     areas = relationship("LocationArea", back_populates="location", 
                         cascade="all, delete-orphan")
     
@@ -212,6 +208,7 @@ class Character(Base, JSONMixin):
     __tablename__ = 'character'
     
     character_id = Column(Integer, primary_key=True)
+    story_id = Column(Integer, ForeignKey('story.story_id'))
     name = Column(String(100), nullable=False)
     description = Column(Text)
     character_type = Column(String(50))
@@ -224,10 +221,12 @@ class Character(Base, JSONMixin):
     appearance = Column(Text)
     is_culprit = Column(Boolean, default=False)
     motive = Column(Text)
+    created_at = Column(DateTime)  # Adicionar esta linha
+    updated_at = Column(DateTime)  # Adicionar esta linha
     
     # Relacionamentos
-    area = relationship("LocationArea", back_populates="characters") 
-    stories = relationship("Story", secondary=story_character_association, back_populates="characters")
+    story = relationship("Story", back_populates="characters")
+    area = relationship("LocationArea", back_populates="characters")
     levels = relationship("CharacterLevel", back_populates="character", cascade="all, delete-orphan")
     dialogue_history = relationship("DialogueHistory", back_populates="character")
     
@@ -335,19 +334,22 @@ class GameObject(Base):
     __tablename__ = 'game_object'
     
     object_id = Column(Integer, primary_key=True)
-    story_id = Column(Integer, ForeignKey('story.story_id', ondelete='CASCADE'), nullable=False)
+    story_id = Column(Integer, ForeignKey('story.story_id'))
     name = Column(String(255), nullable=False, index=True)
     base_description = Column(Text)
     is_collectible = Column(Boolean, default=True, index=True)
     initial_location_id = Column(Integer, ForeignKey('location.location_id', ondelete='SET NULL'), nullable=True)
     initial_area_id = Column(Integer, ForeignKey('location_area.area_id', ondelete='SET NULL'), nullable=True)
     discovery_condition = Column(String(255))
+    created_at = Column(DateTime)  # Adicionar esta linha
+    updated_at = Column(DateTime)  # Adicionar esta linha
     
     # Relacionamentos
     story = relationship("Story", back_populates="objects")
+    location = relationship("Location", overlaps="initial_location")
     levels = relationship("ObjectLevel", back_populates="object", cascade="all, delete-orphan")
     player_inventories = relationship("PlayerInventory", back_populates="object")
-    initial_location = relationship("Location")
+    initial_location = relationship("Location", overlaps="location")
     initial_area = relationship("LocationArea")
     
     # Índices

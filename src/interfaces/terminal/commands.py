@@ -134,10 +134,20 @@ class CommandProcessor:
         return True
     
     def cmd_exit(self, args: List[str]) -> bool:
-        """Sai do jogo após confirmação."""
+        """Sai do jogo após confirmação e salva o progresso."""
         confirm = get_input("Tem certeza que deseja sair? (s/n): ")
         if confirm.lower() == "s":
+            # Salvar jogo antes de sair
+            result = self.cli.player_repository.save_game_state(
+                self.cli.db_session,
+                self.cli.session_id
+            )
+            
+            if not result["success"]:
+                print(f"Erro ao salvar jogo: {result.get('error', 'Erro desconhecido')}")
+            
             self.cli.should_exit = True
+            print("\nRetornando ao menu principal...")
         return True
     
     def cmd_go_to(self, args: List[str]) -> bool:
@@ -197,36 +207,44 @@ class CommandProcessor:
     def cmd_talk_to(self, args: List[str]) -> bool:
         """Inicia diálogo com um personagem."""
         if not args:
-            print("Com quem você quer falar? (Use 'falar <personagem>')")
+            print("Com quem você quer falar? (Use 'falar <número>')")
             return False
-            
-        # Remove a palavra "com" se presente
-        if args[0].lower() == "com":
-            args.pop(0)
-            
-        if not args:
-            print("Especifique o personagem para falar.")
+
+        try:
+            target_num = int(args[0])
+            available_npcs = self.cli.game_state.get("available_npcs", [])
+
+            if not available_npcs:
+                print("Não há personagens disponíveis para conversar aqui.")
+                return False
+
+            if target_num < 1 or target_num > len(available_npcs):
+                print(f"Número inválido. Use um número entre 1 e {len(available_npcs)}.")
+                return False
+
+            npc = available_npcs[target_num - 1]
+            print(f"\nIniciando conversa com {npc['name']}...")
+
+            # Iniciar diálogo usando o character_id
+            result = self.cli.character_manager.start_conversation(
+                self.cli.db_session,
+                self.cli.session_id,
+                npc['id']
+            )
+
+            if result.get("success"):
+                print(f"\n{npc['name']}: {result['message']}\n")  # Alterado aqui
+                return True
+            else:
+                print(f"Erro ao iniciar diálogo: {result.get('message', 'Erro desconhecido')}")  # Alterado aqui
+                return False
+
+        except ValueError:
+            print("Por favor, use um número para selecionar o personagem.")
             return False
-            
-        target = " ".join(args).lower()
-            
-        # Obtém personagens na localização atual
-        current_location_id = self.cli.game_state.get("current_location_id")
-        if not current_location_id:
-            print("Você não está em nenhum local. Algo deu errado!")
+        except Exception as e:
+            print(f"Erro ao iniciar diálogo: {e}")
             return False
-            
-        characters = self.cli.character_repository.get_characters_at_location(
-            self.cli.db_session, current_location_id
-        )
-        
-        for character in characters:
-            if character['name'].lower() == target:
-                # Inicia diálogo
-                return self.dialogue_handler.start_dialogue(character['character_id'])
-        
-        print(f"Não há ninguém chamado '{target}' por aqui.")
-        return False
     
     def cmd_examine(self, args: List[str]) -> bool:
         """Examina um local, área ou objeto."""

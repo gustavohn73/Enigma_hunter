@@ -12,6 +12,7 @@ import argparse
 import logging
 from pathlib import Path
 from sqlalchemy import exc
+from datetime import datetime 
 import uuid
 from sqlalchemy.orm import Session 
 from src.models.db_models import PlayerProgress
@@ -468,38 +469,50 @@ def load_character_data(arquivo):
         logger.error(f"Erro ao carregar ou decodificar arquivo de personagem {arquivo}: {e}")
         return None
     
-def create_and_add_character(session, story, character_data):
-    """Cria um objeto Character e o insere no banco de dados."""
+def create_and_add_character(session, story, char_data):
+    """Cria um personagem Character e o insere no banco de dados."""
     try:
+        current_time = datetime.now()
         character = Character(
-            character_id=character_data.get("character_id"),
-            name=character_data.get("name", "Personagem sem nome"),
-            base_description=character_data.get("base_description", ""),
-            personality=character_data.get("personality", ""),
-            appearance=character_data.get("appearance", ""),
-            is_culprit=character_data.get("is_culprit", False),
-            motive=character_data.get("motive", ""),
-            location_schedule=json.dumps(character_data.get("location_schedule", {}))
+            character_id=char_data.get("character_id"),
+            story_id=story.story_id,
+            name=char_data.get("name", "Personagem sem nome"),
+            base_description=char_data.get("base_description", ""),
+            personality=char_data.get("personality", ""),
+            appearance=char_data.get("appearance", ""),
+            is_culprit=char_data.get("is_culprit", False),
+            motive=char_data.get("motive", ""),
+            area_id=char_data.get("area_id"),
+            created_at=current_time,
+            updated_at=current_time,
+            is_active=True,
+            character_type="NPC",
+            dialogue_state="neutral",
+            importance_level=1
         )
-        character.stories.append(story)
+        
         session.add(character)
         session.flush()
+        logger.info(f"Personagem criado com sucesso: {character.name}")
         return character
-    except KeyError as e:
-        logger.error(f"Chave faltando nos dados do personagem: {e}")
-        session.rollback()
-        return None
-    except exc.IntegrityError as e:
-        logger.error(f"Erro de integridade ao inserir personagem: {e}")
-        session.rollback()
-        return None
+        
     except Exception as e:
-        logger.error(f"Erro inesperado ao inserir personagem: {e}")
+        logger.error(f"Erro ao criar personagem {char_data.get('name')}: {e}")
         session.rollback()
         return None
     
 def create_and_add_character_level(session, character, level_data):
-    """Creates a CharacterLevel object and adds it to the database."""
+    """
+    Creates and adds a character level to the database.
+    
+    Args:
+        session: SQLAlchemy session
+        character: Character object
+        level_data: Dictionary containing level data
+    
+    Returns:
+        CharacterLevel object or None if error
+    """
     try:
         level = CharacterLevel(
             character_id=character.character_id,
@@ -508,21 +521,53 @@ def create_and_add_character_level(session, character, level_data):
             narrative_stance=level_data.get("narrative_stance", ""),
             is_defensive=level_data.get("is_defensive", False),
             dialogue_parameters=level_data.get("dialogue_parameters", ""),
-            ia_instruction_set=json.dumps(level_data.get("ia_instruction_set", {}))
+            ia_instruction_set=level_data.get("ia_instruction_set", {})
         )
+        
         session.add(level)
         session.flush()
+        
+        # Create evolution triggers if they exist
+        if level_data.get("evolution_triggers"):
+            for trigger_data in level_data["evolution_triggers"]:
+                trigger = create_and_add_evolution_trigger(session, level, trigger_data)
+                if trigger is None:
+                    logger.error(f"Failed to create trigger for level {level.level_number}")
+                    continue
+        
         return level
-    except KeyError as e:
-        logger.error(f"Missing key in character level data: {e}")
-        session.rollback()
-        return None
-    except exc.IntegrityError as e:
-        logger.error(f"Integrity error inserting character level: {e}")
-        session.rollback()
-        return None
+        
     except Exception as e:
-        logger.error(f"Unexpected error inserting character level: {e}")
+        logger.error(f"Error creating character level: {e}")
+        session.rollback()
+        return None
+    
+def create_and_add_game_object(session, story, object_data):
+    """Cria um objeto GameObject e o insere no banco de dados."""
+    try:
+        current_time = datetime.now()
+        logger.info(f"Criando objeto: {object_data.get('name')} com area_id: {object_data.get('initial_area_id')}")
+        
+        game_object = GameObject(
+            object_id=object_data.get("object_id"),
+            story_id=story.story_id,
+            name=object_data.get("name", "Objeto sem nome"),
+            base_description=object_data.get("base_description", ""),
+            is_collectible=object_data.get("is_collectible", True),
+            initial_location_id=object_data.get("initial_location_id"),
+            initial_area_id=object_data.get("initial_area_id"),
+            discovery_condition=object_data.get("discovery_condition", ""),
+            created_at=current_time,
+            updated_at=current_time
+        )
+        
+        session.add(game_object)
+        session.flush()
+        logger.info(f"Objeto criado com sucesso: {game_object.name}")
+        return game_object
+        
+    except Exception as e:
+        logger.error(f"Erro ao criar objeto {object_data.get('name')}: {e}")
         session.rollback()
         return None
 
@@ -656,6 +701,9 @@ def load_clues_data(data_dir):
 def create_and_add_game_object(session, story, object_data):
     """Cria um objeto GameObject e o insere no banco de dados."""
     try:
+        current_time = datetime.now()
+        logger.info(f"Criando objeto: {object_data.get('name')} com area_id: {object_data.get('initial_area_id')}")
+        
         game_object = GameObject(
             object_id=object_data.get("object_id"),
             story_id=story.story_id,
@@ -664,21 +712,17 @@ def create_and_add_game_object(session, story, object_data):
             is_collectible=object_data.get("is_collectible", True),
             initial_location_id=object_data.get("initial_location_id"),
             initial_area_id=object_data.get("initial_area_id"),
-            discovery_condition=object_data.get("discovery_condition", "")
+            discovery_condition=object_data.get("discovery_condition", ""),
+            created_at=current_time,
+            updated_at=current_time
         )
+        
         session.add(game_object)
         session.flush()
         return game_object
-    except KeyError as e:
-        logger.error(f"Chave faltando nos dados do objeto: {e}")
-        session.rollback()
-        return None
-    except exc.IntegrityError as e:
-        logger.error(f"Erro de integridade ao inserir objeto: {e}")
-        session.rollback()
-        return None
+        
     except Exception as e:
-        logger.error(f"Erro inesperado ao inserir objeto: {e}")
+        logger.error(f"Erro ao criar objeto {object_data.get('name')}: {e}")
         session.rollback()
         return None
 
