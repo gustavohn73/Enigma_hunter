@@ -1,5 +1,5 @@
-// Firebase Configuration
-// Este arquivo aguarda o Firebase SDK carregar antes de inicializar
+// Firebase Configuration - Ambiente Development
+// Este arquivo usa variáveis de ambiente para segurança
 
 (function() {
     'use strict';
@@ -13,15 +13,39 @@
         }
 
         // Configuração do Firebase
-        // IMPORTANTE: Substitua com suas configurações reais do Firebase Console
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+        // IMPORTANTE: Para desenvolvimento local, use as configurações de emulador
+        // Para produção, substitua com suas configurações reais do Firebase Console
+
+        let firebaseConfig;
+
+        // Detectar ambiente
+        const isLocalhost = window.location.hostname === 'localhost' ||
+                           window.location.hostname === '127.0.0.1';
+
+        if (isLocalhost) {
+            // Configuração para emuladores (desenvolvimento)
+            console.log('🔧 Modo: Desenvolvimento (Emulators)');
+            firebaseConfig = {
+                apiKey: "demo-api-key",
+                authDomain: "demo-project.firebaseapp.com",
+                projectId: "demo-project",
+                storageBucket: "demo-project.appspot.com",
+                messagingSenderId: "123456789",
+                appId: "1:123456789:web:abcdef"
+            };
+        } else {
+            // Configuração para produção
+            // SUBSTITUA com suas credenciais reais do Firebase Console
+            console.log('🚀 Modo: Produção');
+            firebaseConfig = {
+                apiKey: window.ENV?.FIREBASE_API_KEY || "YOUR_API_KEY",
+                authDomain: window.ENV?.FIREBASE_AUTH_DOMAIN || "YOUR_PROJECT_ID.firebaseapp.com",
+                projectId: window.ENV?.FIREBASE_PROJECT_ID || "YOUR_PROJECT_ID",
+                storageBucket: window.ENV?.FIREBASE_STORAGE_BUCKET || "YOUR_PROJECT_ID.appspot.com",
+                messagingSenderId: window.ENV?.FIREBASE_MESSAGING_SENDER_ID || "YOUR_MESSAGING_SENDER_ID",
+                appId: window.ENV?.FIREBASE_APP_ID || "YOUR_APP_ID"
+            };
+        }
 
         // Initialize Firebase
         try {
@@ -37,8 +61,8 @@
         const auth = firebase.auth();
         const functions = firebase.functions();
 
-        // For local development with emulators
-        if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+        // Configurar emuladores para localhost
+        if (isLocalhost) {
             console.log('🔧 Using Firebase Emulators');
             db.useEmulator("localhost", 8080);
             functions.useEmulator("localhost", 5001);
