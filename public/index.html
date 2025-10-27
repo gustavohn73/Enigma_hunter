@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Segredo da Estalagem do Cervo Negro - Enigma Hunter</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Carregando o mistério...</p>
+        </div>
+    </div>
+
+    <div id="main-menu" class="main-menu">
+        <div class="title-container">
+            <h1 class="game-title">O SEGREDO DA</h1>
+            <h2 class="game-subtitle">ESTALAGEM DO CERVO NEGRO</h2>
+            <p class="game-tagline">Um mistério interativo com IA</p>
+        </div>
+
+        <div class="menu-container">
+            <button id="btn-new-game" class="menu-btn">
+                <span class="btn-icon">⚔️</span>
+                Novo Jogo
+            </button>
+            <button id="btn-load-game" class="menu-btn">
+                <span class="btn-icon">📜</span>
+                Carregar Jogo
+            </button>
+            <button id="btn-instructions" class="menu-btn">
+                <span class="btn-icon">📖</span>
+                Instruções
+            </button>
+        </div>
+    </div>
+
+    <div id="player-id-screen" class="modal-screen hidden">
+        <div class="modal-content">
+            <h2>Novo Jogo</h2>
+            <p>Escolha um identificador único para seu investigador.</p>
+            <input type="text" id="player-id-input" placeholder="Digite seu ID ou deixe em branco para gerar automaticamente" maxlength="20">
+            <div class="modal-buttons">
+                <button id="btn-start-game" class="primary-btn">Começar Investigação</button>
+                <button id="btn-cancel-new-game" class="secondary-btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="load-game-screen" class="modal-screen hidden">
+        <div class="modal-content wide">
+            <h2>Carregar Jogo</h2>
+            <div id="saved-games-list" class="saved-games-list">
+                <p class="no-saves">Nenhum jogo salvo encontrado.</p>
+            </div>
+            <div class="modal-buttons">
+                <button id="btn-cancel-load" class="secondary-btn">Voltar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="instructions-screen" class="modal-screen hidden">
+        <div class="modal-content">
+            <h2>Instruções</h2>
+            <div class="instructions-content">
+                <h3>Como Jogar</h3>
+                <p><strong>Enigma Hunter</strong> é um jogo de investigação e mistério baseado em texto. Você é um investigador chamado para resolver um assassinato misterioso na histórica Estalagem do Cervo Negro.</p>
+
+                <h3>Objetivos</h3>
+                <ul>
+                    <li>Explore diferentes áreas da estalagem e da cidade</li>
+                    <li>Examine objetos e colete evidências</li>
+                    <li>Interrogue personagens suspeitos</li>
+                    <li>Descubra pistas para desvendar o mistério</li>
+                    <li>Desenvolva suas habilidades de investigação</li>
+                    <li>Faça a acusação correta quando tiver evidências suficientes</li>
+                </ul>
+
+                <h3>Sistema de Habilidades</h3>
+                <p>Suas ações desenvolvem 5 habilidades especializadas:</p>
+                <ul>
+                    <li><strong>Análise de Evidências:</strong> Examinar objetos físicos</li>
+                    <li><strong>Conhecimento Histórico:</strong> Compreender contexto e história</li>
+                    <li><strong>Interpretação de Comportamento:</strong> Ler pessoas e intenções</li>
+                    <li><strong>Descoberta Ambiental:</strong> Explorar ambientes</li>
+                    <li><strong>Conexão de Informações:</strong> Relacionar pistas</li>
+                </ul>
+
+                <h3>Dicas</h3>
+                <ul>
+                    <li>Explore completamente cada área antes de seguir em frente</li>
+                    <li>Converse com todos os personagens várias vezes</li>
+                    <li>Palavras-chave específicas podem desbloquear informações especiais</li>
+                    <li>Colete evidências antes de confrontar suspeitos</li>
+                    <li>Revise suas pistas regularmente</li>
+                </ul>
+            </div>
+            <div class="modal-buttons">
+                <button id="btn-close-instructions" class="primary-btn">Entendi</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-screen" class="game-screen hidden">
+        <div class="game-header">
+            <div class="header-left">
+                <h3 id="current-location-name" class="location-name"></h3>
+                <p id="current-area-name" class="area-name"></p>
+            </div>
+            <div class="header-right">
+                <button id="btn-menu" class="icon-btn" title="Menu">☰</button>
+            </div>
+        </div>
+
+        <div class="game-content">
+            <div class="main-panel">
+                <div id="narrative-text" class="narrative-text"></div>
+
+                <div id="options-container" class="options-container"></div>
+
+                <div id="conversation-panel" class="conversation-panel hidden">
+                    <div id="conversation-history" class="conversation-history"></div>
+                    <div class="conversation-input-container">
+                        <input type="text" id="conversation-input" placeholder="Digite sua pergunta...">
+                        <button id="btn-send-message" class="send-btn">Enviar</button>
+                        <button id="btn-end-conversation" class="secondary-btn">Encerrar Conversa</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <div class="panel-section">
+                    <button class="panel-btn" id="btn-inventory">
+                        <span class="panel-icon">🎒</span>
+                        <span class="panel-label">Inventário</span>
+                        <span id="inventory-count" class="badge">0</span>
+                    </button>
+                </div>
+
+                <div class="panel-section">
+                    <button class="panel-btn" id="btn-clues">
+                        <span class="panel-icon">🔍</span>
+                        <span class="panel-label">Pistas</span>
+                        <span id="clues-count" class="badge">0</span>
+                    </button>
+                </div>
+
+                <div class="panel-section">
+                    <button class="panel-btn" id="btn-skills">
+                        <span class="panel-icon">⚡</span>
+                        <span class="panel-label">Habilidades</span>
+                    </button>
+                </div>
+
+                <div class="panel-section">
+                    <button class="panel-btn" id="btn-save">
+                        <span class="panel-icon">💾</span>
+                        <span class="panel-label">Salvar</span>
+                    </button>
+                </div>
+
+                <div class="panel-section">
+                    <button class="panel-btn accusation-btn" id="btn-accuse">
+                        <span class="panel-icon">⚖️</span>
+                        <span class="panel-label">Fazer Acusação</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="inventory-modal" class="modal-screen hidden">
+        <div class="modal-content">
+            <h2>Inventário</h2>
+            <div id="inventory-list" class="item-list"></div>
+            <div class="modal-buttons">
+                <button id="btn-close-inventory" class="secondary-btn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="clues-modal" class="modal-screen hidden">
+        <div class="modal-content">
+            <h2>Pistas Descobertas</h2>
+            <div id="clues-list" class="item-list"></div>
+            <div class="modal-buttons">
+                <button id="btn-close-clues" class="secondary-btn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="skills-modal" class="modal-screen hidden">
+        <div class="modal-content">
+            <h2>Habilidades do Investigador</h2>
+            <div id="skills-list" class="skills-list"></div>
+            <div class="modal-buttons">
+                <button id="btn-close-skills" class="secondary-btn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="accusation-modal" class="modal-screen hidden">
+        <div class="modal-content">
+            <h2>Fazer Acusação</h2>
+            <div id="accusation-content" class="accusation-content">
+                <p class="warning-text">Esta é sua chance de resolver o mistério. Escolha com cuidado!</p>
+
+                <div class="form-group">
+                    <label for="suspect-select">Quem você acusa?</label>
+                    <select id="suspect-select">
+                        <option value="">Selecione um suspeito...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="motive-input">Qual foi o motivo?</label>
+                    <textarea id="motive-input" rows="3" placeholder="Descreva o motivo do crime..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="method-input">Qual foi o método utilizado?</label>
+                    <textarea id="method-input" rows="3" placeholder="Descreva como o crime foi cometido..."></textarea>
+                </div>
+
+                <p id="evidence-warning" class="evidence-warning hidden">
+                    Você precisa de pelo menos <span id="min-evidence">5</span> evidências-chave para fazer uma acusação.
+                </p>
+            </div>
+            <div class="modal-buttons">
+                <button id="btn-submit-accusation" class="primary-btn">Fazer Acusação</button>
+                <button id="btn-cancel-accusation" class="secondary-btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="result-modal" class="modal-screen hidden">
+        <div class="modal-content">
+            <h2 id="result-title">Resultado</h2>
+            <div id="result-content" class="result-content"></div>
+            <div class="modal-buttons">
+                <button id="btn-close-result" class="primary-btn">Continuar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-functions-compat.js"></script>
+
+    <!-- Game Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="game-engine.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "enigma-hunter",
+  "version": "2.0.0",
+  "description": "Enigma Hunter - Mystery Investigation Game (Firebase Web Version)",
+  "main": "upload-game-data.js",
+  "scripts": {
+    "upload-data": "node upload-game-data.js",
+    "serve": "firebase emulators:start",
+    "deploy": "firebase deploy",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy:rules": "firebase deploy --only firestore:rules",
+    "logs": "firebase functions:log"
+  },
+  "keywords": [
+    "game",
+    "mystery",
+    "investigation",
+    "firebase",
+    "ai"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "firebase-admin": "^11.8.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

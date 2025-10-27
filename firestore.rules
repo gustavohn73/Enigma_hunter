@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Regras para dados do jogo (somente leitura)
+    match /game_data/{document=**} {
+      allow read: if true;
+      allow write: if false; // Dados do jogo não podem ser modificados pelos clientes
+    }
+
+    // Regras para saves dos jogadores
+    match /player_saves/{playerId} {
+      // Permitir que jogadores leiam e escrevam apenas seus próprios saves
+      allow read, write: if request.auth != null && request.auth.uid == playerId;
+
+      // Permitir criação de save para jogadores autenticados
+      allow create: if request.auth != null && request.auth.uid == playerId;
+    }
+
+    // Regras para jogadores anônimos (guest)
+    match /guest_saves/{sessionId} {
+      // Permitir acesso baseado no sessionId armazenado localmente
+      allow read, write: if true; // Em produção, considere adicionar mais validações
+    }
+  }
+}
