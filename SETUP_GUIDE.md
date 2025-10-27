@@ -1,6 +1,37 @@
 # Guia Rápido de Configuração - Enigma Hunter Firebase
 
-## 🚀 Setup Rápido (5 minutos)
+## ⚡ NOVO! Setup Ultra-Rápido com Gemini GRATUITO (3 minutos)
+
+### Para 5 jogadores, use a API GRATUITA do Google!
+
+```bash
+# 1. Clone e instale
+git clone [seu-repo]
+cd Enigma_hunter
+npm install && cd functions && npm install && cd ..
+
+# 2. Inicie os emulators
+firebase emulators:start
+
+# 3. (Em outro terminal) Upload dos dados
+npm run upload-data
+
+# 4. Abra http://localhost:5000
+```
+
+**No jogo:**
+1. Vá em "⚙️ Configurar IA"
+2. Selecione "Google Gemini" (GRÁTIS!)
+3. Cole sua API key (obtenha em: https://makersuite.google.com/app/apikey)
+4. Teste e salve
+
+✅ **Pronto!** Jogo funcionando com IA gratuita!
+
+📖 **Quer gerar histórias próprias?** Clique em "✨ Criar Nova História (IA)"
+
+---
+
+## 🚀 Setup Completo (5 minutos)
 
 ### 1. Instalar Dependências
 

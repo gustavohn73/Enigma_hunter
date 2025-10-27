@@ -41,6 +41,7 @@ class GameEngine {
         this.conversationHistory = [];
         this.db = window.firebaseServices.db;
         this.functions = window.firebaseServices.functions;
+        this.aiProvider = new AIProviderManager();
     }
 
     async loadGameData() {
@@ -396,9 +397,28 @@ class GameEngine {
 
     async enhanceTextWithAI(context, text, instruction) {
         try {
-            const enhanceText = this.functions.httpsCallable('enhanceText');
-            const result = await enhanceText({ context, text, instruction });
-            return result.data.enhancedText || text;
+            const systemPrompt = `Você é um assistente de narração para um jogo de mistério ambientado em uma estalagem antiga.
+Seu trabalho é:
+1. Enriquecer descrições com detalhes vívidos e sensoriais
+2. Falar como os personagens de forma coerente com suas personalidades
+3. Criar pequenos elementos narrativos que se encaixem no tema do jogo
+
+Importante:
+- Mantenha o tom de mistério e investigação
+- Seja conciso mas detalhado
+- Não mude fatos essenciais da história
+- Não use marcações como asteriscos ou aspas, apenas texto puro
+- Sempre responda em português brasileiro
+- Nunca use palavras em inglês`;
+
+            const prompt = `Contexto: ${context}\n\nTexto original: ${text}\n\nInstrução: ${instruction}\n\nResponda apenas com o texto melhorado, em português brasileiro, sem comentários adicionais.`;
+
+            const result = await this.aiProvider.generateText(prompt, systemPrompt, {
+                temperature: 0.7,
+                maxTokens: 500
+            });
+
+            return result || text;
         } catch (error) {
             console.error('Error enhancing text:', error);
             return text;
@@ -407,13 +427,45 @@ class GameEngine {
 
     async generateNPCDialogue(character, playerQuestion) {
         try {
-            const generateDialogue = this.functions.httpsCallable('generateNPCDialogue');
-            const result = await generateDialogue({
-                character: character,
-                characterLevel: this.getCharacterLevel(character.character_id),
-                question: playerQuestion
+            const charName = character.name || "Personagem";
+            const charPersonality = character.personality || "";
+            const charId = character.character_id;
+            const charLevel = this.getCharacterLevel(charId);
+
+            // Get knowledge based on character level
+            let knowledge = "";
+            if (character.levels && character.levels.length > 0) {
+                for (const level of character.levels) {
+                    if (level.level_number <= charLevel) {
+                        knowledge += level.knowledge_scope + " ";
+                    }
+                }
+            }
+
+            const systemPrompt = `Você é ${charName}, um personagem em um jogo de mistério.
+
+Sua personalidade: ${charPersonality}
+
+O que você sabe (baseado no nível atual do jogador): ${knowledge}
+
+Regras importantes:
+1. Responda sempre em primeira pessoa como ${charName}
+2. Seja fiel à sua personalidade
+3. Só compartilhe informações que você conhece no nível atual
+4. Mantenha respostas concisas (1-4 frases)
+5. Use pulsação narrativa para incluir detalhe de linguagem corporal ou expressão.
+6. Se a pergunta busca informações que você não deveria saber, demonstre confusão ou negue conhecimento
+7. Sempre responda em português brasileiro
+8. Nunca use palavras em inglês`;
+
+            const prompt = `Um jogador perguntou: "${playerQuestion}"\n\nComo ${charName}, responda de acordo com seu conhecimento atual e personalidade.\nSe a pergunta for sobre algo que você não deveria saber, demonstre confusão ou negue conhecimento de maneira natural.`;
+
+            const result = await this.aiProvider.generateText(prompt, systemPrompt, {
+                temperature: 0.8,
+                maxTokens: 300
             });
-            return result.data.response;
+
+            return result || "Não sei o que dizer sobre isso.";
         } catch (error) {
             console.error('Error generating NPC dialogue:', error);
             return "Não consigo responder a isso no momento.";

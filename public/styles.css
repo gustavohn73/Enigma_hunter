@@ -875,3 +875,194 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--secondary-color);
 }
+
+/* AI Settings Styles */
+.provider-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.provider-card {
+    background: var(--dark-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.provider-card.selected {
+    border-color: var(--secondary-color);
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.provider-card:hover {
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.provider-card.free::after {
+    content: "GRÁTIS";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--accent-green);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.provider-card h4 {
+    color: var(--secondary-color);
+    margin-bottom: 8px;
+}
+
+.provider-card p {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.provider-config {
+    margin-top: 20px;
+}
+
+.config-field {
+    margin-bottom: 20px;
+}
+
+.config-field label {
+    display: block;
+    color: var(--secondary-color);
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.config-field input {
+    width: 100%;
+    padding: 12px;
+    background: var(--dark-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-light);
+    font-family: 'Crimson Text', serif;
+    font-size: 1rem;
+}
+
+.config-field input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+}
+
+.config-field small {
+    display: block;
+    margin-top: 5px;
+    opacity: 0.7;
+    font-size: 0.85rem;
+}
+
+.config-field small a {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+.config-field small a:hover {
+    text-decoration: underline;
+}
+
+/* Story Generator Styles */
+.story-form {
+    margin-bottom: 20px;
+}
+
+.story-form .form-group {
+    margin-bottom: 20px;
+}
+
+.story-form label {
+    display: block;
+    color: var(--secondary-color);
+    font-family: 'Cinzel', serif;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.story-form select,
+.story-form input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    background: var(--dark-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-light);
+    font-family: 'Crimson Text', serif;
+    font-size: 1rem;
+}
+
+.story-form select:focus,
+.story-form input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+}
+
+.generation-status {
+    background: rgba(212, 175, 55, 0.1);
+    border: 2px solid var(--secondary-color);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.generation-status.hidden {
+    display: none;
+}
+
+.generation-status .loading-spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 15px;
+}
+
+.generation-status .loading-spinner.small {
+    width: 30px;
+    height: 30px;
+}
+
+.generation-status p {
+    color: var(--secondary-color);
+    font-style: italic;
+}
+
+/* Provider Status Indicator */
+.provider-status {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.provider-status.connected {
+    background: var(--accent-green);
+    box-shadow: 0 0 10px var(--accent-green);
+}
+
+.provider-status.disconnected {
+    background: var(--accent-red);
+}
+
+/* Additional Modal Improvements */
+.modal-content.wide {
+    max-width: 900px;
+}
+
+.ai-provider-selector h3 {
+    color: var(--secondary-color);
+    font-family: 'Cinzel', serif;
+    margin-bottom: 15px;
+}

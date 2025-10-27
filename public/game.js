@@ -20,6 +20,9 @@ class UIController {
             // Setup event listeners
             this.setupEventListeners();
 
+            // Initialize AI UI Controller
+            this.aiController = new AIUIController(this);
+
         } catch (error) {
             console.error('Failed to initialize game:', error);
             alert('Erro ao carregar o jogo. Por favor, recarregue a página.');

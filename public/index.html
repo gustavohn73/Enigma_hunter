@@ -29,9 +29,17 @@
                 <span class="btn-icon">⚔️</span>
                 Novo Jogo
             </button>
+            <button id="btn-create-story" class="menu-btn">
+                <span class="btn-icon">✨</span>
+                Criar Nova História (IA)
+            </button>
             <button id="btn-load-game" class="menu-btn">
                 <span class="btn-icon">📜</span>
                 Carregar Jogo
+            </button>
+            <button id="btn-ai-settings" class="menu-btn">
+                <span class="btn-icon">⚙️</span>
+                Configurar IA
             </button>
             <button id="btn-instructions" class="menu-btn">
                 <span class="btn-icon">📖</span>
@@ -248,6 +256,91 @@
         </div>
     </div>
 
+    <!-- AI Settings Modal -->
+    <div id="ai-settings-modal" class="modal-screen hidden">
+        <div class="modal-content wide">
+            <h2>Configurações de IA</h2>
+
+            <div class="ai-provider-selector">
+                <h3>Escolha o Provider de IA:</h3>
+                <div id="provider-list" class="provider-list"></div>
+            </div>
+
+            <div id="provider-config" class="provider-config">
+                <h3>Configuração</h3>
+                <div id="config-fields"></div>
+            </div>
+
+            <div class="modal-buttons">
+                <button id="btn-save-ai-settings" class="primary-btn">Salvar</button>
+                <button id="btn-test-ai" class="secondary-btn">Testar Conexão</button>
+                <button id="btn-close-ai-settings" class="secondary-btn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story Generator Modal -->
+    <div id="story-generator-modal" class="modal-screen hidden">
+        <div class="modal-content wide">
+            <h2>Criar Nova História com IA</h2>
+
+            <div class="story-form">
+                <div class="form-group">
+                    <label for="story-theme">Tema:</label>
+                    <select id="story-theme">
+                        <option value="medieval">Medieval/Fantasia</option>
+                        <option value="modern">Moderno/Urbano</option>
+                        <option value="victorian">Vitoriano (século XIX)</option>
+                        <option value="sci-fi">Ficção Científica</option>
+                        <option value="custom">Personalizado</option>
+                    </select>
+                </div>
+
+                <div class="form-group hidden" id="custom-theme-group">
+                    <label for="custom-theme">Descreva seu tema:</label>
+                    <input type="text" id="custom-theme" placeholder="Ex: Uma mansão assombrada nos anos 1920">
+                </div>
+
+                <div class="form-group">
+                    <label for="age-rating">Classificação Etária:</label>
+                    <select id="age-rating">
+                        <option value="child">Infantil (sem violência)</option>
+                        <option value="teen">Adolescente (mistério moderado)</option>
+                        <option value="adult">Adulto (temas complexos)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="difficulty">Dificuldade:</label>
+                    <select id="difficulty">
+                        <option value="easy">Fácil (4 suspeitos, pistas óbvias)</option>
+                        <option value="medium" selected>Médio (6 suspeitos, desafio moderado)</option>
+                        <option value="hard">Difícil (8+ suspeitos, muito complexo)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="duration">Duração Estimada:</label>
+                    <select id="duration">
+                        <option value="short">Curta (30-45 min)</option>
+                        <option value="medium" selected>Média (1-2 horas)</option>
+                        <option value="long">Longa (2-4 horas)</option>
+                    </select>
+                </div>
+
+                <div class="generation-status hidden" id="generation-status">
+                    <div class="loading-spinner small"></div>
+                    <p id="generation-message">Gerando história...</p>
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button id="btn-generate-story" class="primary-btn">✨ Gerar História</button>
+                <button id="btn-cancel-story-gen" class="secondary-btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -256,7 +349,10 @@
 
     <!-- Game Scripts -->
     <script src="firebase-config.js"></script>
+    <script src="ai-providers.js"></script>
+    <script src="story-generator.js"></script>
     <script src="game-engine.js"></script>
+    <script src="ai-ui-controller.js"></script>
     <script src="game.js"></script>
 </body>
 </html>
