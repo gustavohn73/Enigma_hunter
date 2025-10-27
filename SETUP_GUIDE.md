@@ -58,34 +58,16 @@ firebase use --add
 # Selecione ou crie o projeto "enigma-hunter"
 ```
 
-### 3. Configurar Credenciais
+### 3. Configurar Gemini (GRATUITO)
 
-#### a) Configurar Firebase no Frontend
+**No jogo (após iniciar):**
+1. Abra **http://localhost:5000**
+2. Vá em "⚙️ Configurar IA"
+3. Selecione "Google Gemini"
+4. Cole sua API key (obtida em https://makersuite.google.com/app/apikey)
+5. Clique em "Testar Conexão" → "Salvar"
 
-1. Acesse [Firebase Console](https://console.firebase.google.com/)
-2. Vá em **Configurações do Projeto** → **Seus apps** → **Web**
-3. Copie as configurações
-4. Edite `public/firebase-config.js` e cole suas configs
-
-#### b) Configurar OpenAI API Key
-
-**Obter API Key**:
-- Acesse https://platform.openai.com/
-- Crie uma conta
-- Vá em "API Keys" e crie uma nova key
-- Copie a key (começa com `sk-...`)
-
-**Configurar para desenvolvimento local**:
-```bash
-cd functions
-echo "OPENAI_API_KEY=sk-sua-key-aqui" > .env
-cd ..
-```
-
-**Configurar para produção**:
-```bash
-firebase functions:config:set openai.key="sk-sua-key-aqui"
-```
+✅ **Pronto! IA configurada e funcionando!**
 
 ### 4. Iniciar Desenvolvimento Local
 
