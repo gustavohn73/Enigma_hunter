@@ -83,12 +83,74 @@ class AIUIController {
                 </div>
                 <div class="config-field">
                     <label>Modelo:</label>
-                    <input type="text" id="ollama-model" value="${config.model}" placeholder="llama3">
-                    <small>Nome do modelo instalado no Ollama</small>
+                    <select id="ollama-model">
+                        <option value="llama3" ${config.model === 'llama3' ? 'selected' : ''}>Llama 3 (recomendado)</option>
+                        <option value="llama3.1" ${config.model === 'llama3.1' ? 'selected' : ''}>Llama 3.1</option>
+                        <option value="phi3" ${config.model === 'phi3' ? 'selected' : ''}>Phi 3 (rápido)</option>
+                        <option value="mistral" ${config.model === 'mistral' ? 'selected' : ''}>Mistral</option>
+                        <option value="custom" ${!['llama3', 'llama3.1', 'phi3', 'mistral'].includes(config.model) ? 'selected' : ''}>Outro (digitar)</option>
+                    </select>
+                    <input type="text" id="ollama-model-custom" class="hidden" value="${config.model}" placeholder="Nome do modelo">
+                    <small>Execute 'ollama list' no terminal para ver modelos instalados</small>
+                </div>
+            `;
+
+            // Show custom input if needed
+            document.getElementById('ollama-model').addEventListener('change', (e) => {
+                const customInput = document.getElementById('ollama-model-custom');
+                customInput.classList.toggle('hidden', e.target.value !== 'custom');
+            });
+        } else if (currentProvider === 'gemini') {
+            // Gemini specific configuration
+            configElement.innerHTML = `
+                <div class="config-field">
+                    <label>API Key:</label>
+                    <input type="password" id="api-key" value="${config.apiKey || ''}" placeholder="AIza...">
+                    <small>Obtenha sua API key em: <a href="${providerInfo.setupUrl}" target="_blank">Clique aqui</a></small>
+                </div>
+                <div class="config-field">
+                    <label>Modelo:</label>
+                    <select id="api-model">
+                        <option value="gemini-pro" ${config.model === 'gemini-pro' ? 'selected' : ''}>gemini-pro (recomendado)</option>
+                        <option value="gemini-1.5-pro" ${config.model === 'gemini-1.5-pro' ? 'selected' : ''}>gemini-1.5-pro</option>
+                        <option value="gemini-1.5-flash" ${config.model === 'gemini-1.5-flash' ? 'selected' : ''}>gemini-1.5-flash (rápido)</option>
+                    </select>
+                    <small>⚠️ Use apenas os modelos listados acima</small>
                 </div>
             `;
         } else if (providerInfo && providerInfo.needsKey) {
-            // API key configuration
+            // API key configuration for other providers
+            let modelOptions = '';
+
+            switch (currentProvider) {
+                case 'openai':
+                    modelOptions = `
+                        <option value="gpt-3.5-turbo" ${config.model === 'gpt-3.5-turbo' ? 'selected' : ''}>gpt-3.5-turbo</option>
+                        <option value="gpt-4" ${config.model === 'gpt-4' ? 'selected' : ''}>gpt-4</option>
+                        <option value="gpt-4-turbo-preview" ${config.model === 'gpt-4-turbo-preview' ? 'selected' : ''}>gpt-4-turbo-preview</option>
+                    `;
+                    break;
+                case 'claude':
+                    modelOptions = `
+                        <option value="claude-3-haiku-20240307" ${config.model === 'claude-3-haiku-20240307' ? 'selected' : ''}>claude-3-haiku</option>
+                        <option value="claude-3-sonnet-20240229" ${config.model === 'claude-3-sonnet-20240229' ? 'selected' : ''}>claude-3-sonnet</option>
+                        <option value="claude-3-opus-20240229" ${config.model === 'claude-3-opus-20240229' ? 'selected' : ''}>claude-3-opus</option>
+                    `;
+                    break;
+                case 'deepseek':
+                    modelOptions = `
+                        <option value="deepseek-chat" ${config.model === 'deepseek-chat' ? 'selected' : ''}>deepseek-chat</option>
+                        <option value="deepseek-coder" ${config.model === 'deepseek-coder' ? 'selected' : ''}>deepseek-coder</option>
+                    `;
+                    break;
+                case 'perplexity':
+                    modelOptions = `
+                        <option value="llama-3.1-sonar-small-128k-online" ${config.model === 'llama-3.1-sonar-small-128k-online' ? 'selected' : ''}>sonar-small (online)</option>
+                        <option value="llama-3.1-sonar-large-128k-online" ${config.model === 'llama-3.1-sonar-large-128k-online' ? 'selected' : ''}>sonar-large (online)</option>
+                    `;
+                    break;
+            }
+
             configElement.innerHTML = `
                 <div class="config-field">
                     <label>API Key:</label>
@@ -97,8 +159,10 @@ class AIUIController {
                 </div>
                 <div class="config-field">
                     <label>Modelo:</label>
-                    <input type="text" id="api-model" value="${config.model}" placeholder="${config.model}">
-                    <small>Nome do modelo a ser usado</small>
+                    <select id="api-model">
+                        ${modelOptions}
+                    </select>
+                    <small>Escolha o modelo desejado</small>
                 </div>
             `;
         }
@@ -109,15 +173,25 @@ class AIUIController {
 
         if (currentProvider === 'ollama') {
             const baseUrl = document.getElementById('ollama-url').value;
-            const model = document.getElementById('ollama-model').value;
+            const modelSelect = document.getElementById('ollama-model').value;
+            const model = modelSelect === 'custom' ?
+                document.getElementById('ollama-model-custom').value :
+                modelSelect;
             this.aiProvider.updateProviderConfig('ollama', { baseUrl, model });
         } else {
-            const apiKey = document.getElementById('api-key').value;
+            const apiKey = document.getElementById('api-key').value.trim();
             const model = document.getElementById('api-model').value;
+
+            // Validate API key
+            if (!apiKey) {
+                this.showNotification('⚠️ Por favor, insira uma API key válida', 'error');
+                return;
+            }
+
             this.aiProvider.updateProviderConfig(currentProvider, { apiKey, model });
         }
 
-        this.showNotification('Configurações salvas!', 'success');
+        this.showNotification('✓ Configurações salvas!', 'success');
     }
 
     async testAIConnection() {
