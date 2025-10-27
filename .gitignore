@@ -1,45 +1,25 @@
+# Credenciais e chaves secretas
+service-account-key.json
+.env
+.env.local
+.env.production
+
+# Functions
+functions/.env
+functions/node_modules/
+functions/package-lock.json
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
 # Firebase
 .firebase/
 firebase-debug.log
-firebase-debug.*.log
 firestore-debug.log
 ui-debug.log
-
-# Service Account Keys (NEVER commit these!)
-**/service-account-key.json
-**/serviceAccountKey.json
-
-# Node modules
-node_modules/
-functions/node_modules/
-
-# Environment variables
-.env
-.env.local
-.env.*.local
-functions/.env
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-venv/
-ENV/
-
-# Database
-*.db
-*.db-journal
-*.sqlite
-*.sqlite3
-
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-traceback
 
 # IDE
 .vscode/
@@ -52,9 +32,9 @@ traceback
 .DS_Store
 Thumbs.db
 
-# Save files
-save_*.json
+# Logs
+*.log
 
-# Build outputs
+# Build
 dist/
 build/

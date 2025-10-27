@@ -1,31 +1,32 @@
 {
-  "name": "enigma-hunter",
-  "version": "2.0.0",
-  "description": "Enigma Hunter - Mystery Investigation Game (Firebase Web Version)",
-  "main": "upload-game-data.js",
-  "scripts": {
-    "upload-data": "node upload-game-data.js",
-    "serve": "firebase emulators:start",
-    "deploy": "firebase deploy",
-    "deploy:hosting": "firebase deploy --only hosting",
-    "deploy:functions": "firebase deploy --only functions",
-    "deploy:rules": "firebase deploy --only firestore:rules",
-    "logs": "firebase functions:log"
-  },
-  "keywords": [
-    "game",
-    "mystery",
-    "investigation",
-    "firebase",
-    "ai"
-  ],
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "firebase-admin": "^11.8.0"
-  },
-  "devDependencies": {},
-  "engines": {
-    "node": ">=18.0.0"
-  }
+    "name": "enigma-hunter",
+    "version": "2.0.0",
+    "description": "Jogo de investigação e mistério com IA",
+    "main": "upload-game-data.js",
+    "scripts": {
+        "serve": "firebase emulators:start",
+        "upload-data": "node upload-game-data.js --emulator",
+        "upload-data:production": "node upload-game-data.js --production",
+        "deploy": "firebase deploy",
+        "deploy:hosting": "firebase deploy --only hosting",
+        "deploy:functions": "firebase deploy --only functions",
+        "deploy:firestore": "firebase deploy --only firestore:rules",
+        "logs": "firebase functions:log"
+    },
+    "keywords": [
+        "game",
+        "mystery",
+        "investigation",
+        "ai",
+        "firebase"
+    ],
+    "author": "Enigma Hunter Team",
+    "license": "MIT",
+    "dependencies": {
+        "firebase-admin": "^12.0.0"
+    },
+    "devDependencies": {
+        "eslint": "^9.38.0",
+        "firebase-tools": "^13.0.0"
+    }
 }

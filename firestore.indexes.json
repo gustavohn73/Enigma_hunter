@@ -1,15 +1,4 @@
 {
-  "indexes": [
-    {
-      "collectionGroup": "player_saves",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "last_saved",
-          "order": "DESCENDING"
-        }
-      ]
-    }
-  ],
+  "indexes": [],
   "fieldOverrides": []
 }

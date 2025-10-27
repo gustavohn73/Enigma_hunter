@@ -127,7 +127,7 @@ npm run deploy
 
 # Ou deploy individual
 npm run deploy:hosting     # Apenas interface
-npm run deploy:functions   # Apenas functions
+firebase deploy --except functions   # Sem o functions (Plano Spark))
 ```
 
 ### 5. Acessar Seu Jogo
